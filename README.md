@@ -1,5 +1,5 @@
-# AlbaOS
-AlbaOS is a operating system developed by me , a uni student who had no clue how an os worked until taking this on
+# AlbaOS #
+AlbaOS is a operating system developed by me , a uni student who had no clue how an os worked until taking this on,
 It may not be the best but its a project i plan to constantly work on 
 
 Updates will be make with more screenshots later!

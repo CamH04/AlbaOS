@@ -4,7 +4,8 @@ It may not be the best but its a project i plan to constantly work on
 
 Updates will be make with more screenshots later!
 
-![image](https://github.com/CamH04/AlbaOS/assets/104907445/29feb86e-8122-4058-a9b1-0ff9ae5f10ab)
+![image](https://github.com/CamH04/AlbaOS/assets/104907445/0342bfcb-fbdf-4e46-b6c0-f127e1655e38)
+
 
 
 Some Ascii art of my owls: 

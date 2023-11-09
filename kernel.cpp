@@ -85,6 +85,7 @@ extern "C" void kernelMain(void* multiboot_structure, unsigned int magicnumber)
     printf("       ###               #########\n");
     printf("         ##################\n");
     printf("-------------------AlbaOS--------------------");
+    printf("-------------------AlbaOS--------------------");
 
     GlobalDescriptorTable gdt;
     while(1);

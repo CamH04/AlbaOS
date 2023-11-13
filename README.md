@@ -32,9 +32,13 @@ Some Ascii art of my owls:
 sudo apt-get install g++
 sudo apt-get install binutils
 sudo apt-get install libc-dev-i386
+sudo apt-get install grub-legacy
+sudo apt-get install xorriso
 
 ```
 
 + g++ is a the compiler for the c++ code as i dont want to write my own
 + binutils is a binary manager as well as managing the assembaly code
 + libc-dev-i386 is the 32 bit architecture for the kernel
++ grub legacy allows for multibooting and installing the os into the grub
++ so the iso digital disc file can be generated 

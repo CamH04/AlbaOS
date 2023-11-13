@@ -12,9 +12,11 @@ Some Ascii art of my owls:
 ## How To Run AlbaOS On A Virtual Machine
 
 +Clone the repo localy / Download the zip folder
+
 ![image](https://github.com/CamH04/AlbaOS/assets/104907445/d822d2a2-9967-41ca-aab4-98f97f8d42ce)
 
 +In your virtual machine seleect the boot / installer disc file as mykernel.iso (in this example im using VMware workstation)
+
 ![image](https://github.com/CamH04/AlbaOS/assets/104907445/7ff1f85a-9976-4c50-8719-8a6796b16018)
 
 +Run the virtual machine!

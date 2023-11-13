@@ -6,7 +6,11 @@ AlbaOS is a 32 bit operating system developed by me
 
 
 Some Ascii art of my owls: 
-[New Text Document.txt](https://github.com/CamH04/AlbaOS/files/13266996/New.Text.Document.txt)
+                
+ ^__^              (0,0)
+(-,-_)             /)_)/
+(x-x(v)7            ""
+
 
 
 ## How To Run AlbaOS On A Virtual Machine

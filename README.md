@@ -4,14 +4,16 @@ AlbaOS is a 32 bit operating system developed by me
 ![image](https://github.com/CamH04/AlbaOS/assets/104907445/0342bfcb-fbdf-4e46-b6c0-f127e1655e38)
 
 
-
 Some Ascii art of my owls: 
-                
- ^__^              (0,0)
-(-,-_)             /)_)/
-(x-x(v)7            ""
+```                
+(0,0)
+/)_)/
+ ""
 
+(-,-_)
+(x-x(v)7
 
+```
 
 ## How To Run AlbaOS On A Virtual Machine
 

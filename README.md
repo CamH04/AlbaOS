@@ -1,12 +1,44 @@
 # AlbaOS #
-AlbaOS is a operating system developed by me , a uni student who had no clue how an os worked until taking this on,
-It may not be the best but its a project i plan to constantly work on 
-
-Updates will be make with more screenshots later!
+AlbaOS is a 32 bit operating system developed by me
 
 ![image](https://github.com/CamH04/AlbaOS/assets/104907445/0342bfcb-fbdf-4e46-b6c0-f127e1655e38)
 
 
-
 Some Ascii art of my owls: 
-[New Text Document.txt](https://github.com/CamH04/AlbaOS/files/13266996/New.Text.Document.txt)
+```                
+(0,0)
+/)_)/
+ ""
+
+(-,-_)
+(x-x(v)7
+
+```
+
+## How To Run AlbaOS On A Virtual Machine
+
++ Clone the repo localy / Download the zip folder
+
++ In your virtual machine select the boot / installer disc file as mykernel.iso (in this example im using VMware workstation)
+
+![image](https://github.com/CamH04/AlbaOS/assets/104907445/7ff1f85a-9976-4c50-8719-8a6796b16018)
+
++ Run the virtual machine!
+
+
+## Installs
+
+```
+sudo apt-get install g++
+sudo apt-get install binutils
+sudo apt-get install libc-dev-i386
+sudo apt-get install grub-legacy
+sudo apt-get install xorriso
+
+```
+
++ g++ is a the compiler for the c++ code as i dont want to write my own
++ binutils is a binary manager as well as managing the assembaly code
++ libc-dev-i386 is the 32 bit architecture for the kernel
++ grub legacy allows for multibooting and installing the os into the grub
++ so the iso digital disc file can be generated 

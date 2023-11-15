@@ -1,5 +1,6 @@
 #include "types.h"
 #include "gdt.h"
+#include "interrupts.h"
 
 void oldprint(char* str)
 {
@@ -45,6 +46,17 @@ void printf(char* str)
     }
 }
 
+void printowl()
+{
+    printf("(0,0)\n");
+    printf("/)_)/\n");
+    printf(" **\n ");
+    printf("\n");
+
+    printf("Welcome To AlbaOS");
+}
+
+
 
 typedef void (*constructor)();
 extern "C" constructor start_ctors;
@@ -56,16 +68,17 @@ extern "C" void callConstructors()
         (*i)();
     }
 }
-extern "C" void kernelMain(void* multiboot_structure, unsigned int magicnumber)
+extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber)
 {
-    printf("(0,0)\n");
-    printf("/)_)/\n");
-    printf(" ""\n ");
-    printf("\n");
+    //cool stuff
+    printowl();
 
-    printf("Welcome To AlbaOS");
-
+    //boring nerd stuff
     GlobalDescriptorTable gdt;
+
+    InterruptManager interrupts(0x20, &gdt);
+    interrupts.Activate();
+
     while(1);
 }
 

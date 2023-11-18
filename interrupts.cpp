@@ -82,20 +82,21 @@ InterruptManager::InterruptManager(uint16_t hardwareInterruptOffset, GlobalDescr
     programmableInterruptControllerSlaveCommandPort.Write(0x11);
 
 
+
+
     // remap
     programmableInterruptControllerMasterDataPort.Write(hardwareInterruptOffset);
     programmableInterruptControllerSlaveDataPort.Write(hardwareInterruptOffset+8);
 
-
     programmableInterruptControllerMasterDataPort.Write(0x04);
     programmableInterruptControllerSlaveDataPort.Write(0x02);
-
 
     programmableInterruptControllerMasterDataPort.Write(0x01);
     programmableInterruptControllerSlaveDataPort.Write(0x01);
 
     programmableInterruptControllerMasterDataPort.Write(0x00);
     programmableInterruptControllerSlaveDataPort.Write(0x00);
+
 
     InterruptDescriptorTablePointer idt_pointer;
     idt_pointer.size  = 256*sizeof(GateDescriptor) - 1;
@@ -116,10 +117,10 @@ uint16_t InterruptManager::HardwareInterruptOffset()
 void InterruptManager::Activate()
 {
     //if(ActiveInterruptManager == 0)
-
+    {
         //ActiveInterruptManager = this;
-    asm("sti");
-
+        asm("sti");
+    }
 }
 
 void InterruptManager::Deactivate()
@@ -144,4 +145,3 @@ uint32_t InterruptManager::HandleInterrupt(uint8_t interrupt, uint32_t esp)
 
     return esp;
 }
-

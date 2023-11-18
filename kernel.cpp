@@ -68,7 +68,7 @@ extern "C" void callConstructors()
         (*i)();
     }
 }
-extern "C" void kernelMain(void* multiboot_structure, uint32_t magicnumber)
+extern "C" void kernelMain(void* multiboot_structure, uint32_t /*magicnumber*/)
 {
     //cool stuff
     printowl();

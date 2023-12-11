@@ -21,10 +21,6 @@ loader:
 	push %eax
 	push %ebx
 
-	#comment these registers out if you have to
-	#push %ecx
-	#push %edx
-
 	call kernelMain
 
 _stop:

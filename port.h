@@ -28,7 +28,6 @@
                 uint8_t result;
                 __asm__ volatile("inb %1, %0" : "=a" (result) : "Nd" (_port));
 
-
                 return result;
             }
 
@@ -51,7 +50,6 @@
             static inline void Write8Slow(uint16_t _port, uint8_t _data)
             {
                 __asm__ volatile("outb %0, %1\njmp 1f\n1: jmp 1f\n1:" : : "a" (_data), "Nd" (_port));
-
             }
 
     };
@@ -80,7 +78,6 @@
                 __asm__ volatile("outw %0, %1" : : "a" (_data), "Nd" (_port));
             }
     };
-
 
 
     class Port32Bit : public Port

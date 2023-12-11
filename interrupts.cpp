@@ -10,8 +10,7 @@ InterruptManager::GateDescriptor InterruptManager::interruptDescriptorTable[256]
 void InterruptManager::SetInterruptDescriptorTableEntry(uint8_t interrupt,
     uint16_t CodeSegment, void (*handler)(), uint8_t DescriptorPrivilegeLevel, uint8_t DescriptorType)
 {
-    // address of pointer to code segment (relative to global descriptor table)
-    // and address of the handler (relative to segment)
+
     interruptDescriptorTable[interrupt].handlerAddressLowBits = ((uint32_t) handler) & 0xFFFF;
     interruptDescriptorTable[interrupt].handlerAddressHighBits = (((uint32_t) handler) >> 16) & 0xFFFF;
     interruptDescriptorTable[interrupt].gdt_codeSegmentSelector = CodeSegment;
@@ -84,7 +83,6 @@ InterruptManager::InterruptManager(uint16_t hardwareInterruptOffset, GlobalDescr
 
 
 
-    // remap
     programmableInterruptControllerMasterDataPort.Write(hardwareInterruptOffset);
     programmableInterruptControllerSlaveDataPort.Write(hardwareInterruptOffset+8);
 

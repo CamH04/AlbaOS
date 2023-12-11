@@ -7,7 +7,6 @@
 
     class InterruptManager
     {
-        //friend class InterruptHandler;
         protected:
 
             struct GateDescriptor
@@ -28,7 +27,6 @@
             } __attribute__((packed));
 
             uint16_t hardwareInterruptOffset;
-            //static InterruptManager* ActiveInterruptManager;
             static void SetInterruptDescriptorTableEntry(uint8_t interrupt,
                 uint16_t codeSegmentSelectorOffset, void (*handler)(),
                 uint8_t DescriptorPrivilegeLevel, uint8_t DescriptorType);

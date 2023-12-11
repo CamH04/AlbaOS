@@ -1,4 +1,3 @@
-
 #ifndef __GDT_H
 #define __GDT_H
 
@@ -24,8 +23,6 @@
                     uint32_t Limit();
             } __attribute__((packed));
 
-
-
         private:
             SegmentDescriptor nullSegmentSelector;
             SegmentDescriptor unusedSegmentSelector;
@@ -39,9 +36,6 @@
 
             uint16_t CodeSegmentSelector();
             uint16_t DataSegmentSelector();
-
-
-
     };
 
 #endif

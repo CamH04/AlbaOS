@@ -1,3 +1,4 @@
+
 #ifndef __PORT_H
 #define __PORT_H
 
@@ -8,6 +9,7 @@
     {
         protected:
             Port(uint16_t portnumber);
+            // FIXME: Must be virtual (currently isnt because the kernel has no memory management yet)
             ~Port();
             uint16_t portnumber;
     };
@@ -27,7 +29,6 @@
             {
                 uint8_t result;
                 __asm__ volatile("inb %1, %0" : "=a" (result) : "Nd" (_port));
-
                 return result;
             }
 
@@ -78,6 +79,7 @@
                 __asm__ volatile("outw %0, %1" : : "a" (_data), "Nd" (_port));
             }
     };
+
 
 
     class Port32Bit : public Port

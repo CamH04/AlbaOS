@@ -1,17 +1,11 @@
+
 #include "types.h"
 #include "gdt.h"
 #include "interrupts.h"
 
-void oldprint(char* str)
-{
-    unsigned short* VideoMemoryLocation = (unsigned short*)0xb8000;
-    for(int i = 0; str[i] != '\0'; i++)
-        VideoMemoryLocation[i] = (VideoMemoryLocation[i] & 0xFF00) | str[i];
-}
-
 void printf(char* str)
 {
-    static uint16_t* VideoMemoryLocation = (uint16_t*)0xb8000;
+    static uint16_t* VideoMemory = (uint16_t*)0xb8000;
 
     static uint8_t x=0,y=0;
 
@@ -24,7 +18,7 @@ void printf(char* str)
                 y++;
                 break;
             default:
-                VideoMemoryLocation[80*y+x] = (VideoMemoryLocation[80*y+x] & 0xFF00) | str[i];
+                VideoMemory[80*y+x] = (VideoMemory[80*y+x] & 0xFF00) | str[i];
                 x++;
                 break;
         }
@@ -39,22 +33,13 @@ void printf(char* str)
         {
             for(y = 0; y < 25; y++)
                 for(x = 0; x < 80; x++)
-                    VideoMemoryLocation[80*y+x] = (VideoMemoryLocation[80*y+x] & 0xFF00) | ' ';
+                    VideoMemory[80*y+x] = (VideoMemory[80*y+x] & 0xFF00) | ' ';
             x = 0;
             y = 0;
         }
     }
 }
 
-void printowl()
-{
-    printf("(0,0)\n");
-    printf("/)_)/\n");
-    printf(" **\n ");
-    printf("\n");
-
-    printf("Welcome To AlbaOS");
-}
 
 
 typedef void (*constructor)();
@@ -70,7 +55,12 @@ extern "C" void callConstructors()
 extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot_magic*/)
 {
     //cool stuff
-    printf("hello");
+    printf("(0,0)\n");
+    printf("/)_)/\n");
+    printf(" **\n ");
+    printf("\n");
+
+    printf("Welcome To AlbaOS");
 
     //boring nerd stuff
     GlobalDescriptorTable gdt;

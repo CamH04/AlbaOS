@@ -63,47 +63,30 @@ HandleInterruptRequest 0x31
 
 int_bottom:
 
-    # register sichern
     pusha
     pushl %ds
     pushl %es
     pushl %fs
     pushl %gs
 
-    # ring 0 segment register laden
-    #cld
-    #mov $0x10, %eax
-    #mov %eax, %eds
-    #mov %eax, %ees
-
-    # C++ Handler aufrufen
     pushl %esp
     push (interruptnumber)
     call _ZN16InterruptManager15HandleInterruptEhj
     add %esp, 6
-    mov %eax, %esp # den stack wechselnint_bottom:
+    mov %eax, %esp
 
-    # register sichern
     pusha
     pushl %ds
     pushl %es
     pushl %fs
     pushl %gs
 
-    # ring 0 segment register laden
-    #cld
-    #mov $0x10, %eax
-    #mov %eax, %eds
-    #mov %eax, %ees
-
-    # C++ Handler aufrufen
     pushl %esp
     push (interruptnumber)
     call _ZN16InterruptManager15HandleInterruptEhj
     add %esp, 6
-    mov %eax, %esp # den stack wechseln
+    mov %eax, %esp
 
-    # register laden
     pop %gs
     pop %fs
     pop %es

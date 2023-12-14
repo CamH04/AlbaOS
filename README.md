@@ -49,5 +49,5 @@ sudo apt-get install xorriso
 ## Stuff i've implemented 
 + working console output (printlines)
 + global descriptor tables / ports
-+ interrupts (WIP) 
++ interrupts
 

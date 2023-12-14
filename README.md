@@ -50,4 +50,5 @@ sudo apt-get install xorriso
 + working console output (printlines)
 + global descriptor tables / ports
 + interrupts
++ keyboard
 

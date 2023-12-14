@@ -42,7 +42,7 @@ sudo apt-get install xorriso
 + binutils is a binary manager as well as managing the assembaly code
 + libc-dev-i386 is the 32 bit architecture for the kernel
 + grub legacy allows for multibooting and installing the os into the grub
-+ so the iso digital disc file can be generated
++ xorriso so the digital disc file (.iso) can be generated
 
 (note) : grub-legacy is unavailable but grub-common or grub2 will work fine
 

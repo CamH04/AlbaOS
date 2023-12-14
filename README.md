@@ -1,7 +1,8 @@
 # AlbaOS #
 AlbaOS is a 32 bit operating system developed by me
 
-![image](https://github.com/CamH04/AlbaOS/assets/104907445/0342bfcb-fbdf-4e46-b6c0-f127e1655e38)
+![screenshot](https://github.com/CamH04/AlbaOS/assets/104907445/71e74641-891c-4da0-ba97-3547e13f66ae)
+
 
 
 Some Ascii art of my owls: 

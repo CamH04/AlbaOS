@@ -52,4 +52,5 @@ sudo apt-get install xorriso
 + global descriptor tables / ports
 + interrupts
 + keyboard
++ mouse
 

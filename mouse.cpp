@@ -65,6 +65,9 @@ uint32_t MouseDriver::HandleInterrupt(uint32_t esp)
                             | ((VideoMemory[80*y+x] &0x0F00) << 4)
                             | (VideoMemory[80*y+x] &0x00FF);
 
+
+        //dont bother with this
+        /*
         for(uint8_t i = 0; i < 3; i++)
         {
             if((buffer[0] & (0x1<<i)) != (buttons & (0x1<<i)))
@@ -75,6 +78,7 @@ uint32_t MouseDriver::HandleInterrupt(uint32_t esp)
             }
         }
         buttons = buffer[0];
+        */
 
 
     }

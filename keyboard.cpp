@@ -78,6 +78,20 @@ uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
         case 0x34: if(Shift) printf(">"); else printf("."); break;
         case 0x35: if(Shift) printf("?"); else printf("/"); break;
 
+
+        case 0x3B: printf(""); break; //f1
+        case 0x3C: printf(""); break; //f2
+        case 0x3D: printf(""); break; //f3
+        case 0x3E: printf(""); break; //f4
+        case 0x3F: printf(""); break; //f5
+        case 0x40: printf(""); break; //f6
+        case 0x41: printf(""); break; //f7
+        case 0x42: printf(""); break; //f8
+        case 0x43: printf(""); break; //f9
+        case 0x44: printf(""); break; //f10
+        case 0x57: printf(""); break; //f11
+        case 0x58: printf(""); break; //f12
+
         case 0x0C: if(Shift) printf("_"); else printf("-"); break;
         case 0x27: if(Shift) printf(":"); else printf(";"); break;
 
@@ -86,10 +100,12 @@ uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
         case 0x39: printf(" "); break;
         case 0x45: break; //numlock
         case 0x1D: printf(""); break; // ctrl
-        case 0x38: printf(""); break; //alt
         case 0x01: printf(""); break; // esc
-        case 0x2A: case 0x36: Shift = true; break;
-        case 0xAA: case 0x86: Shift = false; break;
+        case 0x0F: printf(""); break; // tab
+
+        case 0x3A: printf(""); break; // capslock
+        case 0x2A: case 0x36: Shift = true; break; //presss down for left and right shift
+        case 0xAA: case 0x86: Shift = false; break; //releace for left and right shift
 
 
         default:

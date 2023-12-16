@@ -1,7 +1,8 @@
 # AlbaOS #
 AlbaOS is a 32 bit operating system developed by me
 
-![image](https://github.com/CamH04/AlbaOS/assets/104907445/0342bfcb-fbdf-4e46-b6c0-f127e1655e38)
+![screenshot](https://github.com/CamH04/AlbaOS/assets/104907445/71e74641-891c-4da0-ba97-3547e13f66ae)
+
 
 
 Some Ascii art of my owls: 
@@ -41,7 +42,7 @@ sudo apt-get install xorriso
 + binutils is a binary manager as well as managing the assembaly code
 + libc-dev-i386 is the 32 bit architecture for the kernel
 + grub legacy allows for multibooting and installing the os into the grub
-+ so the iso digital disc file can be generated
++ xorriso so the digital disc file (.iso) can be generated
 
 (note) : grub-legacy is unavailable but grub-common or grub2 will work fine
 
@@ -50,4 +51,5 @@ sudo apt-get install xorriso
 + working console output (printlines)
 + global descriptor tables / ports
 + interrupts
++ keyboard
 

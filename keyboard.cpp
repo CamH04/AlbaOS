@@ -101,6 +101,7 @@ uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
         case 0x45: break; //numlock
         case 0x1D: printf(""); break; // ctrl
         case 0x01: printf(""); break; // esc
+        case 0x38: printf(""); break; //alt
         case 0x0F: printf(""); break; // tab
 
         case 0x3A: printf(""); break; // capslock

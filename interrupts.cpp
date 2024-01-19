@@ -1,21 +1,20 @@
-
 #include "interrupts.h"
 
 
 void printf(char* str);
+void printfHex(uint8_t);
 
 
-//update - making it so it doesnt point to static function, insted it repoints to interruptManager so we can have pic access
 
-//implementing stuff we made in the h file
-//register itself
+
+
 InterruptHandler::InterruptHandler(InterruptManager* interruptManager, uint8_t InterruptNumber)
 {
     this->InterruptNumber = InterruptNumber;
     this->interruptManager = interruptManager;
     interruptManager->handlers[InterruptNumber] = this;
 }
-//unregister itseelf
+
 InterruptHandler::~InterruptHandler()
 {
     if(interruptManager->handlers[InterruptNumber] == this)
@@ -167,33 +166,26 @@ uint32_t InterruptManager::HandleInterrupt(uint8_t interrupt, uint32_t esp)
 {
     if(ActiveInterruptManager != 0)
         return ActiveInterruptManager->DoHandleInterrupt(interrupt, esp);
-    //printf("interrupt");
     return esp;
 }
 
-//"here we put the stuff we really do" - viktor
+
 uint32_t InterruptManager::DoHandleInterrupt(uint8_t interrupt, uint32_t esp)
 {
-    // doesnt output 0x20, just everything else
     if(handlers[interrupt] != 0)
     {
         esp = handlers[interrupt]->HandleInterrupt(esp);
     }
-    //if we dont have a interrupt handler
     else if(interrupt != hardwareInterruptOffset)
     {
-        char* foo = "UNHANDLED INTERRUPT 0x00";
-        char* hex = "0123456789ABCDEF";
-        foo[22] = hex[(interrupt >> 4) & 0xF];
-        foo[23] = hex[interrupt & 0xF];
-        printf(foo);
+        printf("UNHANDLED INTERRUPT 0x");
+        printfHex(interrupt);
     }
 
-    // replying to the interrupt, 0x20 == good yippie
+    // hardware interrupts must be acknowledged
     if(hardwareInterruptOffset <= interrupt && interrupt < hardwareInterruptOffset+16)
     {
         programmableInterruptControllerMasterCommandPort.Write(0x20);
-        //only have to send if came from slave
         if(hardwareInterruptOffset + 8 <= interrupt)
             programmableInterruptControllerSlaveCommandPort.Write(0x20);
     }

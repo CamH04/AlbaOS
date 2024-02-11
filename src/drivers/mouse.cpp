@@ -48,7 +48,7 @@ void printf(char*);
     void MouseDriver::Activate()
     {
         //if mouse is strange change offset (0,1,2)
-        offset = 0;
+        offset = 1;
         buttons = 0;
 
         if(handler != 0)

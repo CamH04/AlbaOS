@@ -7,34 +7,51 @@
 #include <drivers/driver.h>
 #include <hardwarecommunication/port.h>
 
-namespace albaos
-{
-    namespace drivers
-    {
 
-        class KeyboardEventHandler
-        {
-        public:
-            KeyboardEventHandler();
+namespace albaos {
 
-            virtual void OnKeyDown(char);
-            virtual void OnKeyUp(char);
-        };
+	namespace drivers {
 
-        class KeyboardDriver : public albaos::hardwarecommunication::InterruptHandler, public Driver
-        {
-            albaos::hardwarecommunication::Port8Bit dataport;
-            albaos::hardwarecommunication::Port8Bit commandport;
+		class KeyboardEventHandler {
+			public:
+				bool ctrl;
+				bool alt;
+				bool shift;
+				bool caps;
 
-            KeyboardEventHandler* handler;
-        public:
-            KeyboardDriver(albaos::hardwarecommunication::InterruptManager* manager, KeyboardEventHandler *handler);
-            ~KeyboardDriver();
-            virtual albaos::common::uint32_t HandleInterrupt(albaos::common::uint32_t esp);
-            virtual void Activate();
-        };
+				bool cli;
 
-    }
+			public:
+				KeyboardEventHandler();
+				virtual void OnKeyDown(char);
+				virtual void OnKeyUp();
+				virtual void resetMode();
+				virtual void modeSet(albaos::common::uint8_t);
+		};
+
+
+		class KeyboardDriver : public albaos::hardwarecommunication::InterruptHandler, public Driver {
+
+
+			public:
+				albaos::hardwarecommunication::Port8Bit dataport;
+				albaos::hardwarecommunication::Port8Bit commandport;
+
+				KeyboardEventHandler* handler;
+
+			public:
+
+				albaos::common::uint8_t keyHex = 0xff;
+
+				KeyboardDriver(albaos::hardwarecommunication::InterruptManager* manager, KeyboardEventHandler *handler);
+				~KeyboardDriver();
+
+				virtual albaos::common::uint32_t HandleInterrupt(albaos::common::uint32_t esp);
+				virtual void Activate();
+		};
+
+	}
 }
+
 
 #endif

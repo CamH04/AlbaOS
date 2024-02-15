@@ -81,4 +81,6 @@ sudo apt-get install xorriso
 + interrupts
 + keyboard
 + mouse
++ PCI (Peripheral Component Interconnect)
++ Owl Art (:
 

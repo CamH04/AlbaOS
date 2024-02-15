@@ -16,11 +16,13 @@ void owlart::printfline(char *str, uint8_t line) {
     }
 }
 
+void printf(char* str);
+
 void owlart::OwlArtStare()
 {
-    printfline("(0,0)\n",0);
-    printfline("/)_)/\n",1);
-    printfline(" **  \n",2);
+    printf("(0,0)\n");
+    printf("/)_)/\n");
+    printf(" **  \n");
 
 }
 

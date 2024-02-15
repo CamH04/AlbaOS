@@ -12,6 +12,7 @@ objects = obj/loader.o \
           obj/hardwarecommunication/port.o \
           obj/hardwarecommunication/interruptstubs.o \
           obj/hardwarecommunication/interrupts.o \
+          obj/hardwarecommunication/pci.o \
           obj/drivers/keyboard.o \
           obj/drivers/mouse.o \
           obj/kernel.o
@@ -24,27 +25,27 @@ obj/%.o: src/%.s
 	mkdir -p $(@D)
 	as $(ASPARAMS) -o $@ $<
 
-mykernel.bin: linker.ld $(objects)
+albaos.bin: linker.ld $(objects)
 	ld $(LDPARAMS) -T $< -o $@ $(objects)
 
-mykernel.iso: mykernel.bin
+albaos.iso: albaos.bin
 	mkdir iso
 	mkdir iso/boot
 	mkdir iso/boot/grub
-	cp mykernel.bin iso/boot/mykernel.bin
+	cp albaos.bin iso/boot/albaos.bin
 	echo 'set timeout=0'                      > iso/boot/grub/grub.cfg
 	echo 'set default=0'                     >> iso/boot/grub/grub.cfg
 	echo ''                                  >> iso/boot/grub/grub.cfg
 	echo 'menuentry "Alba Os            " {' >> iso/boot/grub/grub.cfg
-	echo '  multiboot /boot/mykernel.bin'    >> iso/boot/grub/grub.cfg
+	echo '  multiboot /boot/albaos.bin'    >> iso/boot/grub/grub.cfg
 	echo '  boot'                            >> iso/boot/grub/grub.cfg
 	echo '}'                                 >> iso/boot/grub/grub.cfg
-	grub-mkrescue --output=mykernel.iso iso
+	grub-mkrescue --output=albaos.iso iso
 	rm -rf iso
 
-install: mykernel.bin
-	sudo cp $< /boot/mykernel.bin
+install: albaos.bin
+	sudo cp $< /boot/albaos.bin
 
 .PHONY: clean
 clean:
-	rm -rf obj mykernel.bin mykernel.iso
+	rm -rf obj albaos.bin albaos.iso

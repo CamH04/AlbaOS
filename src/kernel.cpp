@@ -2,6 +2,7 @@
 #include <common/types.h>
 #include <gdt.h>
 #include <hardwarecommunication/interrupts.h>
+#include <hardwarecommunication/pci.h>
 #include <drivers/driver.h>
 #include <drivers/keyboard.h>
 #include <drivers/mouse.h>
@@ -123,21 +124,12 @@ extern "C" void callConstructors()
 
 extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot_magic*/)
 {
-    //cool stuff
-    printf("(0,0)\n");
-    printf("/)_)/\n");
-    printf(" **\n ");
-    printf("\n");
 
-    printf("Welcome To AlbaOS");
-    printf("\n");
-
-    // nerd stuff (insatnciating objects)
     GlobalDescriptorTable gdt;
     InterruptManager interrupts(0x20, &gdt);
 
-    printf("IH, Stage 1\n");
-
+    //printf("IH, Stage 1\n");
+    //drivers exist, put here lul
     DriverManager drvManager;
 
         PrintfKeyboardEventHandler kbhandler;
@@ -148,14 +140,32 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
         MouseDriver mouse(&interrupts, &mousehandler);
         drvManager.AddDriver(&mouse);
 
+        //i forgot to add this here and wondered why it wasnt working, the blight of man
+        PeripheralComponentInterconnectController PCIController;
+        PCIController.SelectDrivers(&drvManager);
 
-    printf("IH, Stage 2\n");
+        //activating drivers
+        //printf("IH, Stage 2\n");
         drvManager.ActivateAll();
 
-    printf("IH, Stage 3\n");
+    //please dont sprurt out 1billion GPF errors
+    //printf("IH, Stage 3\n");
     interrupts.Activate();
 
+
+
+
+    //cool stuff
+    printf("(0,0)\n");
+    printf("/)_)/\n");
+    printf(" **\n ");
     printf("\n");
+
+    printf("Welcome To AlbaOS");
+    printf("\n");
+    printf("$>");
+
+
     while(1);
 }
 

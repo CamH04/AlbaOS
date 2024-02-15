@@ -47,8 +47,8 @@ void printf(char*);
 
     void MouseDriver::Activate()
     {
-        //if mouse is strange change offset (0,1,2)
-        offset = 3;
+        //if mouse is strange change offset (0,1,2) higher number = less sensitive
+        offset = 2;
         buttons = 0;
 
         if(handler != 0)

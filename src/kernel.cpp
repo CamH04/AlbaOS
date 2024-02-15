@@ -1,6 +1,7 @@
 
 #include <common/types.h>
 #include <gdt.h>
+#include <owlart.h>
 #include <hardwarecommunication/interrupts.h>
 #include <hardwarecommunication/pci.h>
 #include <drivers/driver.h>
@@ -156,10 +157,8 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
 
 
     //cool stuff
-    printf("(0,0)\n");
-    printf("/)_)/\n");
-    printf(" **\n ");
-    printf("\n");
+    owlart OA;
+    OA.OwlArtLove();
 
     printf("Welcome To AlbaOS");
     printf("\n");

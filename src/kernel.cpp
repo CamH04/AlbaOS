@@ -158,13 +158,11 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
 
     //art stuff
     owlart OA;
-    OA.OwlArtStare();
+    OA.OwlArtLove();
 
     printf("Welcome To AlbaOS");
     printf("\n");
     printf("$>");
-
-    OA.OwlArtFly();
 
     while(1);
 }

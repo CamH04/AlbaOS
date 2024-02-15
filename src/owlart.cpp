@@ -5,6 +5,8 @@
 using namespace albaos;
 using namespace albaos::common;
 
+void printf(char* str);
+
 void owlart::printfline(char *str, uint8_t line) {
     uint16_t attrib = 0x07;
 
@@ -16,7 +18,8 @@ void owlart::printfline(char *str, uint8_t line) {
     }
 }
 
-void printf(char* str);
+// eg printfline("help me god",0);
+//    printfline("its too late for this",1);
 
 void owlart::OwlArtStare()
 {
@@ -28,53 +31,53 @@ void owlart::OwlArtStare()
 
 void owlart::OwlArtSleep()
 {
-    printfline("(-,-_)  \n",0);
-    printfline("(x-x(v)7\n",1);
+    printf("(-,-_)  \n");
+    printf("(x-x(v)7\n");
 }
 
 void owlart::OwlArtHeadphones()
 {
-    printfline("  _____       \n",0);
-    printfline(" / ___ \      \n",1);
-    printfline("(|(0,0)|)     \n",2);
-    printfline("  /)_)/       \n",3);
-    printfline("   **         \n",4);
+    printf("  _____       \n");
+    printf(" / ___ \      \n");
+    printf("(|(0,0)|)     \n");
+    printf("  /)_)/       \n");
+    printf("   **         \n");
 
 }
 
 void owlart::OwlArtFly()
 {
-    printfline(" (0,0) \n",0);
-    printfline("==)_)==\n",1);
-    printfline("  **   \n",2);
+    printf(" (0,0) \n");
+    printf("==)_)==\n");
+    printf("  **   \n");
 }
 
 void owlart::OwlArtGeekin()
 {
-    printfline("(@,@)\n",0);
-    printfline("[(_)]\n",1);
-    printfline(" **  \n",2);
+    printf("(@,@)\n");
+    printf("[(_)]\n");
+    printf(" **  \n");
 }
 
 void owlart::OwlArtHappy()
 {
-    printfline("(^,^)\n",0);
-    printfline("/)_)/\n",1);
-    printfline(" **  \n",2);
+    printf("(^,^)\n");
+    printf("/)_)/\n");
+    printf(" **  \n");
 }
 
 void owlart::OwlArtSad()
 {
-    printfline("(v,v)\n",0);
-    printfline("/)_)/\n",1);
-    printfline(" **  \n",2);
+    printf("(v,v)\n");
+    printf("/)_)/\n");
+    printf(" **  \n");
 
 }
 
 void owlart::OwlArtLove()
 {
-    printfline("       <3       \n",0);
-    printfline("  (^,^)  (^,^)  \n",1);
-    printfline("  /)_)/  /)_)/  \n",2);
-    printfline("---**-----**----\n",3);
+    printf("       <3       \n");
+    printf("  (^,^)  (^,^)  \n");
+    printf("  /)_)/  /)_)/  \n");
+    printf("---**-----**----\n");
 }

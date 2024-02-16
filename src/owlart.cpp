@@ -7,6 +7,8 @@ using namespace albaos::common;
 
 void printf(char* str);
 
+
+// primary use of this is to ovveride lines if need be
 void owlart::printfline(char *str, uint8_t line) {
     uint16_t attrib = 0x07;
 
@@ -17,7 +19,6 @@ void owlart::printfline(char *str, uint8_t line) {
 
     }
 }
-
 // eg printfline("help me god",0);
 //    printfline("its too late for this",1);
 

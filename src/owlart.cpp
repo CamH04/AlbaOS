@@ -39,7 +39,7 @@ void owlart::OwlArtSleep()
 void owlart::OwlArtHeadphones()
 {
     printf("  _____       \n");
-    printf(" / ___ \      \n");
+    printf(" / ___ \\     \n");
     printf("(|(0,0)|)     \n");
     printf("  /)_)/       \n");
     printf("   **         \n");

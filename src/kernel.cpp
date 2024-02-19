@@ -7,6 +7,7 @@
 #include <drivers/driver.h>
 #include <drivers/keyboard.h>
 #include <drivers/mouse.h>
+#include <drivers/pit.h>
 
 using namespace albaos;
 using namespace albaos::common;
@@ -115,16 +116,16 @@ public:
 
 //RANDOM NUMBERS
 //god help me random numbers are somthing else
+PIT pit;
 #define MODULUS    2147483647 /* DON'T CHANGE THIS VALUE                  */
 #define MULTIPLIER 48271      /* DON'T CHANGE THIS VALUE                  */
 #define CHECK      399268537  /* DON'T CHANGE THIS VALUE                  */
 #define STREAMS    256        /* # of streams, DON'T CHANGE THIS VALUE    */
 #define A256       22925      /* jump multiplier, DON'T CHANGE THIS VALUE */
-#define DEFAULT    123456789  /* initial seed, use 0 < DEFAULT < MODULUS  */
+#define DEFAULT    123456789
 
-static long seed[STREAMS] = {DEFAULT};  /* current state of each stream   */
+static long seed[STREAMS] = {(uint16_t)pit.readCount()};  /* current state of each stream  when pit implemented do the lmao here */
 static int  stream        = 0;          /* stream index, 0 is the default */
-static int  initialized   = 0;          /* test for stream initialization */
 
 double Random(void)
 /* ----------------------------------------------------------------
@@ -201,7 +202,7 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     owlart OA;
     OA.OwlArtLove();
 
-    printf("Welcome To AlbaOS Version Beta 0.83");
+    printf("Welcome To AlbaOS Version Beta 0.84.1");
     printf("\n");
     printf("$>");
 

@@ -117,22 +117,20 @@ public:
 //RANDOM NUMBERS
 //god help me random numbers are somthing else
 PIT pit;
-#define MODULUS    2147483647 /* DON'T CHANGE THIS VALUE                  */
-#define MULTIPLIER 48271      /* DON'T CHANGE THIS VALUE                  */
-#define CHECK      399268537  /* DON'T CHANGE THIS VALUE                  */
-#define STREAMS    256        /* # of streams, DON'T CHANGE THIS VALUE    */
-#define A256       22925      /* jump multiplier, DON'T CHANGE THIS VALUE */
-#define DEFAULT    123456789
+//dont change any of these
+//uses Lehmer random number generation
+//Steve Park & Dave Geyer are legends btw read their stuff
+#define MODULUS    2147483647
+#define MULTIPLIER 48271
+#define CHECK      399268537
+#define STREAMS    256
+#define A256       22925
 
-static long seed[STREAMS] = {(uint16_t)pit.readCount()};  /* current state of each stream  when pit implemented do the lmao here */
-static int  stream        = 0;          /* stream index, 0 is the default */
+static long seed[STREAMS] = {(uint16_t)pit.readCount()};
+static int  stream        = 0;
 
 double Random(void)
-/* ----------------------------------------------------------------
- * Random returns a pseudo-random real number uniformly distributed
- * between 0.0 and 1.0.
- * ----------------------------------------------------------------
- */
+//between 1 and 0
 {
   const long Q = MODULUS / MULTIPLIER;
   const long R = MODULUS % MULTIPLIER;
@@ -192,17 +190,17 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     //RANDOM STUFF
     if (Random() < 0.5){
 
-        printf("number is smaller than half ig lul");
+        printf("number is smaller than half ig lul \n");
     }
-    if (Random() > 0.5){
-        printf("number is bigger lul");
+    else{
+        printf("number is bigger lul \n");
     }
 
     //art stuff
     owlart OA;
     OA.OwlArtLove();
 
-    printf("Welcome To AlbaOS Version Beta 0.84.1");
+    printf("Welcome To AlbaOS Version Beta 0.85");
     printf("\n");
     printf("$>");
 

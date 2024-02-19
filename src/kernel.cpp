@@ -116,7 +116,6 @@ public:
 
 //RANDOM NUMBERS
 //god help me random numbers are somthing else
-PIT pit;
 //dont change any of these
 //uses Lehmer random number generation
 //Steve Park & Dave Geyer are legends btw read their stuff
@@ -125,10 +124,10 @@ PIT pit;
 #define CHECK      399268537
 #define STREAMS    256
 #define A256       22925
+PIT pit;
 
 static long seed[STREAMS] = {(uint16_t)pit.readCount()};
 static int  stream        = 0;
-
 double Random(void)
 //between 1 and 0
 {
@@ -213,6 +212,7 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
 
 
 
+    /*
     //RANDOM STUFF
     if (Random() < 0.5){
 
@@ -223,6 +223,7 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
         printf("number is bigger lul \n");
         forget();
     }
+    */
 
 
     //art stuff

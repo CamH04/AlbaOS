@@ -11,8 +11,6 @@ namespace albaos {
 	namespace drivers {
 
 		class PIT : public Driver {
-
-			//im losing it slightly
 			public:
 				hardwarecommunication::Port8Bit channel0;
 				hardwarecommunication::Port8Bit channel1;

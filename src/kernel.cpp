@@ -144,6 +144,30 @@ double Random(void)
   return ((double) seed[stream] / MODULUS);
 }
 
+void memWrite(uint32_t memory, uint32_t inputVal) {
+
+	volatile uint32_t* value;
+	value = (volatile uint32_t*)memory;
+	*value = inputVal;
+}
+
+uint32_t memRead(uint32_t memory) {
+
+	volatile uint32_t* value;
+	value = (volatile uint32_t*)memory;
+
+	return *value;
+}
+void forget() {
+
+	uint32_t start = 0;
+	uint32_t end = Random();
+
+	for (start; start < end; start++) {
+
+		memWrite(start, 0);
+	}
+}
 
 
 typedef void (*constructor)();
@@ -187,14 +211,19 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     interrupts.Activate();
 
 
+
+
     //RANDOM STUFF
     if (Random() < 0.5){
 
         printf("number is smaller than half ig lul \n");
+        forget();
     }
     else{
         printf("number is bigger lul \n");
+        forget();
     }
+
 
     //art stuff
     owlart OA;

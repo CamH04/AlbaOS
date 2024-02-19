@@ -114,6 +114,7 @@ public:
 
 };
 
+/*
 //RANDOM NUMBERS
 //god help me random numbers are somthing else
 //dont change any of these
@@ -167,6 +168,7 @@ void forget() {
 		memWrite(start, 0);
 	}
 }
+*/
 
 
 typedef void (*constructor)();

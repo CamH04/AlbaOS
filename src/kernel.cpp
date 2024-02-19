@@ -113,19 +113,38 @@ public:
 
 };
 
+//RANDOM NUMBERS
 //god help me random numbers are somthing else
-static unsigned long int next = 1;
+#define MODULUS    2147483647 /* DON'T CHANGE THIS VALUE                  */
+#define MULTIPLIER 48271      /* DON'T CHANGE THIS VALUE                  */
+#define CHECK      399268537  /* DON'T CHANGE THIS VALUE                  */
+#define STREAMS    256        /* # of streams, DON'T CHANGE THIS VALUE    */
+#define A256       22925      /* jump multiplier, DON'T CHANGE THIS VALUE */
+#define DEFAULT    123456789  /* initial seed, use 0 < DEFAULT < MODULUS  */
 
-int rand(void) // RAND_MAX assumed to be 32767
+static long seed[STREAMS] = {DEFAULT};  /* current state of each stream   */
+static int  stream        = 0;          /* stream index, 0 is the default */
+static int  initialized   = 0;          /* test for stream initialization */
+
+double Random(void)
+/* ----------------------------------------------------------------
+ * Random returns a pseudo-random real number uniformly distributed
+ * between 0.0 and 1.0.
+ * ----------------------------------------------------------------
+ */
 {
-    next = next * 1103515245 + 12345;
-    return (unsigned int) (next / 65536) % 32768;
+  const long Q = MODULUS / MULTIPLIER;
+  const long R = MODULUS % MULTIPLIER;
+        long t;
+
+  t = MULTIPLIER * (seed[stream] % Q) - R * (seed[stream] / Q);
+  if (t > 0)
+    seed[stream] = t;
+  else
+    seed[stream] = t + MODULUS;
+  return ((double) seed[stream] / MODULUS);
 }
 
-void srand(unsigned int seed)
-{
-    next = seed;
-}
 
 
 typedef void (*constructor)();
@@ -144,7 +163,7 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     GlobalDescriptorTable gdt;
     InterruptManager interrupts(0x20, &gdt);
 
-    //printf("IH, Stage 1\n");
+    printf("Hardware init, Stage 1\n");
     //drivers exist, put here lul
     DriverManager drvManager;
 
@@ -161,21 +180,28 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
         PCIController.SelectDrivers(&drvManager);
 
         //activating drivers
-        //printf("IH, Stage 2\n");
+        printf("Hardware init, Stage 2\n");
         drvManager.ActivateAll();
 
-    //please dont sprurt out 1billion GPF errors
-    //printf("IH, Stage 3\n");
+    //please dont spurt out 1billion GPF errors
+    printf("Hardware init, Stage 3\n");
     interrupts.Activate();
 
 
-    //rand();
+    //RANDOM STUFF
+    if (Random() < 0.5){
+
+        printf("number is smaller than half ig lul");
+    }
+    if (Random() > 0.5){
+        printf("number is bigger lul");
+    }
 
     //art stuff
     owlart OA;
     OA.OwlArtLove();
 
-    printf("Welcome To AlbaOS");
+    printf("Welcome To AlbaOS Version Beta 0.83");
     printf("\n");
     printf("$>");
 

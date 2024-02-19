@@ -78,7 +78,7 @@ void PeripheralComponentInterconnectController::SelectDrivers(DriverManager* dri
                 if(dev.vendor_id == 0x0000 || dev.vendor_id == 0xFFFF)
                     break;
 
-                /*
+
                 printf("PCI BUS ");
                 printfHex(bus & 0xFF);
 
@@ -95,7 +95,6 @@ void PeripheralComponentInterconnectController::SelectDrivers(DriverManager* dri
                 printfHex((dev.device_id & 0xFF00) >> 8);
                 printfHex(dev.device_id & 0xFF);
                 printf("\n");
-                */
             }
         }
     }

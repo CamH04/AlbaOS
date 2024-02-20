@@ -9,6 +9,12 @@
 #include <drivers/mouse.h>
 #include <drivers/pit.h>
 
+#define MODULUS    2147483647
+#define MULTIPLIER 48271
+#define CHECK      399268537
+#define STREAMS    256
+#define A256       22925
+
 using namespace albaos;
 using namespace albaos::common;
 using namespace albaos::drivers;
@@ -114,34 +120,29 @@ public:
 
 };
 
-/*
+
 //RANDOM NUMBERS
 //god help me random numbers are somthing else
 //dont change any of these
 //uses Lehmer random number generation
 //Steve Park & Dave Geyer are legends btw read their stuff
-#define MODULUS    2147483647
-#define MULTIPLIER 48271
-#define CHECK      399268537
-#define STREAMS    256
-#define A256       22925
-PIT pit;
 
-static long seed[STREAMS] = {(uint16_t)pit.readCount()};
-static int  stream        = 0;
-double Random(void)
-//between 1 and 0
+double Random(void) // betwwen 1 and 0
 {
-  const long Q = MODULUS / MULTIPLIER;
-  const long R = MODULUS % MULTIPLIER;
-        long t;
+    PIT pit;
 
-  t = MULTIPLIER * (seed[stream] % Q) - R * (seed[stream] / Q);
-  if (t > 0)
-    seed[stream] = t;
-  else
-    seed[stream] = t + MODULUS;
-  return ((double) seed[stream] / MODULUS);
+    static long seed[STREAMS] = {(uint16_t)pit.readCount()};
+    static int  stream        = 0;
+    const long Q = MODULUS / MULTIPLIER;
+    const long R = MODULUS % MULTIPLIER;
+            long t;
+
+    t = MULTIPLIER * (seed[stream] % Q) - R * (seed[stream] / Q);
+    if (t > 0)
+        seed[stream] = t;
+    else
+        seed[stream] = t + MODULUS;
+    return ((double) seed[stream] / MODULUS);
 }
 
 void memWrite(uint32_t memory, uint32_t inputVal) {
@@ -168,8 +169,6 @@ void forget() {
 		memWrite(start, 0);
 	}
 }
-*/
-
 
 typedef void (*constructor)();
 extern "C" constructor start_ctors;
@@ -214,18 +213,16 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
 
 
 
-    /*
     //RANDOM STUFF
     if (Random() < 0.5){
 
-        printf("number is smaller than half ig lul \n");
+        printf("rand num less than 0.5 \n");
         forget();
     }
     else{
-        printf("number is bigger lul \n");
+        printf("rand num larger than 0.5 \n");
         forget();
     }
-    */
 
 
     //art stuff

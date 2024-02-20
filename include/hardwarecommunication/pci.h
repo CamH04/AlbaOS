@@ -11,6 +11,22 @@ namespace albaos
 {
     namespace hardwarecommunication
     {
+        enum BaseAddressRegisterType
+        {
+            MemoryMapping = 0,
+            InputOutput = 1
+        };
+
+
+        class BaseAddressRegister
+        {
+        public:
+            bool prefetchable;
+            albaos::common::uint8_t* address;
+            albaos::common::uint32_t size;
+            BaseAddressRegisterType type;
+        };
+
 
         class PeripheralComponentInterconnectDeviceDescriptor
         {
@@ -50,8 +66,10 @@ namespace albaos
             void Write(albaos::common::uint16_t bus, albaos::common::uint16_t device, albaos::common::uint16_t function, albaos::common::uint32_t registeroffset, albaos::common::uint32_t value);
             bool DeviceHasFunctions(albaos::common::uint16_t bus, albaos::common::uint16_t device);
 
-            void SelectDrivers(albaos::drivers::DriverManager* driverManager);
+            void SelectDrivers(albaos::drivers::DriverManager* driverManager, albaos::hardwarecommunication::InterruptManager* interrupts);
+            albaos::drivers::Driver* GetDriver(PeripheralComponentInterconnectDeviceDescriptor dev, albaos::hardwarecommunication::InterruptManager* interrupts);
             PeripheralComponentInterconnectDeviceDescriptor GetDeviceDescriptor(albaos::common::uint16_t bus, albaos::common::uint16_t device, albaos::common::uint16_t function);
+            BaseAddressRegister GetBaseAddressRegister(albaos::common::uint16_t bus, albaos::common::uint16_t device, albaos::common::uint16_t function, albaos::common::uint16_t bar);
         };
 
     }

@@ -200,7 +200,7 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
 
         //i forgot to add this here and wondered why it wasnt working, the blight of man
         PeripheralComponentInterconnectController PCIController;
-        PCIController.SelectDrivers(&drvManager);
+        PCIController.SelectDrivers(&drvManager, &interrupts);
 
         //activating drivers
         printf("Hardware init, Stage 2\n");

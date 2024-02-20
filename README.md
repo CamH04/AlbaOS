@@ -1,7 +1,7 @@
 # AlbaOS #
 AlbaOS is a 32 bit operating system developed by me
 
-![screenshot](https://github.com/CamH04/AlbaOS/assets/104907445/71e74641-891c-4da0-ba97-3547e13f66ae)
+(screenshot)
 
 
 
@@ -81,6 +81,7 @@ sudo apt-get install xorriso
 + interrupts
 + keyboard
 + mouse
-+ PCI (Peripheral Component Interconnect)
++ PCI (Peripheral Component Interconnect) and BAR (base address registers) 
 + Owl Art (:
++ Random numbers
 

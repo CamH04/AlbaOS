@@ -221,7 +221,9 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     printf("\n");
     printf("$>");
 
-    vga.PutPixel(1,1, 0x00,0x00,0xA8);
+    int32_t drawX = 1;
+    int32_t drawy = 1;
+    vga.PutPixel(drawX,drawy, 0x00,0x00,0xA8);
 
     while(1);
 }

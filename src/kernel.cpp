@@ -212,7 +212,6 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     printf("Hardware init, Stage 3\n");
     interrupts.Activate();
 
-    vga.SetMode(320,200,8);
     //art stuff
     owlart OA;
     OA.OwlArtLove();
@@ -221,9 +220,17 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     printf("\n");
     printf("$>");
 
+    /*
     int32_t drawX = 1;
     int32_t drawy = 1;
     vga.PutPixel(drawX,drawy, 0x00,0x00,0xA8);
+    */
+
+    //draw blue
+    vga.SetMode(320,200,8);
+    for(int32_t y = 0; y < 200; y++)
+        for(int32_t x = 0; x < 320; x++)
+            vga.PutPixel(x, y, 0x00, 0x00, 0xA8);
 
     while(1);
 }

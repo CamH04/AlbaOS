@@ -7,6 +7,7 @@
 #include <drivers/driver.h>
 #include <drivers/keyboard.h>
 #include <drivers/mouse.h>
+#include <drivers/vga.h>
 #include <drivers/pit.h>
 
 #define MODULUS    2147483647
@@ -130,7 +131,6 @@ public:
 double Random(void) // betwwen 1 and 0
 {
     PIT pit;
-
     static long seed[STREAMS] = {(uint16_t)pit.readCount()};
     static int  stream        = 0;
     const long Q = MODULUS / MULTIPLIER;
@@ -202,6 +202,8 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
         PeripheralComponentInterconnectController PCIController;
         PCIController.SelectDrivers(&drvManager, &interrupts);
 
+        VideoGraphicsArray vga;
+
         //activating drivers
         printf("Hardware init, Stage 2\n");
         drvManager.ActivateAll();
@@ -210,28 +212,16 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     printf("Hardware init, Stage 3\n");
     interrupts.Activate();
 
-
-
-
-    //RANDOM STUFF
-    if (Random() < 0.5){
-
-        printf("rand num less than 0.5 \n");
-        forget();
-    }
-    else{
-        printf("rand num larger than 0.5 \n");
-        forget();
-    }
-
-
+    vga.SetMode(320,200,8);
     //art stuff
     owlart OA;
     OA.OwlArtLove();
 
-    printf("Welcome To AlbaOS Version Beta 0.85");
+    printf("Welcome To AlbaOS Version Beta 0.86");
     printf("\n");
     printf("$>");
+
+    vga.PutPixel(1,1, 0x00,0x00,0xA8);
 
     while(1);
 }

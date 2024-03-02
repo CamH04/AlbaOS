@@ -76,7 +76,7 @@ sudo apt-get install xorriso
 
 
 ## Stuff i've implemented 
-+ working console output (printlines)
++ working console output (printf)
 + global descriptor tables / ports
 + interrupts
 + keyboard
@@ -84,4 +84,5 @@ sudo apt-get install xorriso
 + PCI (Peripheral Component Interconnect) and BAR (base address registers) 
 + Owl Art (:
 + Random numbers
-
++ Vga graphics mode
++ basic graphics framework

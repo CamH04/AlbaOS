@@ -7,7 +7,6 @@ using namespace albaos::hardwarecommunication;
 
 
 
-// it is almost done
 PIT::PIT()
 
 : channel0(0x40),

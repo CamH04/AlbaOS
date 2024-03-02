@@ -124,7 +124,6 @@ public:
 
 //RANDOM NUMBERS
 //god help me random numbers are somthing else
-//dont change any of these
 //uses Lehmer random number generation
 //Steve Park & Dave Geyer are legends btw read their stuff
 
@@ -143,31 +142,6 @@ double Random(void) // betwwen 1 and 0
     else
         seed[stream] = t + MODULUS;
     return ((double) seed[stream] / MODULUS);
-}
-
-void memWrite(uint32_t memory, uint32_t inputVal) {
-
-	volatile uint32_t* value;
-	value = (volatile uint32_t*)memory;
-	*value = inputVal;
-}
-
-uint32_t memRead(uint32_t memory) {
-
-	volatile uint32_t* value;
-	value = (volatile uint32_t*)memory;
-
-	return *value;
-}
-void forget() {
-
-	uint32_t start = 0;
-	uint32_t end = Random();
-
-	for (start; start < end; start++) {
-
-		memWrite(start, 0);
-	}
 }
 
 typedef void (*constructor)();
@@ -212,6 +186,10 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     printf("Hardware init, Stage 3\n");
     interrupts.Activate();
 
+    //gui hell
+    vga.SetMode(320,200,8);
+    vga.FillRectangle(0,0,320,200,0x00,0x00,0xA8); // https://convertingcolors.com/decimal-color-168.html
+
     //art stuff
     owlart OA;
     OA.OwlArtLove();
@@ -219,18 +197,6 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     printf("Welcome To AlbaOS Version Beta 0.86");
     printf("\n");
     printf("$>");
-
-    /*
-    int32_t drawX = 1;
-    int32_t drawy = 1;
-    vga.PutPixel(drawX,drawy, 0x00,0x00,0xA8);
-    */
-
-    //draw blue
-    vga.SetMode(320,200,8);
-    for(int32_t y = 0; y < 200; y++)
-        for(int32_t x = 0; x < 320; x++)
-            vga.PutPixel(x, y, 0x00, 0x00, 0xA8);
 
     while(1);
 }

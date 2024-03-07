@@ -1,3 +1,4 @@
+
 #include <drivers/vga.h>
 
 using namespace albaos::common;
@@ -25,18 +26,20 @@ VideoGraphicsArray::~VideoGraphicsArray()
 }
 
 
-//writing to all vga registers
+
 void VideoGraphicsArray::WriteRegisters(uint8_t* registers)
 {
-    //  misc port writes
+    //  misc
     miscPort.Write(*(registers++));
+
+    // sequencer
     for(uint8_t i = 0; i < 5; i++)
     {
         sequencerIndexPort.Write(i);
         sequencerDataPort.Write(*(registers++));
     }
 
-    // cathode ray tube controller writes
+    // cathode ray tube controller
     crtcIndexPort.Write(0x03);
     crtcDataPort.Write(crtcDataPort.Read() | 0x80);
     crtcIndexPort.Write(0x11);
@@ -51,14 +54,14 @@ void VideoGraphicsArray::WriteRegisters(uint8_t* registers)
         crtcDataPort.Write(*(registers++));
     }
 
-    // graphics controller writes
+    // graphics controller
     for(uint8_t i = 0; i < 9; i++)
     {
         graphicsControllerIndexPort.Write(i);
         graphicsControllerDataPort.Write(*(registers++));
     }
 
-    // attribute controller writes
+    // attribute controller
     for(uint8_t i = 0; i < 21; i++)
     {
         attributeControllerResetPort.Read();
@@ -71,8 +74,6 @@ void VideoGraphicsArray::WriteRegisters(uint8_t* registers)
 
 }
 
-
-// ill prob have to update it
 bool VideoGraphicsArray::SupportsMode(uint32_t width, uint32_t height, uint32_t colordepth)
 {
     // color depth 8 bcz 2^8 = 256 (alevels cluched for once)
@@ -81,11 +82,12 @@ bool VideoGraphicsArray::SupportsMode(uint32_t width, uint32_t height, uint32_t 
 
 bool VideoGraphicsArray::SetMode(uint32_t width, uint32_t height, uint32_t colordepth)
 {
+    //might update the supported modes tbh but this is it for now
+    // http://files.osdev.org/mirrors/geezer/osd/graphics/modes.c
+
     if(!SupportsMode(width, height, colordepth))
         return false;
 
-    //might update the supported modes tbh but this is it for now
-    // http://files.osdev.org/mirrors/geezer/osd/graphics/modes.c
     unsigned char g_320x200x256[] =
     {
         /* MISC */
@@ -105,7 +107,7 @@ bool VideoGraphicsArray::SetMode(uint32_t width, uint32_t height, uint32_t color
             0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
             0x41, 0x00, 0x0F, 0x00, 0x00
     };
-    //320x200 lul
+
     WriteRegisters(g_320x200x256);
     return true;
 }
@@ -125,22 +127,29 @@ uint8_t* VideoGraphicsArray::GetFrameBufferSegment()
     }
 }
 
-void VideoGraphicsArray::PutPixel(uint32_t x, uint32_t y,  uint8_t colorIndex)
+void VideoGraphicsArray::PutPixel(int32_t x, int32_t y,  uint8_t colorIndex)
 {
-    //this 320 will need to be changed if diff support mode is put in (it will bite me in the ass later)
+    if(x < 0 || 320 <= x
+    || y < 0 || 200 <= y)
+        return;
+
     uint8_t* pixelAddress = GetFrameBufferSegment() + 320*y + x;
     *pixelAddress = colorIndex;
 }
 
 uint8_t VideoGraphicsArray::GetColorIndex(uint8_t r, uint8_t g, uint8_t b)
 {
-    if(r == 0x00, g == 0x00, b == 0xA8)
-        return 0x01;
+    if(r == 0x00 && g == 0x00 && b == 0x00) return 0x00; // black
+    if(r == 0x00 && g == 0x00 && b == 0xA8) return 0x01; // blue
+    if(r == 0x00 && g == 0xA8 && b == 0x00) return 0x02; // green
+    if(r == 0xA8 && g == 0x00 && b == 0x00) return 0x04; // red
+    if(r == 0xFF && g == 0xFF && b == 0xFF) return 0x3F; // white
     return 0x00;
 }
 
-void VideoGraphicsArray::PutPixel(uint32_t x, uint32_t y,  uint8_t r, uint8_t g, uint8_t b)
+void VideoGraphicsArray::PutPixel(int32_t x, int32_t y,  uint8_t r, uint8_t g, uint8_t b)
 {
+    //this 320 will need to be changed if diff support mode is put in (it will bite me in the ass later)
     PutPixel(x,y, GetColorIndex(r,g,b));
 }
 

@@ -15,13 +15,10 @@ void KeyboardEventHandler::OnKeyDown(char)
 }
 
 // only recognises key release for interrupts
-void KeyboardEventHandler::OnKeyUp()
+void KeyboardEventHandler::OnKeyUp(char)
 {
 }
 
-void KeyboardEventHandler::resetMode()
-{
-}
 
 void KeyboardEventHandler::modeSet(uint8_t)
 {

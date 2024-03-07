@@ -7,7 +7,7 @@ namespace albaos
 {
     namespace common
     {
-        typedef GraphicsContext VideoGraphicsArray;
+        typedef albaos::drivers::VideoGraphicsArray GraphicsContext;
     }
 }
 

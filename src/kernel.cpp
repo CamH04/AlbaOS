@@ -12,6 +12,8 @@
 #include <gui/window.h>
 #include <drivers/pit.h>
 
+#define GRAPHICSMODE
+
 #define MODULUS    2147483647
 #define MULTIPLIER 48271
 #define CHECK      399268537

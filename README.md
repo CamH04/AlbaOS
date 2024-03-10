@@ -1,7 +1,7 @@
 # AlbaOS #
-AlbaOS is a 32 bit operating system developed by me
+AlbaOS is a 32 bit operating system developed by me as a hobby <3
 
-(screenshot)
+![KCQMHsd](https://github.com/CamH04/AlbaOS/assets/104907445/782c68b5-ff62-4646-909c-ddcfdfb60b8c)
 
 
 
@@ -50,7 +50,8 @@ Some Ascii art of my owls:
 
 + In your virtual machine select the boot / installer disc file as mykernel.iso (in this example im using VMware workstation)
 
-![image](https://github.com/CamH04/AlbaOS/assets/104907445/7ff1f85a-9976-4c50-8719-8a6796b16018)
+![uygArES](https://github.com/CamH04/AlbaOS/assets/104907445/1d880cb5-9830-4ff1-b29e-3e346baa0a31)
+
 
 + Run the virtual machine!
 

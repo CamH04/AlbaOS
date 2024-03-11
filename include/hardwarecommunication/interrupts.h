@@ -3,6 +3,7 @@
 #define __ALBAOS__HARDWARECOMMUNICATION__INTERRUPTMANAGER_H
 
 #include <gdt.h>
+#include <multitasking.h>
 #include <common/types.h>
 #include <hardwarecommunication/port.h>
 
@@ -33,6 +34,8 @@ namespace albaos
 
                 static InterruptManager* ActiveInterruptManager;
                 InterruptHandler* handlers[256];
+
+                TaskManager *taskManager;
 
                 struct GateDescriptor
                 {
@@ -107,7 +110,7 @@ namespace albaos
                 Port8BitSlow programmableInterruptControllerSlaveDataPort;
 
             public:
-                InterruptManager(albaos::common::uint16_t hardwareInterruptOffset, albaos::GlobalDescriptorTable* globalDescriptorTable);
+                InterruptManager(albaos::common::uint16_t hardwareInterruptOffset, albaos::GlobalDescriptorTable* globalDescriptorTable, albaos::TaskManager* taskManager);
                 ~InterruptManager();
                 albaos::common::uint16_t HardwareInterruptOffset();
                 void Activate();

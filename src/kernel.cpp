@@ -10,9 +10,11 @@
 #include <drivers/vga.h>
 #include <gui/desktop.h>
 #include <gui/window.h>
+#include <multitasking.h>
 #include <drivers/pit.h>
 
-#define GRAPHICSMODE
+// to enable the GUI uncomment this
+// #define GRAPHICSMODE
 
 #define MODULUS    2147483647
 #define MULTIPLIER 48271
@@ -61,6 +63,17 @@ void printf(char* str)
             y = 0;
         }
     }
+}
+
+void taskA()
+{
+    while(true)
+        printf("Task A");
+}
+void taskB()
+{
+    while(true)
+        printf("Task B");
 }
 
 void printfHex(uint8_t key)
@@ -163,7 +176,13 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
 {
 
     GlobalDescriptorTable gdt;
-    InterruptManager interrupts(0x20, &gdt);
+    TaskManager taskManager;
+    Task task1(&gdt, taskA);
+    Task task2(&gdt, taskB);
+    taskManager.AddTask(&task1);
+    taskManager.AddTask(&task2);
+
+    InterruptManager interrupts(0x20, &gdt, &taskManager);
 
     printf("Hardware init, Stage 1\n");
     #ifdef GRAPHICSMODE

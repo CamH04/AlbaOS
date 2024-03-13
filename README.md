@@ -87,3 +87,4 @@ sudo apt-get install xorriso
 + Random numbers
 + Vga graphics mode
 + basic graphics framework
++ multitasking

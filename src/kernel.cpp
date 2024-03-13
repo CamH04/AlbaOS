@@ -177,11 +177,13 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
 
     GlobalDescriptorTable gdt;
     TaskManager taskManager;
+    //old multitasking debugging stuff
+    /*
     Task task1(&gdt, taskA);
     Task task2(&gdt, taskB);
     taskManager.AddTask(&task1);
     taskManager.AddTask(&task2);
-
+    */
     InterruptManager interrupts(0x20, &gdt, &taskManager);
 
     printf("Hardware init, Stage 1\n");

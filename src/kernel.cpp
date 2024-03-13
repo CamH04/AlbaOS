@@ -7,11 +7,14 @@
 #include <drivers/driver.h>
 #include <drivers/keyboard.h>
 #include <drivers/mouse.h>
+#include <drivers/audio.h>
 #include <drivers/vga.h>
 #include <gui/desktop.h>
 #include <gui/window.h>
 #include <multitasking.h>
 #include <drivers/pit.h>
+
+
 
 // to enable the GUI uncomment this
 // #define GRAPHICSMODE
@@ -65,16 +68,6 @@ void printf(char* str)
     }
 }
 
-void taskA()
-{
-    while(true)
-        printf("Task A");
-}
-void taskB()
-{
-    while(true)
-        printf("Task B");
-}
 
 void printfHex(uint8_t key)
 {
@@ -139,6 +132,20 @@ public:
 
 };
 
+//sleeps zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+void sleep(uint32_t ms) {
+
+	//like arduino (ms) zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+	PIT pit;
+
+	for (uint32_t i = 0; i < ms; i++) {
+
+		pit.setCount(1193182/1000);
+		uint32_t start = pit.readCount();
+
+		while ((start - pit.readCount()) < 1000) {}
+	}
+}
 
 //RANDOM NUMBERS
 //god help me random numbers are somthing else
@@ -178,12 +185,7 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     GlobalDescriptorTable gdt;
     TaskManager taskManager;
     //old multitasking debugging stuff
-    /*
-    Task task1(&gdt, taskA);
-    Task task2(&gdt, taskB);
-    taskManager.AddTask(&task1);
-    taskManager.AddTask(&task2);
-    */
+    //Task taskexample(&gdt, functionForTask);
     InterruptManager interrupts(0x20, &gdt, &taskManager);
 
     printf("Hardware init, Stage 1\n");
@@ -234,18 +236,23 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
 
 
     interrupts.Activate();
-    //vga.FillRectangle(0,0,320,200,0x00,0x00,0xA8); // https://convertingcolors.com/decimal-color-168.html
-
     //art stuff
     owlart OA;
     OA.OwlArtLove();
 
-    printf("Welcome To AlbaOS Version Beta 0.91");
+    printf("Welcome To AlbaOS Version Beta 0.93");
     printf("\n");
     printf("$>");
 
+    Speaker audio;
+    audio.PlaySound(1200);
+	audio.NoSound();
+
+
+
     while(1)
     {
+        //desktop gui RIP
         #ifdef GRAPHICSMODE
             desktop.Draw(&vga);
         #endif

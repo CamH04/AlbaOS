@@ -1,4 +1,3 @@
-
 #include <common/types.h>
 #include <gdt.h>
 #include <owlart.h>
@@ -13,7 +12,6 @@
 #include <gui/window.h>
 #include <multitasking.h>
 #include <drivers/pit.h>
-
 
 
 // to enable the GUI uncomment this
@@ -35,7 +33,8 @@ void printf(char* str)
 {
     static uint16_t* VideoMemory = (uint16_t*)0xb8000;
 
-    static uint8_t x=0,y=0;
+    static uint8_t x=0;
+    static uint8_t y=0;
 
     for(int i = 0; str[i] != '\0'; ++i)
     {
@@ -92,16 +91,12 @@ public:
     }
 };
 
+
 class MouseToConsole : public MouseEventHandler
 {
     int8_t x, y;
 public:
-
     MouseToConsole()
-    {
-    }
-
-    virtual void OnActivate()
     {
         uint16_t* VideoMemory = (uint16_t*)0xb8000;
         x = 40;
@@ -131,6 +126,7 @@ public:
     }
 
 };
+
 
 //sleeps zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
 void sleep(uint32_t ms) {
@@ -247,6 +243,10 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     Speaker audio;
     audio.PlaySound(1200);
 	audio.NoSound();
+
+
+
+
 
 
 

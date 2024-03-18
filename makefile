@@ -27,7 +27,7 @@ objects = obj/loader.o \
 
 obj/%.o: src/%.cpp
 	mkdir -p $(@D)
-	gcc $(GCCPARAMS) -c -o $@ $<
+	g++ $(GCCPARAMS) -c -o $@ $<
 
 obj/%.o: src/%.s
 	mkdir -p $(@D)

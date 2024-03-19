@@ -1,6 +1,7 @@
 #include <common/types.h>
 #include <gdt.h>
 #include <owlart.h>
+//#include <playstart.h>
 #include <hardwarecommunication/interrupts.h>
 #include <hardwarecommunication/pci.h>
 #include <drivers/driver.h>
@@ -91,10 +92,9 @@ public:
     }
 };
 
-
 class MouseToConsole : public MouseEventHandler
 {
-    int8_t x, y;
+    uint8_t x, y;
 public:
     MouseToConsole()
     {
@@ -164,6 +164,7 @@ double Random(void) // betwwen 1 and 0
         seed[stream] = t + MODULUS;
     return ((double) seed[stream] / MODULUS);
 }
+
 
 typedef void (*constructor)();
 extern "C" constructor start_ctors;
@@ -243,11 +244,6 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     Speaker audio;
     audio.PlaySound(1200);
 	audio.NoSound();
-
-
-
-
-
 
 
     while(1)

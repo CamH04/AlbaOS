@@ -64,6 +64,7 @@ sudo apt-get install binutils
 sudo apt-get install libc-dev-i386
 sudo apt-get install grub-legacy
 sudo apt-get install xorriso
+sudo apt-get install libsdl2-mixer-dev
 
 
 ```
@@ -73,7 +74,7 @@ sudo apt-get install xorriso
 + libc-dev-i386 is the 32 bit architecture for the kernel
 + grub legacy allows for multibooting and installing the os into the grub
 + xorriso so the digital disc file (.iso) can be generated
-+ libasound for audio stuff
++ SDL_Mixer for audio stuff
 
 (note) : grub-legacy is unavailable but grub-common or grub2 will work fine
 

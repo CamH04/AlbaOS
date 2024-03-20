@@ -86,7 +86,25 @@ MAGENTALIGHT 13
 YELLOW 14
 WHITELIGHT 15
 */
-
+uint32_t curx=0;
+uint32_t curc=0;
+void console_new_line()
+{
+   char *video=(char*)0xB8000;
+   uint32_t x,i;
+   char *m=" ";
+   x = 80 - curx;
+   for(i=0;i<x;i++)
+   {
+      *video=*m;
+      video++;
+      *video=0;
+      video++;
+      curc=curc+2;
+      curx++;
+   }
+   curx=0;
+}
 void cprintf(uint32_t colour, char *string)
 {
     uint32_t curc=0;
@@ -102,8 +120,29 @@ void cprintf(uint32_t colour, char *string)
         *video=colour;
         video++;
         curc=curc+2;
+        if(curx==80)
+        {
+         console_new_line();
+        }
     }
 }
+
+void console_cls()
+{
+   char *video=(char*)0xB8000;
+   char *x=" ";
+   int i;
+
+
+   for(i=0;i<2000;i++)
+   {
+      *video=*x;
+      video++;
+      *video=0;
+      video++;
+   }
+}
+
 
 void printfHex(uint8_t key)
 {

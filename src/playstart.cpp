@@ -98,6 +98,7 @@ void playstart::singasong(){
 
     drivers::Speaker PCSPEAKER;
     PCSPEAKER.PlaySound(C5);
-    PCSPEAKER.PlaySound(E3);
 	PCSPEAKER.NoSound();
+    PCSPEAKER.PlaySound(E3);
+    PCSPEAKER.NoSound();
 }

@@ -78,7 +78,7 @@ void owlart::OwlArtSad()
 void owlart::OwlArtLove()
 {
     printf("\n");
-    cprintf("       <3       ", 0x0C, 0x0C, 0, 0);
+    cprintf("<3", 0x0C, 0x0C, 7, 0);
     printf("  (^,^)  (^,^)  \n");
     printf("  /)_)/  /)_)/  \n");
     printf("---**-----**----\n");

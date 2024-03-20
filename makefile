@@ -9,6 +9,7 @@ LDPARAMS = -melf_i386
 objects = obj/loader.o \
           obj/gdt.o \
           obj/owlart.o \
+          obj/playstart.o \
           obj/drivers/driver.o \
           obj/drivers/pit.o \
           obj/hardwarecommunication/port.o \

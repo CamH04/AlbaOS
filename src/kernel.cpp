@@ -1,7 +1,7 @@
 #include <common/types.h>
 #include <gdt.h>
 #include <owlart.h>
-//#include <playstart.h>
+#include <playstart.h>
 #include <hardwarecommunication/interrupts.h>
 #include <hardwarecommunication/pci.h>
 #include <drivers/driver.h>
@@ -232,6 +232,12 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
 
 
 
+    /*
+    Speaker audio;
+    audio.PlaySound(1200);
+	audio.NoSound();
+	*/
+
     interrupts.Activate();
     //art stuff
     owlart OA;
@@ -241,9 +247,8 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     printf("\n");
     printf("$>");
 
-    Speaker audio;
-    audio.PlaySound(1200);
-	audio.NoSound();
+    playstart PS;
+    PS.singasong();
 
 
     while(1)

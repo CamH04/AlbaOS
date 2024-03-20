@@ -69,97 +69,52 @@ void printf(char* str)
 }
 
 /*
-BLACK 0
-BLUE 1
-GREEN 2
-CYAN 3
-RED 4
-MAGENTA 5
-ORANGE 6
-WHITE 7
-GRAY 8
-BLUELIGHT 9
-GREENLIGHT 10
-CYANLIGHT 11
-PINK 12
-MAGENTALIGHT 13
-YELLOW 14
-WHITELIGHT 15
+BLACK 0x00
+BLUE 0x01
+GREEN 0x02
+CYAN 0x03
+RED 0x04
+MAGENTA 0x05
+ORANGE 0x06
+WHITE 0x07
+GRAY 0x08
+BLUELIGHT 0x09
+GREENLIGHT 0x0A
+CYANLIGHT 0x0B
+PINK 0x0C
+MAGENTALIGHT 0x0D
+YELLOW 0x0E
+WHITELIGHT 0x0F
 */
-uint32_t curx=0;
-uint32_t curc=0;
-void console_new_line()
-{
-   char *video=(char*)0xB8000;
-   uint32_t x,i;
-   char *m=" ";
-   x = 80 - curx;
-   for(i=0;i<x;i++)
-   {
-      *video=*m;
-      video++;
-      *video=0;
-      video++;
-      curc=curc+2;
-      curx++;
-   }
-   curx=0;
+void putchar(unsigned char ch, unsigned char forecolor,
+		unsigned char backcolor, uint8_t x, uint8_t y) {
+
+    uint16_t attrib = (backcolor << 4) | (forecolor & 0x0f);
+    volatile uint16_t* VideoMemory;
+    VideoMemory = (volatile uint16_t*)0xb8000 + (80*y+x);
+    *VideoMemory = ch | (attrib << 8);
 }
-void cprintf(uint32_t colour, char *str)
-{
-     static uint16_t *VideoMemory = (uint16_t*)0xb8000;
+void cprintf(char* str, uint8_t forecolor, uint8_t backcolor, uint8_t x, uint8_t y) {
 
-    static uint8_t x=0;
-    static uint8_t y=0;
-
-    for(int i = 0; str[i] != '\0'; ++i)
-    {
-        *VideoMemory=colour;
-        switch(str[i])
-        {
-            case '\n':
-                x = 0;
-                y++;
-                break;
-            default:
-                VideoMemory[80*y+x] = (VideoMemory[80*y+x] & 0xFF00) | str[i];
-                x++;
-                break;
-        }
-
-        if(x >= 80)
-        {
-            x = 0;
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (str[i] == '\n') {
             y++;
+            x = 0;
+
+        } else {
+            putchar(str[i], forecolor, backcolor, x, y);
+            x++;
         }
 
-        if(y >= 25)
-        {
-            for(y = 0; y < 25; y++)
-                for(x = 0; x < 80; x++)
-                    VideoMemory[80*y+x] = (VideoMemory[80*y+x] & 0xFF00) | ' ';
+        if (x >= 80) {
+            y++;
             x = 0;
+        }
+        if (y >= 25) {
             y = 0;
         }
     }
 }
-
-void console_cls()
-{
-   char *video=(char*)0xB8000;
-   char *x=" ";
-   int i;
-
-
-   for(i=0;i<2000;i++)
-   {
-      *video=*x;
-      video++;
-      *video=0;
-      video++;
-   }
-}
-
 
 void printfHex(uint8_t key)
 {
@@ -328,10 +283,8 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     OA.OwlArtLove();
 
     printf("Welcome To AlbaOS Version Beta 0.94");
-    printf("\n");
-    cprintf(13, "Test \n");
-
-
+    printf("\n  ");
+    cprintf("$>", 0x0D, 0x0D, 7, 0);
 
 
     playstart PS;

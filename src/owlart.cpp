@@ -1,4 +1,5 @@
 #include <owlart.h>
+#include <common/types.h>
 
 
 
@@ -6,7 +7,6 @@ using namespace albaos;
 using namespace albaos::common;
 
 void printf(char* str);
-
 
 // primary use of this is to ovveride lines if need be
 void owlart::printfline(char *str, uint8_t line) {

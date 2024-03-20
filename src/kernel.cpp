@@ -68,6 +68,42 @@ void printf(char* str)
     }
 }
 
+/*
+BLACK 0
+BLUE 1
+GREEN 2
+CYAN 3
+RED 4
+MAGENTA 5
+ORANGE 6
+WHITE 7
+GRAY 8
+BLUELIGHT 9
+GREENLIGHT 10
+CYANLIGHT 11
+PINK 12
+MAGENTALIGHT 13
+YELLOW 14
+WHITELIGHT 15
+*/
+
+void cprintf(uint32_t colour, char *string)
+{
+    uint32_t curc=0;
+
+    char *video=(char*)0xB8000;
+
+    video = video + curc;
+    while(*string!=0)
+    {
+        *video=*string;
+        string++;
+        video++;
+        *video=colour;
+        video++;
+        curc=curc+2;
+    }
+}
 
 void printfHex(uint8_t key)
 {
@@ -230,22 +266,16 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
         desktop.AddChild(&win2);
     #endif
 
-
-
-    /*
-    Speaker audio;
-    audio.PlaySound(1200);
-	audio.NoSound();
-	*/
-
     interrupts.Activate();
     //art stuff
     owlart OA;
     OA.OwlArtLove();
 
-    printf("Welcome To AlbaOS Version Beta 0.93");
+    printf("Welcome To AlbaOS Version Beta 0.94");
     printf("\n");
-    printf("$>");
+    cprintf(13,"$>");
+    printf("\n");
+
 
     playstart PS;
     PS.singasong();

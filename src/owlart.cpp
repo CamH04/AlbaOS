@@ -1,12 +1,12 @@
 #include <owlart.h>
 #include <common/types.h>
 
-
-
 using namespace albaos;
 using namespace albaos::common;
 
 void printf(char* str);
+void cprintf(char* str, uint8_t forecolor, uint8_t backcolor, uint8_t x, uint8_t y);
+void putchar(unsigned char ch, unsigned char forecolor, unsigned char backcolor, uint8_t x, uint8_t y);
 
 // primary use of this is to ovveride lines if need be
 void owlart::printfline(char *str, uint8_t line) {
@@ -77,7 +77,8 @@ void owlart::OwlArtSad()
 
 void owlart::OwlArtLove()
 {
-    printf("       <3       \n");
+    printf("\n");
+    cprintf("       <3       ", 0x0C, 0x0C, 0, 0);
     printf("  (^,^)  (^,^)  \n");
     printf("  /)_)/  /)_)/  \n");
     printf("---**-----**----\n");

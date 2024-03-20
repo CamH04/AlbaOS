@@ -312,8 +312,10 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
 
     printf("Welcome To AlbaOS Version Beta 0.94");
     printf("\n");
+    console_new_line();
     cprintf(13,"$>");
-    printf("\n");
+
+
 
 
     playstart PS;

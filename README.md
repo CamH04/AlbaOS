@@ -1,7 +1,8 @@
 # AlbaOS #
 AlbaOS is a 32 bit operating system developed by me as a hobby <3
 
-![KCQMHsd](https://github.com/CamH04/AlbaOS/assets/104907445/782c68b5-ff62-4646-909c-ddcfdfb60b8c)
+![7Cw8iHi](https://github.com/CamH04/AlbaOS/assets/104907445/00cd0da1-a2fa-4abb-b428-1d3688e12833)
+
 
 
 
@@ -14,27 +15,11 @@ Some Ascii art of my owls:
 (-,-_)
 (x-x(v)7
 
-  _____       
- / ___ \      
-(|(0,0)|)     
-  /)_)/       
-   **
-
-
- (0,0)
-==)_)==
-  **
-
-
 (@,@)
 [(_)]
  **
 
 (^,^)
-/)_)/
- **
-
-(v,v)
 /)_)/
  **
 
@@ -55,6 +40,13 @@ Some Ascii art of my owls:
 
 + Run the virtual machine!
 
+## How To Compile AlbaOS On Linux
++ make sure you have the installs listed below
++ cd to root folder (/AlbaOs)
++ use command: " make clean " to remove all generated .o , .bin and ,iso files
++ use command: " make albaos.iso " to generate all needed files
+
+
 
 ## Installs
 
@@ -64,8 +56,6 @@ sudo apt-get install binutils
 sudo apt-get install libc-dev-i386
 sudo apt-get install grub-legacy
 sudo apt-get install xorriso
-sudo apt-get install libsdl2-mixer-dev
-
 
 ```
 
@@ -74,13 +64,12 @@ sudo apt-get install libsdl2-mixer-dev
 + libc-dev-i386 is the 32 bit architecture for the kernel
 + grub legacy allows for multibooting and installing the os into the grub
 + xorriso so the digital disc file (.iso) can be generated
-+ SDL_Mixer for audio stuff
 
 (note) : grub-legacy is unavailable but grub-common or grub2 will work fine
 
 
 ## Stuff i've implemented 
-+ working console output (printf)
++ working console output (printf) and coloured printf
 + global descriptor tables / ports
 + interrupts
 + keyboard
@@ -91,3 +80,4 @@ sudo apt-get install libsdl2-mixer-dev
 + Vga graphics mode
 + basic graphics framework
 + multitasking
++ speaker audio with PIT

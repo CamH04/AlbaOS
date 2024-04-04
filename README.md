@@ -33,7 +33,7 @@ Some Ascii art of my owls:
 
 + Clone the repo localy / Download the zip folder
 
-+ In your virtual machine select the boot / installer disc file as mykernel.iso (in this example im using VMware workstation)
++ In your virtual machine select the boot / installer disc file as albaos.iso (in this example im using VMware workstation)
 
 ![uygArES](https://github.com/CamH04/AlbaOS/assets/104907445/1d880cb5-9830-4ff1-b29e-3e346baa0a31)
 

@@ -45,12 +45,23 @@ void printf(char* str)
                 x = 0;
                 y++;
                 break;
+            case '\v': //clear screen
+                for (y = 0; y < 25; y++) {
+                    for (x = 0; x < 80; x++) {
+
+                        VideoMemory = (uint16_t*)0xb8000 + (80*y+x);
+                        *VideoMemory = 0x00;
+                    }
+                }
+                x = 0;
+                y = 0;
+                break;
             default:
                 VideoMemory[80*y+x] = (VideoMemory[80*y+x] & 0xFF00) | str[i];
                 x++;
                 break;
         }
-
+        //endofswitch
         if(x >= 80)
         {
             x = 0;
@@ -67,6 +78,15 @@ void printf(char* str)
         }
     }
 }
+void printfhere(const char* str, uint8_t line) {
+
+    for (uint16_t i = 0; str[i] != '\0'; i++) {
+
+        volatile uint16_t* vidmem = (volatile uint16_t*)0xb8000 + (80*line+i);
+        *vidmem = str[i] | 0x700;
+    }
+}
+
 
 /*
 BLACK 0x00
@@ -116,6 +136,21 @@ void cprintf(char* str, uint8_t forecolor, uint8_t backcolor, uint8_t x, uint8_t
     }
 }
 
+// clear screen
+void printclear()
+{
+   char *VideoMemory=(char*)0xB8000;
+   char x=' ';
+
+   for(int i = 0;i<200;i++)
+   {
+      *VideoMemory=x;
+      VideoMemory++;
+      *VideoMemory=0;
+      VideoMemory++;
+   }
+}
+
 void printfHex(uint8_t key)
 {
     char* foo = "00";
@@ -131,8 +166,10 @@ void printfHex(uint8_t key)
 class PrintfKeyboardEventHandler : public KeyboardEventHandler
 {
 public:
+    bool pressed;
     void OnKeyDown(char c)
     {
+        this->pressed = true;
         char* foo = " ";
         foo[0] = c;
         printf(foo);
@@ -278,18 +315,19 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     #endif
 
     interrupts.Activate();
-    //art stuff
-    owlart OA;
-    OA.OwlArtLove();
-
     printf("Welcome To AlbaOS Version Beta 0.94");
     printf("\n  ");
-    cprintf("$>", 0x0D, 0x0D, 0, 5);
 
+
+    //the user stuff from here -------------------------------------------
+    owlart OA;
+    OA.MenuHello();
 
     playstart PS;
     PS.singasong();
-
+    while (kbhandler.pressed == false) {
+    }
+    printf("\v");
 
     while(1)
     {

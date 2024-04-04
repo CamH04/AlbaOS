@@ -10,8 +10,10 @@
         class  owlart{
 
             public:
-                void printfline(char *str, albaos::common::uint8_t line);
 
+                void printfhere(char *str, albaos::common::uint8_t line);
+
+                void MenuHello();
                 void OwlArtStare();
                 void OwlArtSleep();
                 void OwlArtHeadphones();

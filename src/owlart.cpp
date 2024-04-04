@@ -9,7 +9,7 @@ void cprintf(char* str, uint8_t forecolor, uint8_t backcolor, uint8_t x, uint8_t
 void putchar(unsigned char ch, unsigned char forecolor, unsigned char backcolor, uint8_t x, uint8_t y);
 
 // primary use of this is to ovveride lines if need be
-void owlart::printfline(char *str, uint8_t line) {
+void owlart::printfhere(char *str, uint8_t line) {
     uint16_t attrib = 0x07;
 
     volatile uint16_t* vidmem;
@@ -19,9 +19,21 @@ void owlart::printfline(char *str, uint8_t line) {
 
     }
 }
-// eg printfline("help me god",0);
-//    printfline("its too late for this",1);
+// eg printfhere("help me god",0);
+//    printfhere("its too late for this",1);
+void owlart::MenuHello(){
+    printfhere("                                                                                                                     ",0);
+    printfhere("                                                                                                                     ",1);
+    printfhere("                                  (^,^)  (^,^)                                                                  ",2);
+    printfhere("                                  /)_)/  /)_)/                                                                   ",3);
+    printfhere("                                ---**-----**----                                                                ",4);
 
+
+    printfhere("              Welcome To AlbaOS!      0v0      Welcome To AlbaOS!",7);
+    printfhere("                         Press Any Key To Get Started!",23);
+    cprintf("<3", 0x0C, 0x0C, 39, 1);
+
+}
 void owlart::OwlArtStare()
 {
     printf("(0,0)\n");

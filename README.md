@@ -1,8 +1,8 @@
 # AlbaOS #
 AlbaOS is a 32 bit operating system developed by me as a hobby <3
 
-![7Cw8iHi](https://github.com/CamH04/AlbaOS/assets/104907445/00cd0da1-a2fa-4abb-b428-1d3688e12833)
 
+![Capture](https://github.com/CamH04/AlbaOS/assets/104907445/1fe59130-dfef-43ba-aa56-82f03429d57f)
 
 
 

@@ -30,26 +30,70 @@ using namespace albaos::drivers;
 using namespace albaos::hardwarecommunication;
 using namespace albaos::gui;
 
-void printf(char* str)
-{
-    static uint16_t* VideoMemory = (uint16_t*)0xb8000;
+uint16_t SetTextColor(bool set, uint16_t color = 0x07) {
 
-    static uint8_t x=0;
-    static uint8_t y=0;
+    static uint16_t newColor = 0x07;
 
-    for(int i = 0; str[i] != '\0'; ++i)
-    {
-        switch(str[i])
-        {
-            case '\n':
-                x = 0;
-                y++;
+    if (set) {
+        newColor = color;
+    }
+
+    return newColor;
+}
+
+void printf(char* str) {
+
+    static uint8_t x = 0, y = 0;
+    static bool cliCursor = false;
+
+    uint16_t attrib = SetTextColor(false);
+    volatile uint16_t* VideoMemory;
+
+
+    uint8_t* strWhole = (uint8_t*)strWhole;
+
+
+    for (int i = 0; str[i] != '\0'; i++) {
+
+        VideoMemory = (volatile uint16_t*)0xb8000 + (80*y+x);
+
+        switch (str[i]) {
+
+            case '\b':
+                VideoMemory = (volatile uint16_t*)0xb8000 + (80*y+x);
+                *VideoMemory = ' ' | (attrib << 8);
+                VideoMemory--; *VideoMemory = '_' | (attrib << 8);
+                x--;
                 break;
-            case '\v': //clear screen
+
+            case '\n':
+                *VideoMemory = ' ' | (attrib << 8);
+                y++;
+                x = 0;
+                break;
+            //command line stuff
+            case '\t':
+
+                if (!i) {
+                    cliCursor = true;
+
+                    if (x < 3) { x = 3; }
+
+                    VideoMemory = (volatile uint16_t*)0xb8000 + (80*y);
+                    *VideoMemory = '$' | 0xc00;
+                    VideoMemory++; *VideoMemory = ':' | 0xf00;
+                    VideoMemory++; *VideoMemory = ' ';
+                } else {
+                    *VideoMemory = '_' | (attrib << 8);
+                }
+                break;
+            //clear screen
+            case '\v':
+
                 for (y = 0; y < 25; y++) {
                     for (x = 0; x < 80; x++) {
 
-                        VideoMemory = (uint16_t*)0xb8000 + (80*y+x);
+                        VideoMemory = (volatile uint16_t*)0xb8000 + (80*y+x);
                         *VideoMemory = 0x00;
                     }
                 }
@@ -57,36 +101,29 @@ void printf(char* str)
                 y = 0;
                 break;
             default:
-                VideoMemory[80*y+x] = (VideoMemory[80*y+x] & 0xFF00) | str[i];
+                *VideoMemory = str[i] | (attrib << 8);
                 x++;
                 break;
         }
-        //endofswitch
-        if(x >= 80)
-        {
-            x = 0;
-            y++;
-        }
 
-        if(y >= 25)
-        {
-            for(y = 0; y < 25; y++)
-                for(x = 0; x < 80; x++)
-                    VideoMemory[80*y+x] = (VideoMemory[80*y+x] & 0xFF00) | ' ';
+        if (x >= 80) {
+
+            y++;
             x = 0;
-            y = 0;
         }
+        //TODO add scrolling effect
     }
 }
+
+
 void printfhere(const char* str, uint8_t line) {
 
     for (uint16_t i = 0; str[i] != '\0'; i++) {
 
-        volatile uint16_t* vidmem = (volatile uint16_t*)0xb8000 + (80*line+i);
-        *vidmem = str[i] | 0x700;
+        volatile uint16_t* VideoMemory = (volatile uint16_t*)0xb8000 + (80*line+i);
+        *VideoMemory = str[i] | 0x700;
     }
 }
-
 
 /*
 BLACK 0x00
@@ -134,21 +171,6 @@ void cprintf(char* str, uint8_t forecolor, uint8_t backcolor, uint8_t x, uint8_t
             y = 0;
         }
     }
-}
-
-// clear screen
-void printclear()
-{
-   char *VideoMemory=(char*)0xB8000;
-   char x=' ';
-
-   for(int i = 0;i<200;i++)
-   {
-      *VideoMemory=x;
-      VideoMemory++;
-      *VideoMemory=0;
-      VideoMemory++;
-   }
 }
 
 void printfHex(uint8_t key)
@@ -317,6 +339,7 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     interrupts.Activate();
     printf("Welcome To AlbaOS Version Beta 0.94");
     printf("\n  ");
+    printf("\v");
 
 
     //the user stuff from here -------------------------------------------

@@ -61,7 +61,14 @@ uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
 
     if(handler == 0)
         return esp;
+    //modes	MAY HAVE TO DEBUG LATER HELP ME I HAVE A FEELING THIS WILL BE A PAIN IN THE ARSE
+    static uint8_t mode = 0;
+    //starts the cli keyboard stuff
+    if (handler->cli) {
 
+        printf("\t");
+    }
+    //the fun stuff now
     if(key < 0x80)
     {
         switch(key)

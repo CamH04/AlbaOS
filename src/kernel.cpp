@@ -12,6 +12,7 @@
 #include <gui/desktop.h>
 #include <gui/window.h>
 #include <multitasking.h>
+#include <cli.h>
 #include <drivers/pit.h>
 
 
@@ -80,7 +81,7 @@ void printf(char* str) {
                     if (x < 3) { x = 3; }
 
                     VideoMemory = (volatile uint16_t*)0xb8000 + (80*y);
-                    *VideoMemory = '$' | 0xc00;
+                    *VideoMemory = '>' | 0xc00;
                     VideoMemory++; *VideoMemory = ':' | 0xf00;
                     VideoMemory++; *VideoMemory = ' ';
                 } else {
@@ -182,21 +183,138 @@ void printfHex(uint8_t key)
     printf(foo);
 }
 
+uint16_t strlen(char* args) {
+
+        uint16_t length = 0;
+
+        for (length = 0; args[length] != '\0'; length++) {
+
+        }
+        return length;
+}
 
 
-
-class PrintfKeyboardEventHandler : public KeyboardEventHandler
-{
+class CLIKeyboardEventHandler : public KeyboardEventHandler, public CommandLine {
 public:
-    bool pressed;
-    void OnKeyDown(char c)
-    {
-        this->pressed = true;
-        char* foo = " ";
-        foo[0] = c;
-        printf(foo);
-    }
+
+        uint8_t index = 0;
+		char input[256];
+
+		char keyChar;
+		bool pressed;
+
+		char lastCmd[256];
+
+
+public:
+        CLIKeyboardEventHandler(GlobalDescriptorTable* gdt,TaskManager* tm) {
+            this->getTM(gdt, tm);
+            this->cli = true;
+        }
+
+        void OnKeyDown(char c) {
+
+            this->pressed = true;
+            this->keyChar = c;
+
+            if (this->cliMode == 0) {
+
+                char* foo = " \t";
+                foo[0] = c;
+
+                switch (c) {
+
+                    //history
+                    case '\xff':
+                        break;
+                    case '\xfc':
+                        break;
+                    //up
+                    case '\xfd':
+
+                        if (index > 0) {
+
+                            for (int i = 0; i < index; i++) {
+
+                                input[index] = 0x00;
+                                printf("\b");
+                            }
+                        }
+
+                        for (index = 0; lastCmd[index] != '\0'; index++) {
+
+                            input[index] = lastCmd[index];
+                        }
+                        input[index] = '\0';
+                        printf(input);
+                        break;
+                    //down
+                    case '\xfe':
+
+                        for (int i = 0; i < index; i++) {
+
+                            input[index] = 0x00;
+                            printf("\b");
+                        }
+                        index = 0;
+                        break;
+                    case '\b':
+                        if (index > 0) {
+
+                            printf(foo);
+                            index--;
+                            input[index] = 0;
+                        }
+                        break;
+                    case '\n':
+                        printf(foo);
+                        input[index] = '\0';
+                        //DOYOSHITMYBROTHER (executes the command)
+                        if (index > 0 && input[0] != ' ') {
+
+                            for (int i = 0; input[i] != '\0'; i++) {
+                                lastCmd[i] = input[i];
+                            }
+                            lastCmd[index] = '\0';
+
+                            command(input, index);
+                        }
+
+                        input[0] = 0x00;
+                        index = 0;
+                        break;
+                    //type
+                    default:
+                        printf(foo);
+                        input[index] = c;
+                        index++;
+                        break;
+                }
+            } else {
+
+                index = 0;
+            }
+        }
+
+
+        void OnKeyUp() {
+
+            this->pressed = false;
+        }
+
+
+
+        void resetCmd() {
+
+            for (uint16_t i = 0; i < 256; i++) {
+
+                input[i] = 0x00;
+            }
+        }
+
+
 };
+
 
 class MouseToConsole : public MouseEventHandler
 {
@@ -237,17 +355,71 @@ public:
 //sleeps zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
 void sleep(uint32_t ms) {
 
-	//like arduino (ms) zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
-	PIT pit;
+    //like arduino (ms) zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+    PIT pit;
 
-	for (uint32_t i = 0; i < ms; i++) {
+    for (uint32_t i = 0; i < ms; i++) {
 
-		pit.setCount(1193182/1000);
-		uint32_t start = pit.readCount();
+        pit.setCount(1193182/1000);
+        uint32_t start = pit.readCount();
 
-		while ((start - pit.readCount()) < 1000) {}
-	}
+        while ((start - pit.readCount()) < 1000) {}
+    }
 }
+
+char* argparse(char* args, uint8_t num) {
+
+    char buffer[256];
+
+    bool valid = false;
+    uint8_t argIndex = 0;
+    uint8_t bufferIndex = 0;
+
+
+    for (int i = 0; i < (strlen(args) + 1); i++) {
+
+        if (args[i] == ' ' || args[i] == '\0') {
+
+            if (valid) {
+
+                if (argIndex == num) {
+
+                    buffer[bufferIndex] = '\0';
+                    char* arg = buffer;
+                    return arg;
+                }
+                argIndex++;
+            }
+            valid = false;
+
+        } else {
+            if (argIndex == num) {
+
+                buffer[bufferIndex] = args[i];
+                bufferIndex++;
+            }
+            valid = true;
+        }
+    }
+
+
+    return "wtf";
+}
+
+uint8_t argcount(char* args) {
+
+    uint8_t i = 0;
+    char* foo = argparse(args, i);
+
+    while (foo != "wtf") {
+
+        foo = argparse(args, i);
+        i++;
+    }
+
+    return i-1;
+}
+
 
 //RANDOM NUMBERS
 //god help me random numbers are somthing else
@@ -301,7 +473,8 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
         #ifdef GRAPHICSMODE
             KeyboardDriver keyboard(&interrupts, &desktop);
         #else
-            PrintfKeyboardEventHandler kbhandler;
+            //this was a paint in the ass because i kept calling the objs insted of the pointers to the objs lol
+            CLIKeyboardEventHandler kbhandler(&gdt, &taskManager);
             KeyboardDriver keyboard(&interrupts, &kbhandler);
         #endif
         drvManager.AddDriver(&keyboard);
@@ -351,6 +524,22 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     while (kbhandler.pressed == false) {
     }
     printf("\v");
+    //initialize command line hash table
+	kbhandler.cli = true;
+	kbhandler.hash_cli_init();
+
+
+
+	//this is the command line :D
+	while (keyboard.keyHex != 0x5b) { //0x5b = command/windows key
+
+		kbhandler.cli = true;
+
+		while (kbhandler.cliMode) {
+
+			kbhandler.cli = false;
+		}
+	}
 
     while(1)
     {

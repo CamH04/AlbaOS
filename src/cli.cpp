@@ -16,6 +16,7 @@ char* argparse(char*, uint8_t);
 uint8_t argcount(char*);
 uint32_t Random();
 uint32_t StringToInt(char* args);
+uint16_t SetTextColor(bool set, uint16_t color);
 
 uint32_t findarg(char* args, CommandLine* cli, uint8_t ArgNum);
 
@@ -33,6 +34,7 @@ void help(char* args, CommandLine* cli){
     printf("hello : starts the conversation with Dusty\n");
     printf("speak : Dusty will speak\n");
     printf("clear : clears the screen (you can also press tab)\n");
+    printf("changetextcolour number(1-14): changes text colour(7 is the default white colour)\n");
     printf("random: will generate a random number for you\n");
 }
 
@@ -49,6 +51,22 @@ void clear(char* args, CommandLine* cli) {
     //you could also just press tab
     printf("\v");
 }
+
+
+void changetextcolour(char* args, CommandLine* cli) {
+    uint16_t newColour = (uint16_t)(StringToInt(args));
+	if (!newColour) {
+        return;
+    }
+	else{
+        //i spelt it the american way in kernel . ffs
+        SetTextColor(true, newColour);
+    }
+    printf("\v");
+}
+
+
+
 void speak(char* args, CommandLine* cli){
     printf("Woooooo\n");
     drivers::Speaker PCSPEAKER;
@@ -228,7 +246,7 @@ void CommandLine::hash_cli_init() {
     this->hash_add("random",random);
     this->hash_add("owl",owl);
     this->hash_add("version",version);
-
+    this->hash_add("changetextcolour",changetextcolour);
 
 
 

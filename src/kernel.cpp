@@ -112,7 +112,30 @@ void printf(char* str) {
             y++;
             x = 0;
         }
-        //TODO add scrolling effect
+        //scrolling effect
+        if (y >= 25) {
+
+            uint16_t scroll_temp;
+
+            for (y = 1; y < 25; y++) {
+                for (x = 0; x < 80; x++) {
+
+                    VideoMemory = (volatile uint16_t*)0xb8000 + (80*y+x);
+                    scroll_temp = *VideoMemory;
+
+                    VideoMemory -= 80;
+                    *VideoMemory = scroll_temp;
+
+                    if (y == 24) {
+
+                        VideoMemory = (volatile uint16_t*)0xb8000 + (1920+x);
+                        *VideoMemory = ' ' | (attrib << 8);
+                    }
+                }
+            }
+            x = 0;
+            y = 24;
+        }
     }
 }
 

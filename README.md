@@ -81,3 +81,4 @@ sudo apt-get install xorriso
 + basic graphics framework
 + multitasking
 + speaker audio with PIT
++ Command Line With args

@@ -36,6 +36,7 @@ namespace albaos {
 
 
             void getTM(GlobalDescriptorTable* gdt, TaskManager* tm);
+
     };
 }
 

@@ -95,3 +95,12 @@ void owlart::OwlArtLove()
     printf("  /)_)/  /)_)/  \n");
     printf("---**-----**----\n");
 }
+
+void owlart::OwlArtLoveCLIVER()
+{
+    printf("\n");
+    printf("       <3       \n");
+    printf("  (^,^)  (^,^)  \n");
+    printf("  /)_)/  /)_)/  \n");
+    printf("---**-----**----\n");
+}

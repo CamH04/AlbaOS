@@ -22,6 +22,7 @@
                 void OwlArtHappy();
                 void OwlArtSad();
                 void OwlArtLove();
+                void OwlArtLoveCLIVER();
 
         };
     }

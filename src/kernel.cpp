@@ -183,6 +183,7 @@ void printfHex(uint8_t key)
     printf(foo);
 }
 
+//string manip functions
 uint16_t strlen(char* args) {
 
         uint16_t length = 0;
@@ -193,7 +194,31 @@ uint16_t strlen(char* args) {
         return length;
 }
 
+uint32_t StringToInt(char* args){
+    uint32_t number = 0;
+    uint16_t i = 0;
+    bool foundNum = false;
 
+    for(uint16_t i = 0; args[i] != '\0'; i++){
+        //stopping the entire kernelfrom crashing if the for loop extends to far
+        if((args[i] >= 58 || args[i] <= 47) && args[i] != ' '){
+            return 0;
+        }
+        if(args[i] != ' '){
+            number *= 10;
+            number += ((uint32_t)args[i] -  48);
+            foundNum = true;
+            args[i] = ' ';
+        }
+        else{
+            if(foundNum){
+                return number;
+            }
+        }
+    }
+    return number;
+}
+//"put Keybaord in command line pls" the class
 class CLIKeyboardEventHandler : public KeyboardEventHandler, public CommandLine {
 public:
 

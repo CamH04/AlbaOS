@@ -42,8 +42,47 @@ void help(char* args, CommandLine* cli){
 //TODO become a neofetch like command
 void version(char* args, CommandLine* cli){
     printf("\n");
-    printf("        (0v0)           \n");
-    printf("AlbaOS: Ver: Beta - 0.90\n");
+    printf("                   OOO  OO OOOOO\n");
+    printf("           OOO O               O\n");
+    printf("        OOO                   OOOOOOO\n");
+    printf("       OO                           OOOOO\n");
+    printf("      O                                OOO\n");
+    printf("    OO                                   OOO\n");
+    printf("   O                                      OOO\n");
+    printf("  O       OOOO                             OOO\n");
+    printf(" O       O   OO                             OOO\n");
+    printf("OO      OOOOOOO                              OO\n");
+    printf("O       OOOOOOO             O OOOOO          OOO\n");
+    printf("O       OOOO O             OOO    OOO OO      OOO\n");
+    printf("O         OOO             OO   OOOOOOOOO       OO\n");
+    printf("O                         OOOOOOOOOOO          OOO\n");
+    printf("O                        OOOOOOO OO           OO\n");
+    printf("O                     OO                      OO\n");
+    printf("OO            O     OO                       OO\n");
+    printf("OO          O OO O O                        OO\n");
+    printf(" OOO        O   OO                        OOO\n");
+    printf("  OO        O OOO                        OOO\n");
+    printf("   OO        OO                        OOO\n");
+    printf("    OOO                             OOOOO\n");
+    printf("      OO                       OOOOOOO\n");
+    printf("       OOO               OOOOOOOOO\n");
+    printf("         OOOOOOOOOOOOOOOOOO\n");
+    printf("\n");
+    printf("==================================================\n");
+    printf("\n");
+    printf("                     (0v0)           \n");
+    printf("             AlbaOS: Ver: Beta - 0.91\n");
+    printf("\n");
+    printf("==================================================\n");
+    printf("\n");
+    //print colours
+    int numOfAvalibeCol = 16;
+    for (int i = 0; i < numOfAvalibeCol; i++)
+    {
+        SetTextColor(true,i);
+        printf("+");
+    }
+    SetTextColor(false,7);//back to white text
     printf("\n");
 }
 void hello(char* args, CommandLine* cli){

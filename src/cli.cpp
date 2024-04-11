@@ -36,12 +36,15 @@ void help(char* args, CommandLine* cli){
     printf("clear : clears the screen (you can also press tab)\n");
     printf("changetextcolour number(1-14): changes text colour(7 is the default white colour)\n");
     printf("random: will generate a random number for you\n");
+    printf("pic: will print a coloured picture for you! (its very underwhelming)\n");
 }
 
 //TODO become a neofetch like command
 void version(char* args, CommandLine* cli){
+    printf("\n");
     printf("        (0v0)           \n");
     printf("AlbaOS: Ver: Beta - 0.90\n");
+    printf("\n");
 }
 void hello(char* args, CommandLine* cli){
     printf("Hiiiii ^v^\n");
@@ -51,8 +54,6 @@ void clear(char* args, CommandLine* cli) {
     //you could also just press tab
     printf("\v");
 }
-
-
 void changetextcolour(char* args, CommandLine* cli) {
     uint16_t newColour = (uint16_t)(StringToInt(args));
 	if (!newColour) {
@@ -64,9 +65,6 @@ void changetextcolour(char* args, CommandLine* cli) {
     }
     printf("\v");
 }
-
-
-
 void speak(char* args, CommandLine* cli){
     printf("Woooooo\n");
     drivers::Speaker PCSPEAKER;
@@ -125,13 +123,17 @@ void owl(char* args, CommandLine* cli){
             break;
         case 8:
             OA.OwlArtLoveCLIVER();
-            printf("\n");
             break;
         default:
             printf("Not a valid value -v-\n");
     }
 }
 
+void pic(char* args, CommandLine* cli) {
+    owlart OA;
+    OA.pic();
+    printf("\n");
+}
 
 
 
@@ -247,6 +249,7 @@ void CommandLine::hash_cli_init() {
     this->hash_add("owl",owl);
     this->hash_add("version",version);
     this->hash_add("changetextcolour",changetextcolour);
+    this->hash_add("pic",pic);
 
 
 

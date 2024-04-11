@@ -23,6 +23,7 @@
                 void OwlArtSad();
                 void OwlArtLove();
                 void OwlArtLoveCLIVER();
+                void pic();
 
         };
     }

@@ -30,10 +30,13 @@ void owlart::MenuHello(){
     printfhere("                                  /)_)/  /)_)/                                                                   ",3);
     printfhere("                                ---**-----**----                                                                ",4);
 
-
+    printfhere("================================================================================",6);
     printfhere("              Welcome To AlbaOS!      0v0      Welcome To AlbaOS!",7);
+    printfhere("================================================================================",8);
     printfhere("                         Press Any Key To Get Started!",23);
+    //cprintfs have to go last
     cprintf("<3", 0x0C, 0x0C, 39, 1);
+
 
 }
 void owlart::OwlArtStare()

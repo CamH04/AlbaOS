@@ -34,7 +34,8 @@ void help(char* args, CommandLine* cli){
     printf("hello : starts the conversation with Dusty\n");
     printf("speak : Dusty will speak\n");
     printf("clear : clears the screen (you can also press tab)\n");
-    printf("changetextcolour number(1-14): changes text colour(7 is the default white colour)\n");
+    printf("changetext number(0-16): changes text colour\n");
+    printf("textnum: gives numbers for text colours\n");
     printf("random: will generate a random number for you\n");
     printf("pic: will print a coloured picture for you! (its very underwhelming)\n");
 }
@@ -74,13 +75,12 @@ void version(char* args, CommandLine* cli){
     printf("             AlbaOS: Ver: Beta - 0.91\n");
     printf("\n");
     printf("==================================================\n");
-    printf("\n");
     //print colours
     int numOfAvalibeCol = 16;
     for (int i = 0; i < numOfAvalibeCol; i++)
     {
         SetTextColor(true,i);
-        printf("+");
+        printf("!");
     }
     SetTextColor(false,7);//back to white text
     printf("\n");
@@ -93,19 +93,31 @@ void clear(char* args, CommandLine* cli) {
     //you could also just press tab
     printf("\v");
 }
-void changetextcolour(char* args, CommandLine* cli) {
+void changetext(char* args, CommandLine* cli) {
+    //chnage
     uint16_t newColour = (uint16_t)(StringToInt(args));
-	if (!newColour) {
+    if (!newColour) {
         return;
     }
-	else{
+    else{
         //i spelt it the american way in kernel . ffs
         SetTextColor(true, newColour);
     }
     printf("\v");
 }
+void textnum(char* args, CommandLine* cli) {
+    int numOfAvalibeCol = 16;
+    for (int i = 0; i < numOfAvalibeCol; i++)
+    {
+        SetTextColor(true,i);
+        //TODO print int
+        printf("test");
+    }
+    SetTextColor(false,7);//back to white text
+    printf("\n");
+}
 void speak(char* args, CommandLine* cli){
-    printf("Woooooo\n");
+    printf("Hoo Hoo\n");
     drivers::Speaker PCSPEAKER;
     PCSPEAKER.PlaySound(1522);
 	PCSPEAKER.NoSound();
@@ -287,7 +299,8 @@ void CommandLine::hash_cli_init() {
     this->hash_add("random",random);
     this->hash_add("owl",owl);
     this->hash_add("version",version);
-    this->hash_add("changetextcolour",changetextcolour);
+    this->hash_add("changetext",changetext);
+    this->hash_add("textnum",textnum);
     this->hash_add("pic",pic);
 
 

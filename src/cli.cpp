@@ -1,5 +1,6 @@
 #include <cli.h>
 #include <owlart.h>
+#include <playstart.h>
 #include <drivers/audio.h>
 
 
@@ -200,8 +201,10 @@ void pic(char* args, CommandLine* cli) {
 
 
 void test(char* args, CommandLine* cli){
-
-    printf("test");
+    playstart PS;
+    Speaker s;
+    PS.song1();
+    s.NoSound();
 }
 
 

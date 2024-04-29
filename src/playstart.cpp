@@ -8,7 +8,9 @@ using namespace albaos::common;
 using namespace albaos::drivers;
 
 void printf(char*);
+void printc(char ch);
 void sleep(common::uint32_t ms);
+char* IntToString(uint32_t num);
 void PlayNote(char ch, uint8_t octave, common::uint16_t time);
 uint16_t FrequencyMatch(char ch, uint8_t octave);
 
@@ -48,7 +50,12 @@ void playstart::song1() {
 	};
     uint16_t songnotelength = 10;
     printf("Starting song: Beyond The Breeze\n");
-	//TODO print note
+	//TODO print array of notes
+	for (common::uint8_t j = 0; j <= songnotelength - 1; j++){
+		printc(notes1[j]);
+		printf(" ,");
+	}
+	printf("\n");
     for (common::uint8_t i = 0; i <= songnotelength - 1; i++) {
 
         PlayNote(notes1[i], octave1[i], time1[i]);

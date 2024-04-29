@@ -42,6 +42,18 @@ uint16_t SetTextColor(bool set, uint16_t color = 0x07) {
     return newColor;
 }
 
+void printc(char ch){
+    static uint8_t x = 0, y = 0;
+    static bool cliCursor = false;
+
+    uint16_t attrib = SetTextColor(false);
+    volatile uint16_t* VideoMemory;
+    VideoMemory = (volatile uint16_t*)0xb8000 + (80*y+x);
+
+    *VideoMemory = ch | (attrib << 8);
+    x++;
+
+}
 void printf(char* str) {
 
     static uint8_t x = 0, y = 0;

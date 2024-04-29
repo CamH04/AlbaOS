@@ -39,6 +39,7 @@ void help(char* args, CommandLine* cli){
     printf("textnum: gives numbers for text colours\n");
     printf("random: will generate a random number for you\n");
     printf("pic: will print a coloured picture for you! (its very underwhelming)\n");
+    printf("SingMeASong number(0-idkyet): Dusty will sing you a song!");
 }
 
 //TODO become a neofetch like command
@@ -186,6 +187,24 @@ void pic(char* args, CommandLine* cli) {
     OA.pic();
     printf("\n");
 }
+
+void SingMeASong(char* args, CommandLine* cli){
+    //class init
+    playstart PS;
+    Speaker s;
+    uint32_t ValueIn = findarg(args, cli, 0);
+
+    switch (ValueIn){
+        case 0:
+            //song 1
+            PS.song1();
+            s.NoSound();
+            break;
+        default:
+            printf("We dont have that many songs yet -V-");
+            break;
+    }
+}
 // TODO add cpuid =========================================================================================
 
 
@@ -201,10 +220,7 @@ void pic(char* args, CommandLine* cli) {
 
 
 void test(char* args, CommandLine* cli){
-    playstart PS;
-    Speaker s;
-    PS.song1();
-    s.NoSound();
+
 }
 
 
@@ -305,6 +321,7 @@ void CommandLine::hash_cli_init() {
     this->hash_add("changetext",changetext);
     this->hash_add("textnum",textnum);
     this->hash_add("pic",pic);
+    this->hash_add("SingMeASong",SingMeASong);
 
 
 
@@ -362,9 +379,8 @@ char* CommandLine::command(char* cmd, uint8_t length) {
 
                 if (length < 0xff) {
 
-                    printf("'");
                     printf(command);
-                    printf("' is an unknown command sorry -v-\n");
+                    printf(" is an unknown command sorry -v-\n");
 
                 } else {
 

@@ -223,7 +223,6 @@ uint32_t StringToInt(char* args){
     bool foundNum = false;
 
     for(uint16_t i = 0; args[i] != '\0'; i++){
-        //stopping the entire kernelfrom crashing if the for loop extends to far
         if((args[i] >= 58 || args[i] <= 47) && args[i] != ' '){
             return 0;
         }
@@ -490,7 +489,7 @@ char* argparse(char* args, uint8_t num) {
     }
 
 
-    return "wtf";
+    return "how";
 }
 
 uint8_t argcount(char* args) {
@@ -498,7 +497,7 @@ uint8_t argcount(char* args) {
     uint8_t i = 0;
     char* foo = argparse(args, i);
 
-    while (foo != "wtf") {
+    while (foo != "how") {
 
         foo = argparse(args, i);
         i++;
@@ -609,6 +608,7 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     playstart PS;
     PS.singasong();
     while (kbhandler.pressed == false) {
+        //hi the main menu is being printed rn
     }
     printf("\v");
     //initialize command line hash table

@@ -48,6 +48,7 @@ void playstart::song1() {
 	};
     uint16_t songnotelength = 10;
     printf("Starting song: Beyond The Breeze\n");
+	//TODO print note
     for (common::uint8_t i = 0; i <= songnotelength - 1; i++) {
 
         PlayNote(notes1[i], octave1[i], time1[i]);

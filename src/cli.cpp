@@ -17,6 +17,7 @@ char* argparse(char*, uint8_t);
 uint8_t argcount(char*);
 uint32_t Random();
 uint32_t StringToInt(char* args);
+char* IntToString(uint32_t num);
 uint16_t SetTextColor(bool set, uint16_t color);
 
 uint32_t findarg(char* args, CommandLine* cli, uint8_t ArgNum);
@@ -39,7 +40,7 @@ void help(char* args, CommandLine* cli){
     printf("textnum: gives numbers for text colours\n");
     printf("random: will generate a random number for you\n");
     printf("pic: will print a coloured picture for you! (its very underwhelming)\n");
-    printf("SingMeASong number(0-idkyet): Dusty will sing you a song!");
+    printf("singsong number(0-idkyet): Dusty will sing you a song!\n");
 }
 
 //TODO become a neofetch like command
@@ -84,7 +85,7 @@ void version(char* args, CommandLine* cli){
         SetTextColor(true,i);
         printf("!");
     }
-    SetTextColor(false,7);//back to white text
+    SetTextColor(true,7);//back to white text
     printf("\n");
 }
 void hello(char* args, CommandLine* cli){
@@ -112,10 +113,11 @@ void textnum(char* args, CommandLine* cli) {
     for (int i = 0; i < numOfAvalibeCol; i++)
     {
         SetTextColor(true,i);
-        //TODO print int
-        printf("test");
+        char* numStr = IntToString(i);
+        printf(numStr);
+        printf(" , ");
     }
-    SetTextColor(false,7);//back to white text
+    SetTextColor(true,7);//back to white text
     printf("\n");
 }
 void speak(char* args, CommandLine* cli){
@@ -125,19 +127,11 @@ void speak(char* args, CommandLine* cli){
 	PCSPEAKER.NoSound();
 }
 void random(char* args, CommandLine* cli){
-    //TODO print int
     common::uint64_t prngresult = Random();
-    if(prngresult > 0.5)
-    {
-        printf("you generated a number larger than 0.5\n");
-    }
-    if(prngresult < 0.5)
-    {
-        printf("you generated a number less than 0.5\n");
-    }
-    else{
-        //printf("how\n");
-    }
+    char* value =  IntToString(prngresult);
+    printf(value);
+    printf("\n");
+    //TODO clear the pit after generation
 }
 void owl(char* args, CommandLine* cli){
     owlart OA;
@@ -321,7 +315,7 @@ void CommandLine::hash_cli_init() {
     this->hash_add("changetext",changetext);
     this->hash_add("textnum",textnum);
     this->hash_add("pic",pic);
-    this->hash_add("SingMeASong",SingMeASong);
+    this->hash_add("singsong",SingMeASong);
 
 
 

@@ -51,9 +51,16 @@ void printc(char ch){
     VideoMemory = (volatile uint16_t*)0xb8000 + (80*y+x);
 
     *VideoMemory = ch | (attrib << 8);
+
     x++;
+    if (x >= 80) {
+
+            y++;
+            x = 0;
+    }
 
 }
+
 void printf(char* str) {
 
     static uint8_t x = 0, y = 0;

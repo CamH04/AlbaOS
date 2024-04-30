@@ -195,7 +195,7 @@ void SingMeASong(char* args, CommandLine* cli){
             s.NoSound();
             break;
         default:
-            printf("We dont have that many songs yet -V-");
+            printf("We dont have that many songs yet -V- \n");
             break;
     }
 }

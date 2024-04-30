@@ -141,7 +141,13 @@ void printf(char* str) {
 void printc(char c){
     uint16_t attrib = SetTextColor(false);
     volatile uint16_t* VideoMemory;
-    VideoMemory = (volatile uint16_t *)0xb8000 + (y * 80 + x);
+    VideoMemory = (volatile uint16_t*)0xb8000 + (80*y+x);
+    *VideoMemory = c | (attrib << 8);
+    if (x >= 80) {
+
+            y++;
+            x = 0;
+    }
 }
 
 void printfhere(const char* str, uint8_t line) {

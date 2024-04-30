@@ -41,29 +41,10 @@ uint16_t SetTextColor(bool set, uint16_t color = 0x07) {
 
     return newColor;
 }
-
-void printc(char ch){
-    static uint8_t x = 0, y = 0;
-    static bool cliCursor = false;
-
-    uint16_t attrib = SetTextColor(false);
-    volatile uint16_t* VideoMemory;
-    VideoMemory = (volatile uint16_t*)0xb8000 + (80*y+x);
-
-    *VideoMemory = ch | (attrib << 8);
-
-    x++;
-    if (x >= 80) {
-
-            y++;
-            x = 0;
-    }
-
-}
-
+//im sorry i had to use a global but its so printf and printc and access it
+static uint8_t x = 0, y = 0;
 void printf(char* str) {
 
-    static uint8_t x = 0, y = 0;
     static bool cliCursor = false;
 
     uint16_t attrib = SetTextColor(false);
@@ -157,7 +138,11 @@ void printf(char* str) {
         }
     }
 }
-
+void printc(char c){
+    uint16_t attrib = SetTextColor(false);
+    volatile uint16_t* VideoMemory;
+    VideoMemory = (volatile uint16_t *)0xb8000 + (y * 80 + x);
+}
 
 void printfhere(const char* str, uint8_t line) {
 

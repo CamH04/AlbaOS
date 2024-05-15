@@ -2,6 +2,7 @@
 #include <owlart.h>
 #include <playstart.h>
 #include <drivers/audio.h>
+#include <cpuid.h>
 
 
 using namespace albaos;
@@ -31,7 +32,8 @@ uint32_t findarg(char* args, CommandLine* cli, uint8_t ArgNum);
 //commands
 void help(char* args, CommandLine* cli){
     printf("=== Fun Commands: ===\n");
-    printf("version : tells you the version! of AlbaOS\n");
+    printf("version : tells you the version of AlbaOS!\n");
+    printf("hardwareinfo : tells you about your hardware\n");
     printf("owl number(0-8) : prints owl art!\n");
     printf("hello : starts the conversation with Dusty\n");
     printf("speak : Dusty will speak\n");
@@ -75,7 +77,7 @@ void version(char* args, CommandLine* cli){
     printf("==================================================\n");
     printf("\n");
     printf("                     (0v0)           \n");
-    printf("             AlbaOS: Ver: Beta - 0.91\n");
+    printf("             AlbaOS: Ver: Beta - 0.95\n");
     printf("\n");
     printf("==================================================\n");
     //print colours
@@ -199,7 +201,13 @@ void SingMeASong(char* args, CommandLine* cli){
             break;
     }
 }
-// TODO add cpuid =========================================================================================
+
+void hardwareinfo(char* args, CommandLine* cli){
+    cpuidentif CPUFINDER;
+    CPUFINDER.cpufind();
+    printf("\n");
+}
+
 
 
 
@@ -214,7 +222,6 @@ void SingMeASong(char* args, CommandLine* cli){
 
 
 void test(char* args, CommandLine* cli){
-
 }
 
 
@@ -316,6 +323,7 @@ void CommandLine::hash_cli_init() {
     this->hash_add("textnum",textnum);
     this->hash_add("pic",pic);
     this->hash_add("singsong",SingMeASong);
+    this->hash_add("hardwareinfo",hardwareinfo);
 
 
 

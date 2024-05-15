@@ -5,12 +5,13 @@
 #include <drivers/driver.h>
 #include <hardwarecommunication/port.h>
 
-
 namespace albaos {
 
 	namespace drivers {
 
 		class PIT : public Driver {
+
+			//private:
 			public:
 				hardwarecommunication::Port8Bit channel0;
 				hardwarecommunication::Port8Bit channel1;

@@ -644,7 +644,7 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     #endif
 
     interrupts.Activate();
-    printf("Welcome To AlbaOS Version Beta 0.94");
+    printf("Welcome To AlbaOS!");
     printf("\n  ");
     printf("\v");
 
@@ -660,13 +660,15 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     }
     printf("\v");
     //initialize command line hash table
-	kbhandler.cli = true;
+    printf("Welcome to the AlbaOS Command Line!\n");
+	printf("use the help command (  help  ) if you need assistance ^v^\n");
+    printf("press tab or use the clear command (  clear  ) to clear terminal @v@\n");
+    kbhandler.cli = true;
 	kbhandler.hash_cli_init();
 
 
 
-	//this is the command line :D
-	while (keyboard.keyHex != 0x5b) { //0x5b = command/windows key
+	while (keyboard.keyHex != 0x5b) { //windows key
 
 		kbhandler.cli = true;
 

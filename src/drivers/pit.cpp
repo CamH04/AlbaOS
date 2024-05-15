@@ -6,7 +6,6 @@ using namespace albaos::drivers;
 using namespace albaos::hardwarecommunication;
 
 
-
 PIT::PIT()
 
 : channel0(0x40),

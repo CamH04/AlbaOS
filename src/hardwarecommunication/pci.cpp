@@ -1,6 +1,8 @@
 #include <hardwarecommunication/pci.h>
 
 #include <memorymanagement.h>
+#include <drivers/amd_am79c973.h>
+
 
 using namespace albaos::common;
 using namespace albaos::drivers;
@@ -90,7 +92,9 @@ void PeripheralComponentInterconnectController::SelectDrivers(DriverManager* dri
 
                     Driver* driver = GetDriver(dev, interrupts);
                     if(driver != 0)
-                        driverManager->AddDriver(driver);
+                    driverManager->AddDriver(driver);
+
+
                 }
 
 
@@ -163,19 +167,18 @@ BaseAddressRegister PeripheralComponentInterconnectController::GetBaseAddressReg
 //hard coding drivers as i dont have hd access yet
 Driver* PeripheralComponentInterconnectController::GetDriver(PeripheralComponentInterconnectDeviceDescriptor dev, InterruptManager* interrupts)
 {
-    Driver *driver = 0;
+    Driver* driver = 0;
     switch(dev.vendor_id)
     {
         case 0x1022: // AMD id
             switch(dev.device_id)
             {
                 case 0x2000:
-                    /*
                     driver = (amd_am79c973*)MemoryManager::activeMemoryManager->malloc(sizeof(amd_am79c973));
                     if(driver != 0)
-                        new (driver) amd_am79c973(...);
-                    */
+                        new (driver) amd_am79c973(&dev, interrupts);
                     printf("AMD am79c973 ");
+                    return driver;
                     break;
             }
             break;

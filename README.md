@@ -1,33 +1,9 @@
 # AlbaOS #
-AlbaOS is a 32 bit operating system developed by me as a hobby <3
+AlbaOS is a 32 bit operating system developed by me from scratch as a hobby <3
 
 
 ![Capture](https://github.com/CamH04/AlbaOS/assets/104907445/1fe59130-dfef-43ba-aa56-82f03429d57f)
 
-
-
-Some Ascii art of my owls: 
-```                
-(0,0)
-/)_)/
- **
-
-(-,-_)
-(x-x(v)7
-
-(@,@)
-[(_)]
- **
-
-(^,^)
-/)_)/
- **
-
-       <3
-  (^,^)  (^,^)
-  /)_)/  /)_)/
----**-----**----
-```
 
 ## How To Run AlbaOS On A Virtual Machine
 
@@ -83,3 +59,31 @@ sudo apt-get install xorriso
 + speaker audio with PIT
 + Command Line With args
 + heap with malloc
++ networking
++ hardware identification
+
+
+
+## Some Ascii art of my owls: 
+```                
+(0,0)
+/)_)/
+ **
+
+(-,-_)
+(x-x(v)7
+
+(@,@)
+[(_)]
+ **
+
+(^,^)
+/)_)/
+ **
+
+       <3
+  (^,^)  (^,^)
+  /)_)/  /)_)/
+---**-----**----
+```
+

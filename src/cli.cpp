@@ -28,24 +28,42 @@ uint32_t findarg(char* args, CommandLine* cli, uint8_t ArgNum);
 
 
 
-
-//commands
-void help(char* args, CommandLine* cli){
+void help_page2(){
     printf("=== Fun Commands: ===\n");
-    printf("version : tells you the version of AlbaOS!\n");
-    printf("hardwareinfo : tells you about your hardware\n");
     printf("owl number(0-8) : prints owl art!\n");
     printf("hello : starts the conversation with Dusty\n");
     printf("speak : Dusty will speak\n");
     printf("clear : clears the screen (you can also press tab)\n");
     printf("changetext number(0-16): changes text colour\n");
     printf("textnum: gives numbers for text colours\n");
-    printf("random: will generate a random number for you\n");
     printf("pic: will print a coloured picture for you! (its very underwhelming)\n");
     printf("singsong number(0-idkyet): Dusty will sing you a song!\n");
 }
+void help_page1(){
+    printf("=== Useful Commands: ===\n");
+    printf("help number(0 - 2): list of commands\n");
+    printf("random: will generate a random number for you\n");
+    printf("version : tells you the version of AlbaOS!\n");
+    printf("hardwareinfo : tells you about your hardware\n");
+}
+//commands
+void help(char* args, CommandLine* cli){
 
-//TODO become a neofetch like command
+    uint32_t ValueIn = findarg(args, cli, 0);
+    switch (ValueIn){
+        case 0:
+            help_page1();
+            break;
+        case 1:
+            help_page1();
+            break;
+        case 2:
+            help_page2();
+            break;
+        default:
+            printf("we dont have that many pages -v-");
+    }
+}
 void version(char* args, CommandLine* cli){
     printf("\n");
     printf("                   OOO  OO OOOOO\n");
@@ -90,6 +108,7 @@ void version(char* args, CommandLine* cli){
     SetTextColor(true,7);//back to white text
     printf("\n");
 }
+
 void hello(char* args, CommandLine* cli){
     printf("Hiiiii ^v^\n");
 }
@@ -129,11 +148,12 @@ void speak(char* args, CommandLine* cli){
 	PCSPEAKER.NoSound();
 }
 void random(char* args, CommandLine* cli){
-    common::uint64_t prngresult = Random();
-    char* value =  IntToString(prngresult);
-    printf(value);
+    common::uint16_t prngresult = Random();
+
+    prngresult = prngresult % cli->cmdIndex++;
+
+    printf(IntToString(prngresult));
     printf("\n");
-    //TODO clear the pit after generation
 }
 void owl(char* args, CommandLine* cli){
     owlart OA;
@@ -204,6 +224,7 @@ void SingMeASong(char* args, CommandLine* cli){
 
 void hardwareinfo(char* args, CommandLine* cli){
     cpuidentif CPUFINDER;
+    printf("== Cpu Info: ==\n");
     CPUFINDER.cpufind();
     printf("\n");
 }

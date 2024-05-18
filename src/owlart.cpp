@@ -24,16 +24,31 @@ void owlart::printfhere(char *str, uint8_t line) {
 // eg printfhere("help me god",0);
 //    printfhere("its too late for this",1);
 void owlart::MenuHello(){
-    printfhere("                                                                                                                     ",0);
-    printfhere("                                                                                                                     ",1);
-    printfhere("                                  (^,^)  (^,^)                                                                  ",2);
-    printfhere("                                  /)_)/  /)_)/                                                                   ",3);
-    printfhere("                                ---**-----**----                                                                ",4);
-
+    printfhere("                                                                                ",0);
+    printfhere("                                                                                ",1);
+    printfhere("                                  (^,^)  (^,^)                                  ",2);
+    printfhere("                                  /)_)/  /)_)/                                  ",3);
+    printfhere("                                ---**-----**----                                ",4);
+    printfhere("                                ---**-----**----                                ",5);
     printfhere("================================================================================",6);
-    printfhere("              Welcome To AlbaOS!      0v0      Welcome To AlbaOS!",7);
+    printfhere("              Welcome To AlbaOS!      0v0      Welcome To AlbaOS!               ",7);
     printfhere("================================================================================",8);
-    printfhere("                         Press Any Key To Get Started!",23);
+    printfhere("                                                                                ",9);
+    printfhere("                                                                                ",10);
+    printfhere("                                                                                ",11);
+    printfhere("                                                                                ",12);
+    printfhere("                                                                                ",13);
+    printfhere("                                                                                ",14);
+    printfhere("                                                                                ",15);
+    printfhere("                                                                                ",16);
+    printfhere("                                                                                ",17);
+    printfhere("                                                                                ",18);
+    printfhere("                                                                                ",19);
+    printfhere("                                                                                ",20);
+    printfhere("                                                                                ",21);
+    printfhere("                                                                                ",22);
+    printfhere("                         Press Any Key To Get Started!                          ",23);
+    printfhere("                                                                                ",24);
     //cprintfs have to go last
     cprintf("<3", 0x0C, 0x0C, 39, 1);
 
@@ -41,6 +56,7 @@ void owlart::MenuHello(){
 }
 void owlart::OwlArtStare()
 {
+    printf("\n");
     printf("(0,0)\n");
     printf("/)_)/\n");
     printf(" **  \n");
@@ -49,6 +65,7 @@ void owlart::OwlArtStare()
 
 void owlart::OwlArtSleep()
 {
+    printf("\n");
     printf("(-,-_)  \n");
     printf("(x-x(v)7\n");
 }
@@ -65,6 +82,7 @@ void owlart::OwlArtHeadphones()
 
 void owlart::OwlArtFly()
 {
+    printf("\n");
     printf(" (0,0) \n");
     printf("==)_)==\n");
     printf("  **   \n");
@@ -72,6 +90,7 @@ void owlart::OwlArtFly()
 
 void owlart::OwlArtGeekin()
 {
+    printf("\n");
     printf("(@,@)\n");
     printf("[(_)]\n");
     printf(" **  \n");
@@ -79,6 +98,7 @@ void owlart::OwlArtGeekin()
 
 void owlart::OwlArtHappy()
 {
+    printf("\n");
     printf("(^,^)\n");
     printf("/)_)/\n");
     printf(" **  \n");
@@ -86,6 +106,7 @@ void owlart::OwlArtHappy()
 
 void owlart::OwlArtSad()
 {
+    printf("\n");
     printf("(v,v)\n");
     printf("/)_)/\n");
     printf(" **  \n");

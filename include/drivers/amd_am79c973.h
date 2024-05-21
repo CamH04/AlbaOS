@@ -70,6 +70,9 @@ namespace albaos
             int Reset();
             common::uint32_t HandleInterrupt(common::uint32_t esp);
 
+            void Send(common::uint8_t* buffer, int count);
+            void Receive();
+
 
         };
 

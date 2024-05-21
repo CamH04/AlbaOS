@@ -29,7 +29,7 @@ void owlart::MenuHello(){
     printfhere("                                  (^,^)  (^,^)                                  ",2);
     printfhere("                                  /)_)/  /)_)/                                  ",3);
     printfhere("                                ---**-----**----                                ",4);
-    printfhere("                                ---**-----**----                                ",5);
+    printfhere("                                                                                ",5);
     printfhere("================================================================================",6);
     printfhere("              Welcome To AlbaOS!      0v0      Welcome To AlbaOS!               ",7);
     printfhere("================================================================================",8);

@@ -3,6 +3,7 @@
 #include <playstart.h>
 #include <drivers/audio.h>
 #include <cpuid.h>
+#include <drivers/amd_am79c973.h>
 
 
 using namespace albaos;
@@ -20,6 +21,7 @@ uint32_t Random();
 uint32_t StringToInt(char* args);
 char* IntToString(uint32_t num);
 uint16_t SetTextColor(bool set, uint16_t color);
+void initnetwork(char* string);
 
 uint32_t findarg(char* args, CommandLine* cli, uint8_t ArgNum);
 
@@ -45,6 +47,7 @@ void help_page1(){
     printf("random: will generate a random number for you\n");
     printf("version : tells you the version of AlbaOS!\n");
     printf("hardwareinfo : tells you about your hardware\n");
+    printf("senddata (text): sends string across network\n");
 }
 //commands
 void help(char* args, CommandLine* cli){
@@ -95,7 +98,7 @@ void version(char* args, CommandLine* cli){
     printf("==================================================\n");
     printf("\n");
     printf("                     (0v0)           \n");
-    printf("             AlbaOS: Ver: Beta - 0.95\n");
+    printf("             AlbaOS: Ver: Beta - 0.96\n");
     printf("\n");
     printf("==================================================\n");
     //print colours
@@ -229,6 +232,13 @@ void hardwareinfo(char* args, CommandLine* cli){
     printf("\n");
 }
 
+void senddata(char* args, CommandLine* cli){
+
+    uint32_t ValueIn = findarg(args, cli, 0);
+    char* StrValueIn = IntToString(ValueIn);
+    initnetwork(StrValueIn);
+    printf("\n");
+}
 
 
 
@@ -244,6 +254,7 @@ void hardwareinfo(char* args, CommandLine* cli){
 
 void test(char* args, CommandLine* cli){
 }
+
 
 
 
@@ -345,6 +356,7 @@ void CommandLine::hash_cli_init() {
     this->hash_add("pic",pic);
     this->hash_add("singsong",SingMeASong);
     this->hash_add("hardwareinfo",hardwareinfo);
+    this->hash_add("senddata",senddata);
 
 
 

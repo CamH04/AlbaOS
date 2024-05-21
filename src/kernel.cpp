@@ -15,7 +15,7 @@
 #include <multitasking.h>
 #include <cli.h>
 #include <drivers/pit.h>
-
+#include <drivers/amd_am79c973.h>
 
 // to enable the GUI uncomment this
 // #define GRAPHICSMODE
@@ -554,6 +554,12 @@ double Random(void) // betwwen 1 and 0
     return ((double) seed[stream] / MODULUS);
 }
 
+void initnetwork(char* string){
+
+    DriverManager drvManager;
+    amd_am79c973* eth0 = (amd_am79c973*)(drvManager.drivers[2]);
+    eth0->Send((uint8_t*)string, strlen(string));
+}
 
 typedef void (*constructor)();
 extern "C" constructor start_ctors;
@@ -660,7 +666,7 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     }
     printf("\v");
     //initialize command line hash table
-    printf("Welcome to the AlbaOS Command Line!\n");
+    printf("Welcome to the AlbaOS Command Line! (ACL) \n");
 	printf("use the help command (  help  ) if you need assistance ^v^\n");
     printf("press tab or use the clear command (  clear  ) to clear terminal @v@\n");
     kbhandler.cli = true;

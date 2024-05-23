@@ -1,9 +1,11 @@
 #include <cli.h>
 #include <owlart.h>
 #include <playstart.h>
+#include <multitasking.h>
 #include <drivers/audio.h>
 #include <cpuid.h>
 #include <drivers/amd_am79c973.h>
+#include <drivers/ata.h>
 
 
 using namespace albaos;
@@ -22,13 +24,9 @@ uint32_t StringToInt(char* args);
 char* IntToString(uint32_t num);
 uint16_t SetTextColor(bool set, uint16_t color);
 void initnetwork(char* string);
+uint16_t strlen(char* args);
 
 uint32_t findarg(char* args, CommandLine* cli, uint8_t ArgNum);
-
-
-
-
-
 
 void help_page2(){
     printf("=== Fun Commands: ===\n");
@@ -48,7 +46,9 @@ void help_page1(){
     printf("version : tells you the version of AlbaOS!\n");
     printf("hardwareinfo : tells you about your hardware\n");
     printf("senddata (text): sends string across network\n");
+    printf("debugata: debugging ata stuff (for devs)\n");
 }
+
 //commands
 void help(char* args, CommandLine* cli){
 
@@ -216,6 +216,7 @@ void SingMeASong(char* args, CommandLine* cli){
     switch (ValueIn){
         case 0:
             //song 1
+
             PS.song1();
             s.NoSound();
             break;
@@ -238,6 +239,15 @@ void senddata(char* args, CommandLine* cli){
     char* StrValueIn = IntToString(ValueIn);
     initnetwork(StrValueIn);
     printf("\n");
+}
+
+void debugata(char* args, CommandLine* cli){
+    printf("S-ATA primary master: \n");
+    AdvancedTechnologyAttachment ata0m(true, 0x1F0);
+    ata0m.Identify();
+    ata0m.Write28(0, (uint8_t*)"0v0 Test",9);
+    ata0m.Flush();
+    ata0m.Read28(0);
 }
 
 
@@ -357,7 +367,7 @@ void CommandLine::hash_cli_init() {
     this->hash_add("singsong",SingMeASong);
     this->hash_add("hardwareinfo",hardwareinfo);
     this->hash_add("senddata",senddata);
-
+    this->hash_add("debugata",debugata);
 
 
     this->hash_add("test",test);

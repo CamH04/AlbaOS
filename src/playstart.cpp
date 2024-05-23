@@ -36,7 +36,6 @@ void playstart::singasong(){
 }
 void playstart::song1() {
 
-	//at 135bpm, each beat is 444 ms
 	char notes1[] = {
 		'C', 'd', 'C', 'C', 'E', 'G', 'A', 'C', 'C', 'B'
 	};
@@ -46,14 +45,13 @@ void playstart::song1() {
 	};
 
 	common::uint16_t time1[] = {
-		3552, 1776, 3552, 1776, 1776, 1776, 1776, 1776, 1776, 1776
+		3552, 1776, 3552, 1776, 1776, 1776, 1776, 1776, 1776, 3552
 	};
     uint16_t songnotelength = 10;
+	printc('t');
     printf("Starting song: Beyond The Breeze\n");
-	for (common::uint8_t j = 0; j <= songnotelength - 1; j++){
-		printc(octave1[j]);
-		printf(" ,");
-	}
+	//TODO hard coded for now bcz im tired of trying to debug printc, ill come back to it
+	printf("It Goes Like This: C, d#, C, C, E, G, A, C, C, B");
 	printf("\n");
     for (common::uint8_t i = 0; i <= songnotelength - 1; i++) {
 

@@ -109,18 +109,19 @@ void printfHex(uint8_t);
 
 uint32_t amd_am79c973::HandleInterrupt(common::uint32_t esp)
 {
-    printf("INTERRUPT FROM AMD am79c973\n");
+    //printf("INTERRUPT FROM AMD am79c973\n");
 
     registerAddressPort.Write(0);
     uint32_t temp = registerDataPort.Read();
 
+    /*TO MANY PPRINTING BECAUSE OF GODDAMN UNI WIFI
     if((temp & 0x8000) == 0x8000) printf("=== AMD am79c973 ERROR === \n");
     if((temp & 0x2000) == 0x2000) printf("  : AMD am79c973 COLLISION ERROR\n");
     if((temp & 0x1000) == 0x1000) printf("  : AMD am79c973 MISSED FRAME\n");
     if((temp & 0x0800) == 0x0800) printf("  : AMD am79c973 MEMORY ERROR\n");
     if((temp & 0x0400) == 0x0400) Receive();
     if((temp & 0x0200) == 0x0200) printf("=== AMD am79c973 DATA SENT :) === \n");
-
+    */
     registerAddressPort.Write(0);
     registerDataPort.Write(temp);
     //last time was 2 insted of 1, caused imminent death

@@ -5,6 +5,8 @@
 #include <playstart.h>
 #include <hardwarecommunication/interrupts.h>
 #include <hardwarecommunication/pci.h>
+#include <drivers/amd_am79c973.h>
+#include <drivers/ata.h>
 #include <drivers/driver.h>
 #include <drivers/keyboard.h>
 #include <drivers/mouse.h>
@@ -15,7 +17,6 @@
 #include <multitasking.h>
 #include <cli.h>
 #include <drivers/pit.h>
-#include <drivers/amd_am79c973.h>
 
 // to enable the GUI uncomment this
 // #define GRAPHICSMODE
@@ -42,8 +43,10 @@ uint16_t SetTextColor(bool set, uint16_t color = 0x07) {
 
     return newColor;
 }
+
 //im sorry i had to use a global but its so printf and printc and access it
 static uint8_t x = 0, y = 0;
+
 void printf(char* str) {
 
     static bool cliCursor = false;
@@ -139,16 +142,12 @@ void printf(char* str) {
         }
     }
 }
-void printc(char c){
-    uint16_t attrib = SetTextColor(false);
-    volatile uint16_t* VideoMemory;
-    VideoMemory = (volatile uint16_t*)0xb8000 + (80*y+x);
-    *VideoMemory = c | (attrib << 8);
-    if (x >= 80) {
 
-            y++;
-            x = 0;
-    }
+void printc(char c){
+    uint16_t Ccolour = SetTextColor(false);
+    volatile uint16_t* CVideoMemory;
+    CVideoMemory = (volatile uint16_t *)0xb8000 + (y * 80 + x) ;
+    *CVideoMemory = c | (Ccolour << 8);
 }
 
 void printfhere(const char* str, uint8_t line) {
@@ -532,6 +531,13 @@ uint8_t argcount(char* args) {
 }
 
 
+void initnetwork(char* string){
+
+    DriverManager drvManager;
+    amd_am79c973* eth0 = (amd_am79c973*)(drvManager.drivers[2]);
+    eth0->Send((uint8_t*)string, strlen(string));
+}
+
 //RANDOM NUMBERS
 //god help me random numbers are somthing else
 //uses Lehmer random number generation
@@ -554,12 +560,6 @@ double Random(void) // betwwen 1 and 0
     return ((double) seed[stream] / MODULUS);
 }
 
-void initnetwork(char* string){
-
-    DriverManager drvManager;
-    amd_am79c973* eth0 = (amd_am79c973*)(drvManager.drivers[2]);
-    eth0->Send((uint8_t*)string, strlen(string));
-}
 
 typedef void (*constructor)();
 extern "C" constructor start_ctors;

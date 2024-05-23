@@ -18,6 +18,7 @@ objects = obj/loader.o \
           obj/hardwarecommunication/interrupts.o \
           obj/multitasking.o \
           obj/drivers/amd_am79c973.o \
+          obj/drivers/ata.o \
           obj/cpuid.o \
           obj/cli.o \
           obj/hardwarecommunication/pci.o \

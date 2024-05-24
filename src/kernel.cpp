@@ -18,9 +18,6 @@
 #include <cli.h>
 #include <drivers/pit.h>
 
-// to enable the GUI uncomment this
-// #define GRAPHICSMODE
-
 #define MODULUS    2147483647
 #define MULTIPLIER 48271
 #define CHECK      399268537
@@ -639,29 +636,17 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     InterruptManager interrupts(0x20, &gdt, &taskManager);
 
     printf("Hardware init, Stage 1\n");
-    #ifdef GRAPHICSMODE
-        Desktop desktop(320,200, 0x00,0x00,0xA8);
-    #endif
 
     DriverManager drvManager;
+    //this was a paint in the ass because i kept calling the objs insted of the pointers to the objs lol
+    CLIKeyboardEventHandler kbhandler(&gdt, &taskManager);
+    KeyboardDriver keyboard(&interrupts, &kbhandler);
+    drvManager.AddDriver(&keyboard);
 
-        #ifdef GRAPHICSMODE
-            KeyboardDriver keyboard(&interrupts, &desktop);
-        #else
-            //this was a paint in the ass because i kept calling the objs insted of the pointers to the objs lol
-            CLIKeyboardEventHandler kbhandler(&gdt, &taskManager);
-            KeyboardDriver keyboard(&interrupts, &kbhandler);
-        #endif
-        drvManager.AddDriver(&keyboard);
+    Desktop desktop(320,200, 0x00,0x00,0xA8);
 
-
-        #ifdef GRAPHICSMODE
-            MouseDriver mouse(&interrupts, &desktop);
-        #else
-            MouseToConsole mousehandler;
-            MouseDriver mouse(&interrupts, &mousehandler);
-        #endif
-        drvManager.AddDriver(&mouse);
+	MouseDriver mouse(&interrupts, &desktop);
+    drvManager.AddDriver(&mouse);
 
         //i forgot to add this here and wondered why it wasnt working, the blight of man
         PeripheralComponentInterconnectController PCIController;
@@ -675,14 +660,6 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
 
     //please dont spurt out 1billion GPF errors
     printf("Hardware init, Stage 3\n");
-
-    #ifdef GRAPHICSMODE
-        vga.SetMode(320,200,8);
-        Window win1(&desktop, 10,10,20,20, 0xA8,0x00,0x00);
-        desktop.AddChild(&win1);
-        Window win2(&desktop, 40,15,30,30, 0x00,0xA8,0x00);
-        desktop.AddChild(&win2);
-    #endif
 
     interrupts.Activate();
     printf("Welcome To AlbaOS!");
@@ -706,10 +683,7 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     printf("press tab or use the clear command (  clear  ) to clear terminal @v@\n");
     kbhandler.cli = true;
 	kbhandler.hash_cli_init();
-
-
-
-	while (keyboard.keyHex != 0x5b) { //windows key
+	while (keyboard.keyHex != 0x99) { //esc
 
 		kbhandler.cli = true;
 
@@ -719,12 +693,19 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
 		}
 	}
 
-    while(1)
+	//now in graphics mode
+	vga.SetMode(320, 200, 8);
+
+
+	Window win1(&desktop, 10,10,20,20, 0xA8,0x00,0x00);
+	desktop.AddChild(&win1);
+
+	Window win2(&desktop, 40,15,30,30, 0x00,0xA8,0x00);
+	desktop.AddChild(&win2);
+
+    while(true)
     {
-        //desktop gui RIP
-        #ifdef GRAPHICSMODE
-            desktop.Draw(&vga);
-        #endif
+        desktop.Draw(&vga);
     }
 }
 

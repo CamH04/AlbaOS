@@ -26,8 +26,19 @@ uint16_t SetTextColor(bool set, uint16_t color);
 void initnetwork(char* string);
 uint16_t strlen(char* args);
 
+bool isGUIOpen;
+
 uint32_t findarg(char* args, CommandLine* cli, uint8_t ArgNum);
 
+void help_page1(){
+    printf("=== Useful Commands: ===\n");
+    printf("help number(0 - 2): list of commands\n");
+    printf("random: will generate a random number for you\n");
+    printf("version : tells you the version of AlbaOS!\n");
+    printf("hardwareinfo : tells you about your hardware\n");
+    printf("senddata (text): sends string across network\n");
+    printf("opengui: opens gui\n");
+}
 void help_page2(){
     printf("=== Fun Commands: ===\n");
     printf("owl number(0-8) : prints owl art!\n");
@@ -39,13 +50,8 @@ void help_page2(){
     printf("pic: will print a coloured picture for you! (its very underwhelming)\n");
     printf("singsong number(0-idkyet): Dusty will sing you a song!\n");
 }
-void help_page1(){
-    printf("=== Useful Commands: ===\n");
-    printf("help number(0 - 2): list of commands\n");
-    printf("random: will generate a random number for you\n");
-    printf("version : tells you the version of AlbaOS!\n");
-    printf("hardwareinfo : tells you about your hardware\n");
-    printf("senddata (text): sends string across network\n");
+void help_page3(){
+    printf("=== Dev/Debug Commands: ===\n");
     printf("debugata: debugging ata stuff (for devs)\n");
 }
 
@@ -62,6 +68,9 @@ void help(char* args, CommandLine* cli){
             break;
         case 2:
             help_page2();
+            break;
+        case 3:
+            help_page3();
             break;
         default:
             printf("we dont have that many pages -v-");
@@ -253,6 +262,16 @@ void debugata(char* args, CommandLine* cli){
     ata0m.Read28(0);
 }
 
+void opengui(char* args, CommandLine* cli){
+    isGUIOpen = true;
+}
+
+
+
+
+
+
+
 
 
 
@@ -371,6 +390,11 @@ void CommandLine::hash_cli_init() {
     this->hash_add("hardwareinfo",hardwareinfo);
     this->hash_add("senddata",senddata);
     this->hash_add("debugata",debugata);
+    this->hash_add("opengui",opengui);
+
+
+
+
 
 
     this->hash_add("test",test);

@@ -151,7 +151,7 @@ uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
             //backspace
             case 0x0E: handler->OnKeyDown('\b'); break;
             //esc
-            case 0x01: handler->OnKeyDown('\x1b'); break;
+            case 0x01: handler->OnKeyDown('\x1b'); keyHex=0x99; break;
             //right ctrl
             case 0x1D: handler->ctrl = true; break;
             case 0x9D: handler->ctrl = false; break;

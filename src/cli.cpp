@@ -26,7 +26,6 @@ uint16_t SetTextColor(bool set, uint16_t color);
 void initnetwork(char* string);
 uint16_t strlen(char* args);
 
-bool isGUIOpen;
 
 uint32_t findarg(char* args, CommandLine* cli, uint8_t ArgNum);
 
@@ -263,7 +262,7 @@ void debugata(char* args, CommandLine* cli){
 }
 
 void opengui(char* args, CommandLine* cli){
-    isGUIOpen = true;
+    printf("press esc to enter Gui 0v0\n");
 }
 
 

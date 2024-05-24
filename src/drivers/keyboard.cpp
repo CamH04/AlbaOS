@@ -8,6 +8,8 @@ using namespace albaos::hardwarecommunication;
 // when press key , get 2 interrupts (one for key press, one for key releace. where the first bit is flipped)
 KeyboardEventHandler::KeyboardEventHandler()
 {
+    //for cool chars :)
+	NumCharCode = 0;
 }
 
 void KeyboardEventHandler::OnKeyDown(char)

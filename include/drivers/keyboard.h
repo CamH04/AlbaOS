@@ -20,6 +20,7 @@ namespace albaos {
 				bool caps;
 
 				bool cli;
+				albaos::common::uint8_t NumCharCode;
 
 			public:
 				KeyboardEventHandler();

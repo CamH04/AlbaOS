@@ -105,8 +105,11 @@ void version(char* args, CommandLine* cli){
     int numOfAvalibeCol = 16;
     for (int i = 0; i < numOfAvalibeCol; i++)
     {
+        char* ch = " ";
+        ch[0] = 2;
+
         SetTextColor(true,i);
-        printf("!");
+        printf(ch);
     }
     SetTextColor(true,7);//back to white text
     printf("\n");

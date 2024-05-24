@@ -302,6 +302,25 @@ void printfHex32(uint32_t key)
     printfHex( key & 0xFF);
 }
 
+//for cool chars :)
+void AltCharCode(uint8_t c, uint8_t &NumCharCode) {
+
+    static uint8_t count = 0;
+    bool bitShift = (count % 2 == 0);
+    count++;
+
+    if (c <= '9' && c >= '0') {
+
+        NumCharCode += (c - '0');
+    }
+
+    if (c <= 'f' && c >= 'a') {
+
+        NumCharCode += (c - 'a') + 10;
+    }
+
+    NumCharCode <<= (4 * bitShift);
+}
 
 //"put Keybaord in command line pls" the class
 class CLIKeyboardEventHandler : public KeyboardEventHandler, public CommandLine {
@@ -327,6 +346,22 @@ public:
             this->pressed = true;
             this->keyChar = c;
 
+            /*
+            //for all the cool alt chars
+            if (this->alt) {
+
+                AltCharCode(c, NumCharCode);
+                return;
+            }
+
+            if (this->alt == false && this->NumCharCode != 0) {
+
+                c = this->NumCharCode;
+                keyChar = this->NumCharCode;
+            }
+            this->NumCharCode = 0;
+            */
+            //the whole ass CLI
             if (this->cliMode == 0) {
 
                 char* foo = " \t";

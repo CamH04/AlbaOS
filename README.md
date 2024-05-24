@@ -61,6 +61,7 @@ sudo apt-get install xorriso
 + heap with malloc
 + networking
 + hardware identification
++ ata hard disk read, write and identification
 
 
 

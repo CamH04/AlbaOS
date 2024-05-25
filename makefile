@@ -21,6 +21,7 @@ objects = obj/loader.o \
           obj/drivers/ata.o \
           obj/cpuid.o \
           obj/cli.o \
+          obj/syscalls.o \
           obj/hardwarecommunication/pci.o \
           obj/drivers/keyboard.o \
           obj/drivers/mouse.o \

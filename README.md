@@ -62,6 +62,7 @@ sudo apt-get install xorriso
 + networking
 + hardware identification
 + ata hard disk read, write and identification
++ syscalls
 
 
 

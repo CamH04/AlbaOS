@@ -31,12 +31,12 @@ uint32_t findarg(char* args, CommandLine* cli, uint8_t ArgNum);
 
 void help_page1(){
     printf("=== Useful Commands: ===\n");
-    printf("help number(0 - 2): list of commands\n");
+    printf("help number(0 - 3): list of commands\n");
     printf("random: will generate a random number for you\n");
     printf("version : tells you the version of AlbaOS!\n");
     printf("hardwareinfo : tells you about your hardware\n");
     printf("senddata (text): sends string across network\n");
-    printf("opengui: opens gui\n");
+    printf("opengui: gives key to open gui (its esc)\n");
 }
 void help_page2(){
     printf("=== Fun Commands: ===\n");
@@ -259,7 +259,7 @@ void debugata(char* args, CommandLine* cli){
     ata0m.Identify();
     ata0m.Write28(0, (uint8_t*)"0v0 Test",9);
     ata0m.Flush();
-    ata0m.Read28(0);
+    ata0m.Read28(0, 9);
 }
 
 void opengui(char* args, CommandLine* cli){

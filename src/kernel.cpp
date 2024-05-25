@@ -3,6 +3,7 @@
 #include <memorymanagement.h>
 #include <owlart.h>
 #include <playstart.h>
+#include <syscalls.h>
 #include <hardwarecommunication/interrupts.h>
 #include <hardwarecommunication/pci.h>
 #include <drivers/amd_am79c973.h>
@@ -634,6 +635,7 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     //old multitasking debugging stuff
     //Task taskexample(&gdt, functionForTask);
     InterruptManager interrupts(0x20, &gdt, &taskManager);
+    SyscallHandler syscalls(&interrupts, 0x80);
 
     printf("Hardware init, Stage 1\n");
 

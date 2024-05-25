@@ -52,6 +52,7 @@ void help_page2(){
 void help_page3(){
     printf("=== Dev/Debug Commands: ===\n");
     printf("debugata: debugging ata stuff (for devs)\n");
+    printf("emojiprint: prints emojis and the offset code (for devs)\n");
 }
 
 //commands
@@ -265,7 +266,25 @@ void opengui(char* args, CommandLine* cli){
     printf("press esc to enter Gui 0v0\n");
 }
 
-
+void emojiprint(char* args, CommandLine* cli){
+    char* ch = " ";
+    int chamount = 256;
+    for(int i = 11; i <= chamount; i++){
+        ch[0] = i;
+        printf(IntToString(i));
+        printf("-");
+        printf(ch);
+        printf(",");
+    }
+    for(int i = 1; i < 11; i++){
+        ch[0] = i;
+        printf(IntToString(i));
+        printf("-");
+        printf(ch);
+        printf(",");
+    }
+    printf("\n");
+}
 
 
 
@@ -390,8 +409,7 @@ void CommandLine::hash_cli_init() {
     this->hash_add("senddata",senddata);
     this->hash_add("debugata",debugata);
     this->hash_add("opengui",opengui);
-
-
+    this->hash_add("emojiprint",emojiprint);
 
 
 

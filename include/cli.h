@@ -2,6 +2,8 @@
 #define __ALBAOS__CLI_H
 
 #include <common/types.h>
+#include <drivers/ata.h>
+#include <filesys/ofs.h>
 #include <multitasking.h>
 #include <gdt.h>
 
@@ -23,12 +25,19 @@ namespace albaos {
             common::uint16_t cmdIndex = 0;;
 
 
-            GlobalDescriptorTable* cli_gdt;
-            TaskManager* cli_tm;
+            GlobalDescriptorTable* gdt;
+            TaskManager* tm;
+            drivers::AdvancedTechnologyAttachment* ata0m;
 
             common::uint16_t cliMode = 0;
 
-                        char* commandStr;
+            public:
+                CommandLine(GlobalDescriptorTable* gdt,
+                        TaskManager* tm,
+                        drivers::AdvancedTechnologyAttachment* ata0m);
+                ~CommandLine();
+
+            char* commandStr;
             char* command(char *cmd, common::uint8_t length);
 
             void hash_add(char* cmd, void func(char*, CommandLine*));

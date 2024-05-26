@@ -5,7 +5,7 @@
 #include <drivers/audio.h>
 #include <cpuid.h>
 #include <drivers/amd_am79c973.h>
-#include <drivers/ata.h>
+#include <filesys/ofs.h>
 
 
 using namespace albaos;
@@ -30,6 +30,10 @@ uint16_t strlen(char* args);
 uint32_t findarg(char* args, CommandLine* cli, uint8_t ArgNum);
 
 void help_page1(){
+    printf("=== Keybinds: ===\n");
+    printf("ctrl+e : enter you into file editing nest (program)\n");
+    printf("ctrl+c : return to CLI \n");
+    printf("\n");
     printf("=== Useful Commands: ===\n");
     printf("help number(0 - 3): list of commands\n");
     printf("random: will generate a random number for you\n");
@@ -254,12 +258,15 @@ void senddata(char* args, CommandLine* cli){
 }
 
 void debugata(char* args, CommandLine* cli){
+    printf("this command has been archived due to it breaking the partition table\n");
+    /*
     printf("S-ATA primary master: \n");
     AdvancedTechnologyAttachment ata0m(true, 0x1F0);
     ata0m.Identify();
     ata0m.Write28(0, (uint8_t*)"0v0 Test",9);
     ata0m.Flush();
     ata0m.Read28(0, 9);
+    */
 }
 
 void opengui(char* args, CommandLine* cli){
@@ -293,28 +300,11 @@ void emojiprint(char* args, CommandLine* cli){
 
 
 
-
-
-
-
-
-
-
-
-
 void test(char* args, CommandLine* cli){
 }
 
 
 
-
-
-//hashing stuff
-void CommandLine::getTM(GlobalDescriptorTable* gdt, TaskManager* tm) {
-
-    this->cli_gdt = gdt;
-    this->cli_tm = tm;
-}
 
 uint32_t Trollfnv1a(char* str) {
 
@@ -352,6 +342,17 @@ uint32_t findarg(char* args, CommandLine* cli, uint8_t ArgNum){
         }
 }
 
+CommandLine::CommandLine(GlobalDescriptorTable* gdt,
+			TaskManager* tm,
+			AdvancedTechnologyAttachment* ata0m) {
+
+    this->gdt = gdt;
+    this->tm = tm;
+    this->ata0m = ata0m;
+}
+
+CommandLine::~CommandLine() {
+}
 
 void CommandLine::hash_add(char* cmd, void func(char*, CommandLine* cli)) {
 

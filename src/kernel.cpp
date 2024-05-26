@@ -13,11 +13,13 @@
 #include <drivers/mouse.h>
 #include <drivers/audio.h>
 #include <drivers/vga.h>
+#include <filesys/ofs.h>
 #include <gui/desktop.h>
 #include <gui/window.h>
 #include <multitasking.h>
 #include <cli.h>
 #include <drivers/pit.h>
+#include <nests/filenest.h>
 
 #define MODULUS    2147483647
 #define MULTIPLIER 48271
@@ -205,6 +207,84 @@ void cprintf(char* str, uint8_t forecolor, uint8_t backcolor, uint8_t x, uint8_t
     }
 }
 
+// UI  Prints =============================================
+void putcharTUI(unsigned char ch, unsigned char forecolor,
+        unsigned char backcolor, uint8_t x, uint8_t y) {
+
+    uint16_t attrib = (backcolor << 4) | (forecolor & 0x0f);
+    volatile uint16_t* vidmem;
+    vidmem = (volatile uint16_t*)0xb8000 + (80*y+x);
+    *vidmem = ch | (attrib << 8);
+}
+
+void TUI(uint8_t forecolor, uint8_t backcolor,
+        uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2,
+        bool shadow) {
+
+    for (uint8_t y = 0; y < 25; y++) {
+
+        for (uint8_t x = 0; x < 80; x++) {
+
+            putcharTUI(0xff, 0x00, backcolor, x, y);
+        }
+    }
+
+    uint8_t resetX = x1;
+
+    while (y1 < y2) {
+
+        while (x1 < x2) {
+
+            putcharTUI(0xff, 0x00, forecolor, x1, y1);
+            x1++;
+        }
+        y1++;
+
+        //side shadow
+        if (shadow) {
+
+            putcharTUI(0xff, 0x00, 0x00, x1, y1);
+        }
+        x1 = resetX;
+    }
+
+    //bottom shadow
+    if (shadow) {
+
+        for (resetX++; resetX < (x2 + 1); resetX++) {
+
+            putcharTUI(0xff, 0x00, 0x00, resetX, y1);
+        }
+    }
+}
+
+void printfTUI(char* str, uint8_t forecolor, uint8_t backcolor, uint8_t x, uint8_t y) {
+
+    for (int i = 0; str[i] != '\0'; i++) {
+
+        if (str[i] == '\n') {
+
+            y++;
+            x = 0;
+        } else {
+            putcharTUI(str[i], forecolor, backcolor, x, y);
+            x++;
+        }
+
+        if (x >= 80) {
+
+            y++;
+            x = 0;
+        }
+
+        if (y >= 25) {
+
+            y = 0;
+        }
+    }
+}
+
+//==========================
 void printfHex(uint8_t key)
 {
     char* foo = "00";
@@ -300,6 +380,24 @@ void printfHex32(uint32_t key)
     printfHex( key & 0xFF);
 }
 
+
+void memWrite(uint32_t memory, uint32_t inputVal) {
+
+	volatile uint32_t* value;
+	value = (volatile uint32_t*)memory;
+	*value = inputVal;
+}
+
+uint32_t memRead(uint32_t memory) {
+
+	volatile uint32_t* value;
+	value = (volatile uint32_t*)memory;
+
+	return *value;
+}
+
+
+
 //for cool chars :)
 void AltCharCode(uint8_t c, uint8_t &NumCharCode) {
 
@@ -324,41 +422,57 @@ void AltCharCode(uint8_t c, uint8_t &NumCharCode) {
 class CLIKeyboardEventHandler : public KeyboardEventHandler, public CommandLine {
 public:
 
-        uint8_t index = 0;
-		char input[256];
+    uint8_t index = 0;
+    char input[256];
 
-		char keyChar;
-		bool pressed;
+    char keyChar;
+    bool pressed;
 
-		char lastCmd[256];
+    char lastCmd[256];
 
 
 public:
-        CLIKeyboardEventHandler(GlobalDescriptorTable* gdt,TaskManager* tm) {
-            this->getTM(gdt, tm);
-            this->cli = true;
+    CLIKeyboardEventHandler(GlobalDescriptorTable* gdt, TaskManager* tm, AdvancedTechnologyAttachment* ata0m): CommandLine(gdt, tm, ata0m) {
+
+        this->cli = true;
+    }
+
+    void nestSelect(uint16_t nest, bool pressed, unsigned char ch,
+            bool ctrl, bool type) {
+
+        switch (this->cliMode) {
+            //file edit program
+            case 1:
+                if (type) { fileMain(pressed, ch, ctrl); }
+                break;
+            default:
+                break;
         }
+    }
 
         void OnKeyDown(char c) {
 
             this->pressed = true;
             this->keyChar = c;
 
-            /*
-            //for all the cool alt chars
-            if (this->alt) {
+            if (this->ctrl) {
 
-                AltCharCode(c, NumCharCode);
-                return;
-            }
+				switch (c) {
+					case 'c':
+                        // cli
+						this->cliMode = 0;
+						return;
+                        break;
+					case 'e':
+                        // edit file
+						this->cliMode = 1;
+						nestSet(this->cliMode);
+						break;
+					default:
+						break;
+				}
+			}
 
-            if (this->alt == false && this->NumCharCode != 0) {
-
-                c = this->NumCharCode;
-                keyChar = this->NumCharCode;
-            }
-            this->NumCharCode = 0;
-            */
             //the whole ass CLI
             if (this->cliMode == 0) {
 
@@ -454,6 +568,36 @@ public:
                 input[i] = 0x00;
             }
         }
+
+        void nestSet(uint8_t nest) {
+
+			//reset nest before entering next one
+			this->resetMode();
+			this->cliMode = nest;
+
+			switch (this->cliMode) {
+				case 1:
+					//file editor
+					fileTUI();
+					fileMain(0, 'c', 1);
+					break;
+				default:
+					printf("Mode not found.\n");
+					break;
+			}
+		}
+		void resetMode() {
+			printf("\v");
+			switch (this->cliMode) {
+				case 1:
+					fileMain(0, 'c', 1);
+					printf("\nExiting file edit nest...\n\n");
+					break;
+				default:
+					break;
+			}
+			this->cliMode = 0;
+		}
 
 
 };
@@ -607,43 +751,23 @@ extern "C" void callConstructors()
 extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot_magic*/)
 {
 
-    GlobalDescriptorTable gdt;
-
-    //heap and malloc =====================================================
-    uint32_t* memupper = (uint32_t*)(((size_t)multiboot_structure) + 8);
-    //starts at 10mb
-    size_t heap = 10*1024*1024;
-    //memupper is at an offset of 8 in the multiboot information structure in GNU
-    MemoryManager memoryManager(heap, (*memupper)*1024 - heap - 10*1024);
-
-    printf("heap: 0x");
-    printfHex((heap >> 24) & 0xFF);
-    printfHex((heap >> 16) & 0xFF);
-    printfHex((heap >> 8 ) & 0xFF);
-    printfHex((heap      ) & 0xFF);
-
-    void* allocated = memoryManager.malloc(1024);
-    printf("\nallocated: 0x");
-    printfHex(((size_t)allocated >> 24) & 0xFF);
-    printfHex(((size_t)allocated >> 16) & 0xFF);
-    printfHex(((size_t)allocated >> 8 ) & 0xFF);
-    printfHex(((size_t)allocated      ) & 0xFF);
-    printf("\n");
-    //end of testing heap and malloc =====================================================
+    GlobalDescriptorTable* gdt;
 
     TaskManager taskManager;
     //old multitasking debugging stuff
     //Task taskexample(&gdt, functionForTask);
-    InterruptManager interrupts(0x20, &gdt, &taskManager);
+    InterruptManager interrupts(0x20, gdt, &taskManager);
     SyscallHandler syscalls(&interrupts, 0x80);
 
     printf("Hardware init, Stage 1\n");
 
     DriverManager drvManager;
-    //this was a paint in the ass because i kept calling the objs insted of the pointers to the objs lol
-    CLIKeyboardEventHandler kbhandler(&gdt, &taskManager);
-    KeyboardDriver keyboard(&interrupts, &kbhandler);
-    drvManager.AddDriver(&keyboard);
+    AdvancedTechnologyAttachment ata0m(0x1F0, true);
+	CLIKeyboardEventHandler kbhandler(gdt, &taskManager, &ata0m);
+	KeyboardDriver keyboard(&interrupts, &kbhandler);
+
+
+	drvManager.AddDriver(&keyboard);
 
     Desktop desktop(320,200, 0xA8,0x00,0x00);
 

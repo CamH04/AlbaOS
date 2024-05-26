@@ -170,10 +170,18 @@ uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
             //right arrow
             case 0x4D: handler->OnKeyDown('\xff'); break;
             //shift keys
-            case 0x2A: handler->shift = true; break;
-            case 0x36: handler->shift = true; break;
-            case 0xAA: handler->shift = false; break;
-            case 0xB6: handler->shift = false; break;
+            case 0x2a:
+                handler->shift = true;
+                break;
+            case 0x36:
+                handler->shift = true;
+                break;
+            case 0xaa:
+                handler->shift = false;
+                break;
+            case 0xb6:
+                handler->shift = false;
+                break;
 
             //strange keys
             //pintscrn

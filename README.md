@@ -62,8 +62,9 @@ sudo apt-get install xorriso
 + networking
 + hardware identification
 + ata hard disk read, write and identification
++ ofs file system 
 + syscalls
-
++ Programs (Nests)
 
 
 ## Some Ascii art of my owls: 

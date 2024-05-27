@@ -298,10 +298,47 @@ void emojiprint(char* args, CommandLine* cli){
 
 
 
-
-
 void test(char* args, CommandLine* cli){
+
+
 }
+
+//TODO finish terminal game
+int attemptnum = 4;
+void terminalgame(){
+
+    printf("Alba Software TERMLINK PROTOCOL\n");
+    printf("ENTER PASSWORD NOW\n");
+    printf("ATTEMPT(S) LEFT: ");
+    printf(IntToString(attemptnum));
+    printf("\n");
+    printf("\n");
+
+    printf("0xF4F0 VIRAL 0F5BC MINES\n");
+    printf("0xF4FC DARED 0F5C8 LIKES\n");
+    printf("0xF508 WIRES 0F5D4 PARTS\n");
+    printf("0xF4F0 LINES 0F5BC HARAM\n");
+    printf("0xF520 LIVES 0xF5E LINED\n");
+    printf("0xF52C SORTS 0xF5F WARNS\n");
+    printf("0xF538 AGREE 0xF60 THREW\n");
+    printf("0xF544 FARMS 0xF61 SIDES\n");
+}
+void password(char* args, CommandLine* cli){
+    uint32_t ValueIn = findarg(args, cli, 0);
+    char* guess = IntToString(ValueIn);
+
+    int n;
+    int y;
+    while(attemptnum > 0){
+
+    }
+}
+
+
+
+
+
+
 
 
 

@@ -2,7 +2,7 @@
 AlbaOS is a 32 bit operating system developed by me from scratch as a hobby <3
 
 
-![Capture](https://github.com/CamH04/AlbaOS/assets/104907445/1fe59130-dfef-43ba-aa56-82f03429d57f)
+![AlbaOsSplash](THUMB.JPG "Alba Os Splash Screen")
 
 
 ## How To Run AlbaOS On A Virtual Machine
@@ -11,7 +11,7 @@ AlbaOS is a 32 bit operating system developed by me from scratch as a hobby <3
 
 + In your virtual machine select the boot / installer disc file as albaos.iso (in this example im using VMware workstation)
 
-![uygArES](https://github.com/CamH04/AlbaOS/assets/104907445/1d880cb5-9830-4ff1-b29e-3e346baa0a31)
+![vmwarescreenshot](VMWARE.png "Setup Screenshot in vmware")
 
 
 + Run the virtual machine!

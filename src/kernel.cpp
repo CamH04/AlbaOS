@@ -85,7 +85,7 @@ void printf(char* str) {
                     if (x < 3) { x = 3; }
 
                     VideoMemory = (volatile uint16_t*)0xb8000 + (80*y);
-                    *VideoMemory = '>' | 0xc00;
+                    *VideoMemory = '>' | 0xd00;
                     VideoMemory++; *VideoMemory = ':' | 0xf00;
                     VideoMemory++; *VideoMemory = ' ';
                 } else {
@@ -589,9 +589,11 @@ public:
 			printf("\v");
 			switch (this->cliMode) {
 				case 1:
+                    printf("\v");
 					printf("Exiting file edit nest\n");
 					break;
 				default:
+                    printf("\v");
 					break;
 			}
 			this->cliMode = 0;

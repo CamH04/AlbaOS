@@ -14,6 +14,7 @@ namespace albaos {
 
 		class KeyboardEventHandler {
 			public:
+				common::uint8_t keyValue;
 				bool ctrl;
 				bool alt;
 				bool shift;
@@ -27,6 +28,8 @@ namespace albaos {
 				virtual void OnKeyDown(char);
 				virtual void OnKeyUp(char);
 				virtual void modeSet(albaos::common::uint8_t);
+				virtual void resetMode(albaos::common::uint8_t);
+
 		};
 
 

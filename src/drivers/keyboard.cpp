@@ -8,8 +8,6 @@ using namespace albaos::hardwarecommunication;
 // when press key , get 2 interrupts (one for key press, one for key releace. where the first bit is flipped)
 KeyboardEventHandler::KeyboardEventHandler()
 {
-    //for cool chars :)
-	NumCharCode = 0;
 }
 
 void KeyboardEventHandler::OnKeyDown(char)
@@ -21,6 +19,10 @@ void KeyboardEventHandler::OnKeyUp(char)
 {
 }
 
+
+void KeyboardEventHandler::resetMode(uint8_t)
+{
+}
 
 void KeyboardEventHandler::modeSet(uint8_t)
 {
@@ -42,34 +44,40 @@ KeyboardDriver::~KeyboardDriver()
 {
 }
 
-void printf(char*);
-void printfHex(uint8_t);
-
 void KeyboardDriver::Activate()
 {
-    while(commandport.Read() & 0x1)
+    while(commandport.Read() & 0x1){
         dataport.Read();
-    commandport.Write(0xae); // activate
-    commandport.Write(0x20); //read controller command byte
-    uint8_t status = (dataport.Read() | 1) & ~0x10;
-    commandport.Write(0x60); // set controller command byte
-    dataport.Write(status);
-    dataport.Write(0xf4);
+        commandport.Write(0xAE); // activate
+        commandport.Write(0x20); //read controller command byte (getting current state)
+
+        uint8_t status = (dataport.Read() | 1) & ~0x10;
+
+        commandport.Write(0x60); // set controller command byte
+        dataport.Write(status);
+
+        dataport.Write(0xF4);
+    }
 }
+
+void printf(char*);
+void printfHex(uint8_t);
 
 uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
 {
     uint8_t key = dataport.Read();
+    this->handler->keyValue = key;
 
-    if(handler == 0)
+    if(handler == 0){
         return esp;
-    //modes	MAY HAVE TO DEBUG LATER HELP ME I HAVE A FEELING THIS WILL BE A PAIN IN THE ARSE
+    }
     static uint8_t mode = 0;
     //starts the cli keyboard stuff
     if (handler->cli) {
 
         printf("\t");
     }
+
     //the fun stuff now
     if(key < 0x80)
     {
@@ -151,7 +159,7 @@ uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
             //backspace
             case 0x0E: handler->OnKeyDown('\b'); break;
             //esc
-            case 0x01: handler->OnKeyDown('\x1b'); keyHex=0x99; break;
+            case 0x01: handler->OnKeyDown('\x1b'); break;
             //right ctrl
             case 0x1D: handler->ctrl = true; break;
             case 0x9D: handler->ctrl = false; break;

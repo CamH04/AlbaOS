@@ -76,6 +76,8 @@ uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
     if (handler->cli) {
         printf("\t");
     }
+        //if you look at prev commits you will see a if key > 0x80 here, that was whats been breaking the keyboard drivers for months I AM SO HAPPY ITS FIXED
+        //IVE BEEN LOOSING MY MIND OVER THIS FOR SO LOOOOOONNNNNGGG NOW ITS DONE!!!!!!!!!!!!!!!!!!!!
         switch(key)
         {
             //keycodes do not make sense

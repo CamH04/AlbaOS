@@ -40,14 +40,14 @@ void help_page1(){
     printf("version : tells you the version of AlbaOS!\n");
     printf("hardwareinfo : tells you about your hardware\n");
     printf("senddata (text): sends string across network\n");
-    printf("opengui: gives key to open gui (its esc)\n");
+    printf("opengui: gives key to open gui (its esc) WARNING: IF YOU HAVE EPILEPSY DONT USE THE GUI, TRUST ME\n");
+    printf("clear : clears the screen (you can also press tab)\n");
 }
 void help_page2(){
     printf("=== Fun Commands: ===\n");
     printf("owl number(0-8) : prints owl art!\n");
     printf("hello : starts the conversation with Dusty\n");
     printf("speak : Dusty will speak\n");
-    printf("clear : clears the screen (you can also press tab)\n");
     printf("changetext number(0-16): changes text colour\n");
     printf("textnum: gives numbers for text colours\n");
     printf("pic: will print a coloured picture for you! (its very underwhelming)\n");

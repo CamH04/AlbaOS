@@ -589,14 +589,13 @@ public:
 			printf("\v");
 			switch (this->cliMode) {
 				case 1:
-					printf("\v");
-                    resetCmd();
 					printf("Exiting file edit nest\n");
 					break;
 				default:
 					break;
 			}
 			this->cliMode = 0;
+            printf("\v");
 		}
 
 

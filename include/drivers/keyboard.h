@@ -26,7 +26,7 @@ namespace albaos {
 			public:
 				KeyboardEventHandler();
 				virtual void OnKeyDown(char);
-				virtual void OnKeyUp(char);
+				virtual void OnKeyUp();
 				virtual void modeSet(albaos::common::uint8_t);
 				virtual void resetMode(albaos::common::uint8_t);
 

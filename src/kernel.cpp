@@ -456,7 +456,6 @@ public:
             this->keyChar = c;
 
             if (this->ctrl) {
-
 				switch (c) {
 					case 'c':
                         // cli
@@ -590,8 +589,9 @@ public:
 			printf("\v");
 			switch (this->cliMode) {
 				case 1:
-					fileMain(0, 'c', 1);
-					printf("\nExiting file edit nest...\n\n");
+					printf("\v");
+                    resetCmd();
+					printf("Exiting file edit nest\n");
 					break;
 				default:
 					break;

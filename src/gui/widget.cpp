@@ -153,12 +153,8 @@ void CompositeWidget::OnMouseMove(int32_t oldx, int32_t oldy, int32_t newx, int3
 
 void CompositeWidget::OnKeyDown(char str)
 {
-    if(focussedChild != 0)
-        focussedChild->OnKeyDown(str);
 }
 
 void CompositeWidget::OnKeyUp(char str)
 {
-    if(focussedChild != 0)
-        focussedChild->OnKeyUp(str);
 }

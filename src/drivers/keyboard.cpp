@@ -15,7 +15,7 @@ void KeyboardEventHandler::OnKeyDown(char)
 }
 
 // only recognises key release for interrupts
-void KeyboardEventHandler::OnKeyUp(char)
+void KeyboardEventHandler::OnKeyUp()
 {
 }
 
@@ -74,7 +74,6 @@ uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
     static uint8_t mode = 0;
     //starts the cli keyboard stuff
     if (handler->cli) {
-
         printf("\t");
     }
 
@@ -90,19 +89,19 @@ uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
             case 0x29: if (handler->shift ^ handler->caps) { handler->OnKeyDown('¬'); } else { handler->OnKeyDown('`'); } break;
 
             //top numbers
-            case 0x02: if (handler->shift ^ handler->caps) { handler->OnKeyDown('!'); } else { handler->OnKeyDown('1'); } break;
-            case 0x03: if (handler->shift ^ handler->caps) { handler->OnKeyDown('"'); } else { handler->OnKeyDown('2'); } break;
-            case 0x04: if (handler->shift ^ handler->caps) { handler->OnKeyDown('£'); } else { handler->OnKeyDown('3'); } break;
-            case 0x05: if (handler->shift ^ handler->caps) { handler->OnKeyDown('$'); } else { handler->OnKeyDown('4'); } break;
-            case 0x06: if (handler->shift ^ handler->caps) { handler->OnKeyDown('%'); } else { handler->OnKeyDown('5'); } break;
-            case 0x07: if (handler->shift ^ handler->caps) { handler->OnKeyDown('^'); } else { handler->OnKeyDown('6'); } break;
-            case 0x08: if (handler->shift ^ handler->caps) { handler->OnKeyDown('&'); } else { handler->OnKeyDown('7'); } break;
-            case 0x09: if (handler->shift ^ handler->caps) { handler->OnKeyDown('*'); } else { handler->OnKeyDown('8'); } break;
-            case 0x0A: if (handler->shift ^ handler->caps) { handler->OnKeyDown('('); } else { handler->OnKeyDown('9'); } break;
-            case 0x0B: if (handler->shift ^ handler->caps) { handler->OnKeyDown(')'); } else { handler->OnKeyDown('0'); } break;
+            case 0x02: if (handler->shift) { handler->OnKeyDown('!'); } else { handler->OnKeyDown('1'); } break;
+            case 0x03: if (handler->shift) { handler->OnKeyDown('"'); } else { handler->OnKeyDown('2'); } break;
+            case 0x04: if (handler->shift) { handler->OnKeyDown('£'); } else { handler->OnKeyDown('3'); } break;
+            case 0x05: if (handler->shift) { handler->OnKeyDown('$'); } else { handler->OnKeyDown('4'); } break;
+            case 0x06: if (handler->shift) { handler->OnKeyDown('%'); } else { handler->OnKeyDown('5'); } break;
+            case 0x07: if (handler->shift) { handler->OnKeyDown('^'); } else { handler->OnKeyDown('6'); } break;
+            case 0x08: if (handler->shift) { handler->OnKeyDown('&'); } else { handler->OnKeyDown('7'); } break;
+            case 0x09: if (handler->shift) { handler->OnKeyDown('*'); } else { handler->OnKeyDown('8'); } break;
+            case 0x0A: if (handler->shift) { handler->OnKeyDown('('); } else { handler->OnKeyDown('9'); } break;
+            case 0x0B: if (handler->shift) { handler->OnKeyDown(')'); } else { handler->OnKeyDown('0'); } break;
 
-            case 0x0C: if (handler->shift ^ handler->caps) { handler->OnKeyDown('_'); } else { handler->OnKeyDown('-'); } break;
-            case 0x0D: if (handler->shift ^ handler->caps) { handler->OnKeyDown('+'); } else { handler->OnKeyDown('='); } break;
+            case 0x0C: if (handler->shift) { handler->OnKeyDown('_'); } else { handler->OnKeyDown('-'); } break;
+            case 0x0D: if (handler->shift) { handler->OnKeyDown('+'); } else { handler->OnKeyDown('='); } break;
 
             //top row letters
             case 0x10: if (handler->shift ^ handler->caps) { handler->OnKeyDown('Q'); } else { handler->OnKeyDown('q'); } break;
@@ -116,8 +115,8 @@ uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
             case 0x18: if (handler->shift ^ handler->caps) { handler->OnKeyDown('O'); } else { handler->OnKeyDown('o'); } break;
             case 0x19: if (handler->shift ^ handler->caps) { handler->OnKeyDown('P'); } else { handler->OnKeyDown('p'); } break;
 
-            case 0x1A: if (handler->shift ^ handler->caps) { handler->OnKeyDown('{'); } else { handler->OnKeyDown('['); } break;
-            case 0x1B: if (handler->shift ^ handler->caps) { handler->OnKeyDown('}'); } else { handler->OnKeyDown(']'); } break;
+            case 0x1A: if (handler->shift) { handler->OnKeyDown('{'); } else { handler->OnKeyDown('['); } break;
+            case 0x1B: if (handler->shift) { handler->OnKeyDown('}'); } else { handler->OnKeyDown(']'); } break;
 
             // 2nd row letters
             case 0x1E: if (handler->shift ^ handler->caps) { handler->OnKeyDown('A'); } else { handler->OnKeyDown('a'); } break;
@@ -130,9 +129,9 @@ uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
             case 0x25: if (handler->shift ^ handler->caps) { handler->OnKeyDown('K'); } else { handler->OnKeyDown('k'); } break;
             case 0x26: if (handler->shift ^ handler->caps) { handler->OnKeyDown('L'); } else { handler->OnKeyDown('l'); } break;
 
-            case 0x2B: if (handler->shift ^ handler->caps) { handler->OnKeyDown('~'); } else { handler->OnKeyDown('#'); } break;
-            case 0x28: if (handler->shift ^ handler->caps) { handler->OnKeyDown('@'); } break;
-            case 0x27: if (handler->shift ^ handler->caps) { handler->OnKeyDown(':'); } else { handler->OnKeyDown(';'); } break;
+            case 0x2B: if (handler->shift) { handler->OnKeyDown('~'); } else { handler->OnKeyDown('#'); } break;
+            case 0x28: if (handler->shift) { handler->OnKeyDown('@'); } break;
+            case 0x27: if (handler->shift) { handler->OnKeyDown(':'); } else { handler->OnKeyDown(';'); } break;
 
             //3rd row letters
             case 0x56: break;
@@ -144,9 +143,9 @@ uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
             case 0x31: if (handler->shift ^ handler->caps) { handler->OnKeyDown('N'); } else { handler->OnKeyDown('n'); } break;
             case 0x32: if (handler->shift ^ handler->caps) { handler->OnKeyDown('M'); } else { handler->OnKeyDown('m'); } break;
 
-            case 0x33: if (handler->shift ^ handler->caps) { handler->OnKeyDown('<'); } else { handler->OnKeyDown(','); } break;
-            case 0x34: if (handler->shift ^ handler->caps) { handler->OnKeyDown('>'); } else { handler->OnKeyDown('.'); } break;
-            case 0x35: if (handler->shift ^ handler->caps) { handler->OnKeyDown('?'); } else { handler->OnKeyDown('/'); } break;
+            case 0x33: if (handler->shift) { handler->OnKeyDown('<'); } else { handler->OnKeyDown(','); } break;
+            case 0x34: if (handler->shift) { handler->OnKeyDown('>'); } else { handler->OnKeyDown('.'); } break;
+            case 0x35: if (handler->shift) { handler->OnKeyDown('?'); } else { handler->OnKeyDown('/'); } break;
 
             // funny keys
             //enter
@@ -215,13 +214,13 @@ uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
             default:
             {
                 //used for debugging keyboard, if you dont want to see hex codes just comment out the printf's
-                /*
+
                 printf("KEYBOARD 0x");
                 printfHex(key);
 
                 handler->OnKeyUp();
                 break;
-                */
+
             }
         }
     }

@@ -31,6 +31,7 @@ using namespace albaos;
 using namespace albaos::common;
 using namespace albaos::drivers;
 using namespace albaos::hardwarecommunication;
+using namespace albaos::filesystem;
 using namespace albaos::gui;
 
 uint16_t SetTextColor(bool set, uint16_t color = 0x07) {
@@ -443,7 +444,9 @@ public:
         switch (this->cliMode) {
             //file edit program
             case 1:
-                if (type) { fileMain(pressed, ch, ctrl); }
+                if (type) {
+                    fileMain(pressed, ch, ctrl);
+                }
                 break;
             default:
                 break;
@@ -590,6 +593,7 @@ public:
 			switch (this->cliMode) {
 				case 1:
                     printf("\v");
+                    fileMain(0, 'c', 1);
 					printf("Exiting file edit nest\n");
 					break;
 				default:

@@ -65,6 +65,11 @@ void printfHex(uint8_t);
 
 uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
 {
+    /*
+    char* ch = " ";
+    ch[0] = 2;
+    */
+
     uint8_t key = dataport.Read();
     this->handler->keyValue = key;
 

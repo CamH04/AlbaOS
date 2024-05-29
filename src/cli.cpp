@@ -10,11 +10,13 @@
 
 using namespace albaos;
 using namespace albaos::drivers;
+using namespace albaos::filesystem;
 using namespace albaos::common;
 
 void putchar(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t);
 void printfTUI(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, bool);
 void printf(char*);
+uint16_t hash(char* cmd);
 
 //func from kernel
 char* argparse(char*, uint8_t);
@@ -26,6 +28,7 @@ uint16_t SetTextColor(bool set, uint16_t color);
 void initnetwork(char* string);
 uint16_t strlen(char* args);
 
+uint32_t numOrVar(char* args, CommandLine* cli, uint8_t argNum);
 
 uint32_t findarg(char* args, CommandLine* cli, uint8_t ArgNum);
 
@@ -40,7 +43,7 @@ void help_page1(){
     printf("version : tells you the version of AlbaOS!\n");
     printf("hardwareinfo : tells you about your hardware\n");
     printf("senddata (text): sends string across network\n");
-    printf("opengui: gives key to open gui (its esc) WARNING: IF YOU HAVE EPILEPSY DONT USE THE GUI, TRUST ME\n");
+    printf("opengui: gives key to open gui WARNING: IF YOU HAVE EPILEPSY DONT USE THE GUI, TRUST ME\n");
     printf("clear : clears the screen (you can also press tab)\n");
 }
 void help_page2(){
@@ -258,7 +261,7 @@ void senddata(char* args, CommandLine* cli){
 }
 
 void debugata(char* args, CommandLine* cli){
-    printf("this command has been archived due to it breaking the partition table\n");
+    printf("this command has been archived VvV\n");
     /*
     printf("S-ATA primary master: \n");
     AdvancedTechnologyAttachment ata0m(true, 0x1F0);
@@ -270,7 +273,7 @@ void debugata(char* args, CommandLine* cli){
 }
 
 void opengui(char* args, CommandLine* cli){
-    printf("press esc to enter Gui 0v0\n");
+    printf("press esc to enter Gui 0v0 Doesnt work Rn... @v@\n");
 }
 
 void emojiprint(char* args, CommandLine* cli){
@@ -293,7 +296,148 @@ void emojiprint(char* args, CommandLine* cli){
     printf("\n");
 }
 
+//Read And Write File Commands Imported From pac-ac=============================================================================
+//==============================================================================================================================
+uint32_t numOrVar(char* args, CommandLine* cli, uint8_t argNum) {
+	char* name = argparse(args, argNum);
+	uint16_t hashVar = hash(name) % 1024;
+	if (cli->varTable[hashVar] != 0xffffffff) {
+		return cli->varTable[hashVar];
 
+	} else if (name[0] == '$' && name[2] == '\0') {
+		if (name[1] <= '9' && name[1] >= '0') {
+			return cli->argTable[name[1]-'0'];
+		}
+		if (name[1] == 'R') {
+			return cli->returnVal;
+		}
+		return 0;
+	} else if (name[0] == '@' && name[2] == '\0') {
+		return (uint8_t)(name[1]);
+	} else {
+		return StringToInt(name);
+	}
+}
+
+void wdisk(char* args, CommandLine* cli) {
+
+	uint32_t sector = numOrVar(args, cli, 0);
+
+	if (sector < 64 && cli->mute == false) {
+
+		printf("!v!   WARNING!: This Writes Over Sector Without Any Checks, make sure you dont overwrite your other files\n");
+	}
+	char* cmp = argparse(args, 0);
+	uint8_t offset = 0;
+	for (offset; cmp[offset] != '\0'; offset++) {} offset++;
+	for (int i = 0; args[i] != '\0'; i++) {
+
+		args[i] = args[i+offset];
+	}
+	cli->ata0m->Write28(sector, (uint8_t*)args, strlen(args), 0);
+	cli->ata0m->Flush();
+	if (cli->mute == false) {
+
+		printf("Wrote: ");
+		printf(args);
+		printf(" to sector ");
+		printf(IntToString(sector));
+		printf(". ^v^\n");
+	}
+}
+
+
+void rdisk(char* args, CommandLine* cli) {
+
+	uint32_t sector = numOrVar(args, cli, 0);
+	uint32_t size = numOrVar(args, cli, 1);
+	uint8_t data[512];
+	cli->ata0m->Read28(sector, data, size, 0);
+	printf((char*)data);
+	printf("\n");
+
+	for (int i = 0; i < 512; i++) data[i] = 0;
+}
+
+
+void files(char* args, CommandLine* cli) {
+
+	char name[33];
+	for (int i = 0; i < 33; i++) { name[i] = 0x00; }
+	uint32_t location = 0;
+	uint32_t fileNum = GetFileCount();
+	cli->returnVal = fileNum;
+
+	for (int i = 0; i < fileNum; i++) {
+
+		location = GetFileName(i, name);
+
+		if (cli->mute == false) {
+
+			printf(IntToString(location));
+			printf("    ");
+			printf(name);
+			printf("\n");
+		}
+	}
+
+
+	char* strNum = IntToString(fileNum);
+
+	if (cli->mute == false) {
+
+		printf("\n");
+		printf(strNum);
+		printf(" files have been allocated.\n");
+	}
+}
+
+
+void size(char* args, CommandLine* cli) {
+
+	uint32_t size = GetFileSize(args);
+	cli->returnVal = size;
+
+
+	if (cli->mute == false) {
+
+		if (size) {
+
+			printf("'");
+			printf(args);
+			printf("' is ");
+			printf(IntToString(size));
+			printf("damn, its bytes large. 0v0\n");
+		} else {
+			printf("doesnt exist @v@\n");
+		}
+	}
+
+}
+
+
+
+void deleteFile(char* args, CommandLine* cli) {
+
+	bool deleted = DeleteFile(args);
+
+
+	if (cli->mute == false) {
+
+		if (deleted) {
+
+			printf("'");
+			printf(args);
+			printf("' was deleted XvX\n");
+		} else {
+			printf(args);
+			printf(" doesnt exist @v@\n");
+		}
+	}
+}
+//==============================================================================================================================
+//==============================================================================================================================
+//==============================================================================================================================
 
 
 
@@ -448,6 +592,12 @@ void CommandLine::hash_cli_init() {
     this->hash_add("debugata",debugata);
     this->hash_add("opengui",opengui);
     this->hash_add("emojiprint",emojiprint);
+    //file commands
+    this->hash_add("wdisk", wdisk);
+	this->hash_add("rdisk", rdisk);
+	this->hash_add("files", files);
+	this->hash_add("size", size);
+	this->hash_add("delete", deleteFile);
 
 
 

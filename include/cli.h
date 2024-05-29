@@ -16,6 +16,7 @@ namespace albaos {
         public:
             void (*cmdTable[65536])(char*, CommandLine*);
             common::uint32_t varTable[1024];
+            common::uint32_t argTable[10];
             bool conditionIf;
             bool conditionLoop;
             common::uint32_t returnVal = 0;
@@ -24,6 +25,7 @@ namespace albaos {
             common::uint16_t cmdList[65536];
             common::uint16_t cmdIndex = 0;;
 
+			bool mute = false;
 
             GlobalDescriptorTable* gdt;
             TaskManager* tm;

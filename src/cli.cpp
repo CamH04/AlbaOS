@@ -61,6 +61,15 @@ void help_page3(){
     printf("debugata: debugging ata stuff (for devs)\n");
     printf("emojiprint: prints emojis and the offset code (for devs)\n");
 }
+void help_page4(){
+    printf("=== File Commands: ===\n");
+    printf("wdisk number(sector) text(what-you-want-to-write) : writes to disk\n");
+    printf("rdisk number(sector) number(end): reads to disk\n");
+    printf("files: lists files \n");
+    printf("size number(sector): tells size of file \n");
+    printf("delete number(sector): deletes file XvX \n");
+}
+
 
 //commands
 void help(char* args, CommandLine* cli){
@@ -78,6 +87,9 @@ void help(char* args, CommandLine* cli){
             break;
         case 3:
             help_page3();
+            break;
+        case 4:
+            help_page4();
             break;
         default:
             printf("we dont have that many pages -v-");
@@ -407,7 +419,7 @@ void size(char* args, CommandLine* cli) {
 			printf(args);
 			printf("' is ");
 			printf(IntToString(size));
-			printf("damn, its bytes large. 0v0\n");
+			printf("bytes large. 0v0\n");
 		} else {
 			printf("doesnt exist @v@\n");
 		}

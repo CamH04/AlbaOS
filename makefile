@@ -21,6 +21,7 @@ objects = obj/loader.o \
           obj/drivers/ata.o \
           obj/filesys/ofs.o \
           obj/nests/filenest.o \
+          obj/app.o \
           obj/cpuid.o \
           obj/cli.o \
           obj/syscalls.o \

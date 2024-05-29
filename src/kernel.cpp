@@ -422,15 +422,7 @@ void AltCharCode(uint8_t c, uint8_t &NumCharCode) {
 //"put Keybaord in command line pls" the class
 class CLIKeyboardEventHandler : public KeyboardEventHandler, public CommandLine {
 public:
-
-    uint8_t index = 0;
-    char input[256];
-
-    char keyChar;
     bool pressed;
-
-    char lastCmd[256];
-
 
 public:
     CLIKeyboardEventHandler(GlobalDescriptorTable* gdt, TaskManager* tm, AdvancedTechnologyAttachment* ata0m): CommandLine(gdt, tm, ata0m) {
@@ -444,9 +436,7 @@ public:
         switch (this->cliMode) {
             //file edit program
             case 1:
-                if (type) {
-                    fileMain(pressed, ch, ctrl);
-                }
+                if (type) {fileMain(pressed, ch, ctrl);}
                 break;
             default:
                 break;
@@ -457,14 +447,27 @@ public:
 
             this->pressed = true;
             this->keyChar = c;
+            /*
+			if (this->alt) {
+
+				AltCharCode(c, NumCharCode);
+				return;
+			}
+
+			if (this->alt == false && this->NumCharCode != 0) {
+
+				c = this->NumCharCode;
+				keyChar = this->NumCharCode;
+			}
+			this->NumCharCode = 0;
+            */
 
             if (this->ctrl) {
 				switch (c) {
 					case 'c':
                         // cli
-						this->cliMode = 0;
-						return;
-                        break;
+						this->resetMode();
+						return; break;
 					case 'e':
                         // edit file
 						this->cliMode = 1;
@@ -550,8 +553,9 @@ public:
                         break;
                 }
             } else {
+				this->nestSelect(this->cliMode, this->pressed, this->keyChar, this->ctrl, 1);
 
-                index = 0;
+				index = 0;
             }
         }
 

@@ -22,7 +22,12 @@ namespace albaos {
             common::uint32_t returnVal = 0;
 
 
+            char input[256];
+
+            char keyChar;
+            common::uint8_t index = 0;
             common::uint16_t cmdList[65536];
+            char lastCmd[256];
             common::uint16_t cmdIndex = 0;;
 
 			bool mute = false;

@@ -18,11 +18,10 @@ void sleep(uint32_t);
 
 
 void fileTUI() {
-
-	TUI(0x07, 0x01, 10, 5, 70, 19, true);
+	TUI(0x07, 0x05, 10, 5, 70, 19, true);
 	printfTUI("AlbaOs File Nest", 0x00, 0x07, 29, 7);
 	printfTUI("Search file name up to 32 characters.", 0x00, 0x07, 22, 8);
-    printfTUI("Enter file name: ", 0x00, 0x07, 12, 11);
+        printfTUI("Enter file name: ", 0x00, 0x07, 12, 11);
 	printfTUI("0123456789abcdef0123456789abcdef", 0x00, 0x00, 29, 11);
 }
 
@@ -127,10 +126,10 @@ void file(bool pressed, char key, bool ctrl, bool reset) {
 						}
 						searchStr[0] = '\0';
 						search = false;
-						TUI(0x0f, 0x01, 0, 23, 79, 24, false);
-						printfTUI(fileName, 0x0f, 0x01, 0, 24);
-						printfTUI("LBA:", 0x0f, 0x01, 72, 24);
-						printfTUI(IntToString(lba), 0x0f, 0x01, 76, 24);
+						TUI(0x0f, 0x05, 0, 23, 79, 24, false);
+						printfTUI(fileName, 0x0f, 0x05, 0, 24);
+						printfTUI("LBA:", 0x0f, 0x05, 72, 24);
+						printfTUI(IntToString(lba), 0x0f, 0x05, 76, 24);
 
 
 						//read file if it already exists
@@ -170,7 +169,7 @@ void file(bool pressed, char key, bool ctrl, bool reset) {
 			if (ctrl) {
 
 				//remove previous message
-				printfTUI("0123456789abcdef0123456789abcdef", 0x01, 0x01, 33, 24);
+				printfTUI("0123456789abcdef0123456789abcdef", 0x05, 0x05, 33, 24);
 
 				switch (key) {
 
@@ -179,11 +178,11 @@ void file(bool pressed, char key, bool ctrl, bool reset) {
 						if (FileIf(fnv1a(fileName))) {
 
 							WriteLBA(fileName, file, lba);
-							printfTUI("File has been saved.", 0x0f, 0x01, 33, 24);
+							printfTUI("File has been saved.", 0x0f, 0x05, 33, 24);
 						} else {
 
 							NewFile(fileName, file, (lba + 1) * 1920);
-							printfTUI("File was created.", 0x0f, 0x01, 33, 24);
+							printfTUI("File was created.", 0x0f, 0x05, 33, 24);
 						}
 						return;
 						break;
@@ -202,7 +201,7 @@ void file(bool pressed, char key, bool ctrl, bool reset) {
 
 							copyLine[i] = file[80*y+i];
 						}
-						printfTUI("Copied line to clipboard.", 0x0f, 0x01, 33, 24);
+						printfTUI("Copied line to clipboard.", 0x0f, 0x05, 33, 24);
 						break;
 					//paste line
 					case 'P':
@@ -211,7 +210,7 @@ void file(bool pressed, char key, bool ctrl, bool reset) {
 							file[80*y+i] = copyLine[i];
 							putcharTUI(file[80*y+i], 0x0f, 0x00, i, y);
 						}
-						printfTUI("Pasted line from clipboard.", 0x0f, 0x01, 33, 24);
+						printfTUI("Pasted line from clipboard.", 0x0f, 0x05, 33, 24);
 						y += (1 * (y < 23));
 						break;
 					//delete line
@@ -221,7 +220,7 @@ void file(bool pressed, char key, bool ctrl, bool reset) {
 							file[80*y+i] = 0x00;
 							putcharTUI(0x00, 0x0f, 0x00, i, y);
 						}
-						printfTUI("Deleted line.", 0x0f, 0x01, 33, 24);
+						printfTUI("Deleted line.", 0x0f, 0x05, 33, 24);
 						y += (1 * (y < 23));
 						break;
 					default:
@@ -238,7 +237,7 @@ void file(bool pressed, char key, bool ctrl, bool reset) {
 						}
 					}
 					printfTUI("   ", 0x01, 0x01, 76, 24);
-					printfTUI(IntToString(lba), 0x0f, 0x01, 76, 24);
+					printfTUI(IntToString(lba), 0x0f, 0x05, 76, 24);
 				}
 				return;
 			}

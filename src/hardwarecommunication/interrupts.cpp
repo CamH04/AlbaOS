@@ -183,9 +183,9 @@ uint32_t InterruptManager::DoHandleInterrupt(uint8_t interrupt, uint32_t esp)
     }
     else if(interrupt != hardwareInterruptOffset)
     {
-        printf("debugger: === UNHANDLED INTERRUPT 0x ");
-        printfHex(interrupt);
-        printf(" === \n");
+        //printf("debugger: === UNHANDLED INTERRUPT 0x ");
+        //printfHex(interrupt);
+        //printf(" === \n");
     }
 
 

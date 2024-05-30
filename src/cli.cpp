@@ -48,6 +48,7 @@ void help_page1(){
 }
 void help_page2(){
     printf("=== Fun Commands: ===\n");
+    printf("hackterminal: hack terminal game!\n");
     printf("owl number(0-8) : prints owl art!\n");
     printf("hello : starts the conversation with Dusty\n");
     printf("speak : Dusty will speak\n");
@@ -55,16 +56,10 @@ void help_page2(){
     printf("textnum: gives numbers for text colours\n");
     printf("pic: will print a coloured picture for you! (its very underwhelming)\n");
     printf("singsong number(0-idkyet): Dusty will sing you a song!\n");
-}
-void help_page3(){
-    printf("=== Dev/Debug Commands: ===\n");
-    printf("debugata: debugging ata stuff (for devs)\n");
     printf("emojiprint: prints emojis and the offset code (for devs)\n");
 }
-void help_page4(){
+void help_page3(){
     printf("=== File Commands: ===\n");
-    printf("wdisk number(sector) text(what-you-want-to-write) : writes to disk\n");
-    printf("rdisk number(sector) number(end): reads to disk\n");
     printf("files: lists files \n");
     printf("size number(sector): tells size of file \n");
     printf("delete number(sector): deletes file XvX \n");
@@ -87,9 +82,6 @@ void help(char* args, CommandLine* cli){
             break;
         case 3:
             help_page3();
-            break;
-        case 4:
-            help_page4();
             break;
         default:
             printf("we dont have that many pages -v-");
@@ -308,8 +300,6 @@ void emojiprint(char* args, CommandLine* cli){
     printf("\n");
 }
 
-//Read And Write File Commands Imported From pac-ac=============================================================================
-//==============================================================================================================================
 uint32_t numOrVar(char* args, CommandLine* cli, uint8_t argNum) {
 	char* name = argparse(args, argNum);
 	uint16_t hashVar = hash(name) % 1024;
@@ -330,47 +320,6 @@ uint32_t numOrVar(char* args, CommandLine* cli, uint8_t argNum) {
 		return StringToInt(name);
 	}
 }
-
-void wdisk(char* args, CommandLine* cli) {
-
-	uint32_t sector = numOrVar(args, cli, 0);
-
-	if (sector < 64 && cli->mute == false) {
-
-		printf("!v!   WARNING!: This Writes Over Sector Without Any Checks, make sure you dont overwrite your other files\n");
-	}
-	char* cmp = argparse(args, 0);
-	uint8_t offset = 0;
-	for (offset; cmp[offset] != '\0'; offset++) {} offset++;
-	for (int i = 0; args[i] != '\0'; i++) {
-
-		args[i] = args[i+offset];
-	}
-	cli->ata0m->Write28(sector, (uint8_t*)args, strlen(args), 0);
-	cli->ata0m->Flush();
-	if (cli->mute == false) {
-
-		printf("Wrote: ");
-		printf(args);
-		printf(" to sector ");
-		printf(IntToString(sector));
-		printf(". ^v^\n");
-	}
-}
-
-
-void rdisk(char* args, CommandLine* cli) {
-
-	uint32_t sector = numOrVar(args, cli, 0);
-	uint32_t size = numOrVar(args, cli, 1);
-	uint8_t data[512];
-	cli->ata0m->Read28(sector, data, size, 0);
-	printf((char*)data);
-	printf("\n");
-
-	for (int i = 0; i < 512; i++) data[i] = 0;
-}
-
 
 void files(char* args, CommandLine* cli) {
 
@@ -403,7 +352,6 @@ void files(char* args, CommandLine* cli) {
 		printf(" files have been allocated.\n");
 	}
 }
-
 
 void size(char* args, CommandLine* cli) {
 
@@ -447,21 +395,10 @@ void deleteFile(char* args, CommandLine* cli) {
 		}
 	}
 }
-//==============================================================================================================================
-//==============================================================================================================================
-//==============================================================================================================================
-
-
-
-
-void test(char* args, CommandLine* cli){
-
-
-}
 
 //TODO finish terminal game
 int attemptnum = 4;
-void terminalgame(){
+void terminalgamestart(){
 
     printf("Alba Software TERMLINK PROTOCOL\n");
     printf("ENTER PASSWORD NOW\n");
@@ -480,13 +417,28 @@ void terminalgame(){
     printf("0xF544 FARMS 0xF61 SIDES\n");
 }
 void password(char* args, CommandLine* cli){
-    uint32_t ValueIn = findarg(args, cli, 0);
-    char* guess = IntToString(ValueIn);
+    terminalgamestart();
+    uint32_t strlength = numOrVar(args, cli, 0);
 
-    int n;
-    int y;
-    while(attemptnum > 0){
+    char* cmp = argparse(args, 0);
 
+
+    if(strlen(cmp) > 0){
+        int n;
+        int y;
+        while(attemptnum > 0){
+            if(cmp != "LIVES"){
+                //idkman
+            }
+            else{
+                printf("Exact Match! +10EXP\n");
+            }
+        }
+        printf("You have been temporarily locked out! Contact the Administrator! \n");
+    }
+    else
+    {
+        printf("error: no arg\n");
     }
 }
 
@@ -496,6 +448,16 @@ void password(char* args, CommandLine* cli){
 
 
 
+
+
+
+
+
+
+void test(char* args, CommandLine* cli){
+
+
+}
 
 
 
@@ -601,12 +563,11 @@ void CommandLine::hash_cli_init() {
     this->hash_add("singsong",SingMeASong);
     this->hash_add("hardwareinfo",hardwareinfo);
     this->hash_add("senddata",senddata);
-    this->hash_add("debugata",debugata);
+    this->hash_add("debugata",password);
     this->hash_add("opengui",opengui);
     this->hash_add("emojiprint",emojiprint);
+    this->hash_add("hackterminal",password);
     //file commands
-    this->hash_add("wdisk", wdisk);
-	this->hash_add("rdisk", rdisk);
 	this->hash_add("files", files);
 	this->hash_add("size", size);
 	this->hash_add("delete", deleteFile);

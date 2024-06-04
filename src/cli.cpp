@@ -365,7 +365,7 @@ void size(char* args, CommandLine* cli) {
 			printf("'");
 			printf(args);
 			printf("' is ");
-			printf(IntToString(size / 8));
+			printf(IntToString(size / 1000));
 			printf("kb large. ");
             printf(" (");
             printf(IntToString(size));

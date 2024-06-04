@@ -16,48 +16,40 @@ uint16_t FrequencyMatch(char ch, uint8_t octave);
 
 
 void playstart::singasong(){
-
-    //mixer stuff :(
-    /*
-    //mixer stuff
-    //init
-    Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
-    Mix_Chunk *sound = NULL;
-    sound = Mix_LoadWAV("start.wav");
-    //play sounds
-    Mix_PlayChannel(-1, sound, 0);
-    Mix_FreeChunk(sound);
-    sound = NULL;
-    Mix_CloseAudio();
-    */
     drivers::Speaker PCSPEAKER;
 	PCSPEAKER.PlaySound(FrequencyMatch('C',5));
     PCSPEAKER.NoSound();
 }
+
+//RISEN
 void playstart::song1() {
 
+	//100bpm
+	// 1/4 = 600
+	// 1/8 = 300
+	// 1/16 = 150
 	char notes1[] = {
-		'C', 'd', 'C', 'C', 'E', 'G', 'A', 'C', 'C', 'B'
+		'D', 'E', 'F', 'F', 'E', 'E', 'F', 'D', 'C', 'D', 'D', 'E', 'C', 'G', 'F', 'D', 'E', 'F', 'F', 'E', 'E', 'F', 'D', 'C', 'D', 'D', 'E', 'C', 'G', 'F'
 	};
 
 	common::uint8_t octave1[] = {
-		3, 3, 3, 4, 4, 4, 4, 4, 3, 4
 	};
 
 	common::uint16_t time1[] = {
-		3552, 1776, 3552, 1776, 1776, 1776, 1776, 1776, 1776, 3552
+		300, 300, 600, 600, 150, 150, 300, 600, 300, 300, 300, 300, 150, 150, 150, 300, 300, 600, 600, 150, 150, 300, 600, 300, 300, 300, 300, 150, 150, 150
 	};
-    uint16_t songnotelength = 10;
+
+    uint16_t songnotelength = 30;
 	printc('t');
-    printf("Starting song: Beyond The Breeze\n");
-	//TODO hard coded for now bcz im tired of trying to debug printc, ill come back to it
-	printf("It Goes Like This: C, d#, C, C, E, G, A, C, C, B");
-	printf("\n");
+    printf("Starting song: Risen\n");
+	//TODO hard coded for now bcz im tired of trying to debug printc, ill come back to it (later)
+	printf("Rip Terry o7 \n");
     for (common::uint8_t i = 0; i <= songnotelength - 1; i++) {
 
-        PlayNote(notes1[i], octave1[i], time1[i]);
+        PlayNote(notes1[i], 4, time1[i]);
     }
-	printf("hope you liked my song!\n");
+	printf("i hope you liked gods song\n");
+	sleep(100);
 }
 
 

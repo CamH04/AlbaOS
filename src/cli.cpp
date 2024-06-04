@@ -34,16 +34,15 @@ uint32_t findarg(char* args, CommandLine* cli, uint8_t ArgNum);
 
 void help_page1(){
     printf("=== Keybinds: ===\n");
-    printf("ctrl+e : enter you into file editing nest (program)\n");
+    printf("ctrl+e : enter you into file editing nest\n");
+    printf("        ctrl+w to write to file :)\n");
     printf("ctrl+c : return to CLI \n");
+    printf("esc: Enter GUI\n");
     printf("\n");
     printf("=== Useful Commands: ===\n");
     printf("help number(0 - 3): list of commands\n");
-    printf("random: will generate a random number for you\n");
     printf("version : tells you the version of AlbaOS!\n");
     printf("hardwareinfo : tells you about your hardware\n");
-    printf("senddata (text): sends string across network\n");
-    printf("opengui: gives key to open gui WARNING: IF YOU HAVE EPILEPSY DONT USE THE GUI, TRUST ME\n");
     printf("clear : clears the screen (you can also press tab)\n");
 }
 void help_page2(){
@@ -57,12 +56,15 @@ void help_page2(){
     printf("pic: will print a coloured picture for you! (its very underwhelming)\n");
     printf("singsong number(0-idkyet): Dusty will sing you a song!\n");
     printf("emojiprint: prints emojis and the offset code (for devs)\n");
+    printf("random: will generate a random number for you\n");
+    printf("senddata (text): sends string across network\n");
 }
 void help_page3(){
     printf("=== File Commands: ===\n");
     printf("files: lists files \n");
     printf("size number(sector): tells size of file \n");
-    printf("delete number(sector): deletes file XvX \n");
+    printf("delete filename: deletes file XvX \n");
+    printf("debugata: idenf dump of master disk\n");
 }
 
 
@@ -118,7 +120,7 @@ void version(char* args, CommandLine* cli){
     printf("==================================================\n");
     printf("\n");
     printf("                     (0v0)           \n");
-    printf("             AlbaOS: Ver: Beta - 0.96\n");
+    printf("             AlbaOS: Ver: Beta - 0.98\n");
     printf("\n");
     printf("==================================================\n");
     //print colours
@@ -250,6 +252,11 @@ void SingMeASong(char* args, CommandLine* cli){
 }
 
 void hardwareinfo(char* args, CommandLine* cli){
+    printf("== Os ==\n");
+    printf("AlbaOs\n");
+    printf("== Vga Output ==\n");
+    printf("320,200\n");
+    printf("\n");
     cpuidentif CPUFINDER;
     printf("== Cpu Info: ==\n");
     CPUFINDER.cpufind();
@@ -266,18 +273,10 @@ void senddata(char* args, CommandLine* cli){
 
 void debugata(char* args, CommandLine* cli){
     printf("this command has been archived VvV\n");
-    /*
     printf("S-ATA primary master: \n");
     AdvancedTechnologyAttachment ata0m(true, 0x1F0);
     ata0m.Identify();
-    ata0m.Write28(0, (uint8_t*)"0v0 Test",9);
-    ata0m.Flush();
-    ata0m.Read28(0, 9);
-    */
-}
-
-void opengui(char* args, CommandLine* cli){
-    printf("press esc to enter Gui 0v0 Doesnt work Rn... @v@\n");
+    printf("\n");
 }
 
 void emojiprint(char* args, CommandLine* cli){
@@ -366,8 +365,11 @@ void size(char* args, CommandLine* cli) {
 			printf("'");
 			printf(args);
 			printf("' is ");
-			printf(IntToString(size));
-			printf("bytes large. 0v0\n");
+			printf(IntToString(size / 8));
+			printf("kb large. ");
+            printf(" (");
+            printf(IntToString(size));
+            printf(" bytes) 0v0\n");
 		} else {
 			printf("doesnt exist @v@\n");
 		}
@@ -564,7 +566,6 @@ void CommandLine::hash_cli_init() {
     this->hash_add("hardwareinfo",hardwareinfo);
     this->hash_add("senddata",senddata);
     this->hash_add("debugata",password);
-    this->hash_add("opengui",opengui);
     this->hash_add("emojiprint",emojiprint);
     this->hash_add("hackterminal",password);
     //file commands

@@ -418,7 +418,7 @@ void AltCharCode(uint8_t c, uint8_t &NumCharCode) {
 
     NumCharCode <<= (4 * bitShift);
 }
-
+bool EnterGUI = false;
 //"put Keybaord in command line pls" the class
 class CLIKeyboardEventHandler : public KeyboardEventHandler, public CommandLine {
 public:
@@ -461,7 +461,6 @@ public:
 			}
 			this->NumCharCode = 0;
             */
-
             if (this->ctrl) {
 				switch (c) {
 					case 'c':
@@ -473,6 +472,9 @@ public:
 						this->cliMode = 1;
 						nestSet(this->cliMode);
 						break;
+                    case 'g':
+                        EnterGUI = true;
+                        break;
 					default:
 						break;
 				}
@@ -818,7 +820,7 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     printf("press tab or use the clear command (  clear  ) to clear terminal @v@\n");
     kbhandler.cli = true;
 	kbhandler.hash_cli_init();
-	while (keyboard.keyHex != 0x99) { //esc
+	while (EnterGUI == false) {
 
 		kbhandler.cli = true;
 

@@ -241,8 +241,17 @@ void SingMeASong(char* args, CommandLine* cli){
     switch (ValueIn){
         case 0:
             //song 1
-
             PS.song1();
+            s.NoSound();
+            break;
+        case 1:
+            //song 1 again
+            PS.song1();
+            s.NoSound();
+            break;
+        case 2:
+            //song 2
+            PS.song2();
             s.NoSound();
             break;
         default:
@@ -254,6 +263,7 @@ void SingMeASong(char* args, CommandLine* cli){
 void hardwareinfo(char* args, CommandLine* cli){
     printf("== Os ==\n");
     printf("AlbaOs\n");
+    printf("\n");
     printf("== Vga Output ==\n");
     printf("320,200\n");
     printf("\n");

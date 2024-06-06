@@ -17,7 +17,7 @@ uint16_t FrequencyMatch(char ch, uint8_t octave);
 
 void playstart::singasong(){
     drivers::Speaker PCSPEAKER;
-	PCSPEAKER.PlaySound(FrequencyMatch('C',5));
+	PlayNote('E', 4, 200);
     PCSPEAKER.NoSound();
 }
 
@@ -29,27 +29,63 @@ void playstart::song1() {
 	// 1/8 = 300
 	// 1/16 = 150
 	char notes1[] = {
-		'D', 'E', 'F', 'F', 'E', 'E', 'F', 'D', 'C', 'D', 'D', 'E', 'C', 'G', 'F', 'D', 'E', 'F', 'F', 'E', 'E', 'F', 'D', 'C', 'D', 'D', 'E', 'C', 'G', 'F'
+		'D', 'E', 'F', 'F', 'E', 'E', 'F', 'D', 'C', 'D',
+		'D', 'E', 'C', 'G', 'F', 'D', 'E', 'F', 'F', 'E',
+		'E', 'F', 'D', 'C', 'D', 'D', 'E', 'C', 'G', 'F'
 	};
 
 	common::uint8_t octave1[] = {
+		4,4,4,4,4,4,4,4,4,4,
+		4,4,4,4,4,4,4,4,4,4,
+		4,4,4,4,4,4,4,4,4,4
 	};
 
 	common::uint16_t time1[] = {
-		300, 300, 600, 600, 150, 150, 300, 600, 300, 300, 300, 300, 150, 150, 150, 300, 300, 600, 600, 150, 150, 300, 600, 300, 300, 300, 300, 150, 150, 150
+		300, 300, 600, 600, 150, 150, 300, 600, 300, 300,
+		300, 300, 150, 150, 150, 300, 300, 600, 600, 150,
+		150, 300, 600, 300, 300, 300, 300, 150, 150, 150
 	};
 
     uint16_t songnotelength = 30;
-	printc('t');
     printf("Starting song: Risen\n");
-	//TODO hard coded for now bcz im tired of trying to debug printc, ill come back to it (later)
 	printf("Rip Terry o7 \n");
     for (common::uint8_t i = 0; i <= songnotelength - 1; i++) {
 
-        PlayNote(notes1[i], 4, time1[i]);
+        PlayNote(notes1[i], octave1[i], time1[i]);
+		sleep(100);
     }
 	printf("i hope you liked gods song\n");
-	sleep(100);
+}
+void playstart::song2() {
+
+	//100bpm
+	// 1/4 = 600
+	// 1/8 = 300
+	// 1/16 = 150
+	char notes2[] = {
+		'C','E','D','A',
+		'C','E','D','G'
+	};
+
+	common::uint8_t octave2[] = {
+		4,4,4,3,
+		4,4,4,4
+	};
+
+	common::uint16_t time2[] = {
+		1200,1200,1200,1200,
+		1200,1200,1200,1200
+	};
+
+    uint16_t songnotelength = 8;
+    printf("Starting song: Gentleman\n");
+	printf("Rip Lawrence o7 \n");
+    for (common::uint8_t i = 0; i <= songnotelength - 1; i++) {
+
+        PlayNote(notes2[i], octave2[i], time2[i]);
+		sleep(100);
+    }
+	printf("i hope you liked a gentlemans song\n");
 }
 
 

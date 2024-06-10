@@ -19,7 +19,6 @@ PIT::PIT()
 PIT::~PIT() {
 }
 
-
 uint32_t PIT::readCount() {
 
 	uint32_t count = 0;

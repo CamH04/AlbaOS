@@ -103,7 +103,6 @@ int amd_am79c973::Reset()
     return 10;
 }
 
-
 void printf(char*);
 void printfHex(uint8_t);
 

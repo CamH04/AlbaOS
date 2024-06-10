@@ -7,33 +7,35 @@ ASPARAMS = --32
 LDPARAMS = -melf_i386
 
 objects = obj/loader.o \
-          obj/gdt.o \
-          obj/memorymanagement.o \
-          obj/owlart.o \
-          obj/playstart.o \
-          obj/drivers/driver.o \
-          obj/drivers/pit.o \
-          obj/hardwarecommunication/port.o \
-          obj/hardwarecommunication/interruptstubs.o \
-          obj/hardwarecommunication/interrupts.o \
-          obj/multitasking.o \
-          obj/drivers/amd_am79c973.o \
-          obj/drivers/ata.o \
-          obj/filesys/ofs.o \
-          obj/nests/filenest.o \
-          obj/app.o \
-          obj/cpuid.o \
-          obj/cli.o \
-          obj/syscalls.o \
-          obj/hardwarecommunication/pci.o \
-          obj/drivers/keyboard.o \
-          obj/drivers/mouse.o \
-          obj/drivers/audio.o \
-          obj/drivers/vga.o \
+	  obj/gdt.o \
+	  obj/memorymanagement.o \
+	  obj/owlart.o \
+	  obj/drivers/driver.o \
+	  obj/hardwarecommunication/port.o \
+	  obj/hardwarecommunication/interruptstubs.o \
+	  obj/hardwarecommunication/interrupts.o \
+	  obj/multitasking.o \
+	  obj/drivers/amd_am79c973.o \
+	  obj/hardwarecommunication/pci.o \
+	  obj/drivers/keyboard.o \
+	  obj/drivers/mouse.o \
+	  obj/drivers/vga.o \
+	  obj/drivers/ata.o \
+	  obj/drivers/pit.o \
+	  obj/drivers/audio.o \
 	  obj/gui/widget.o \
-          obj/gui/window.o \
-          obj/gui/desktop.o \
-          obj/kernel.o
+	  obj/gui/desktop.o \
+	  obj/gui/window.o \
+	  obj/gui/sim.o \
+	  obj/filesys/ofs.o \
+	  obj/cli.o \
+	  obj/app.o \
+	  obj/maths.o \
+	  obj/nests/filenest.o \
+	  obj/playstart.o \
+	  obj/cpuid.o \
+	  obj/syscalls.o \
+	  obj/kernel.o
 
 obj/%.o: src/%.cpp
 	mkdir -p $(@D)

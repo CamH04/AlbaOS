@@ -18,8 +18,10 @@
 #include <gui/window.h>
 #include <multitasking.h>
 #include <cli.h>
+#include <app.h>
 #include <drivers/pit.h>
 #include <nests/filenest.h>
+#include <gui/sim.h>
 
 #define MODULUS    2147483647
 #define MULTIPLIER 48271
@@ -748,6 +750,29 @@ double Random(void) // betwwen 1 and 0
     return ((double) seed[stream] / MODULUS);
 }
 
+Desktop* LoadDesktopForTask(bool set, Desktop* desktop = 0) {
+
+	static Desktop* retDesktop = 0;
+
+	if (set) {
+		retDesktop = desktop;
+	}
+
+	return retDesktop;
+}
+
+void DrawDesktopTask() {
+
+	Desktop* desktop = LoadDesktopForTask(false);
+	desktop->gc->SetMode(320, 200, 8);
+
+	while (1) {
+
+		desktop->Draw(desktop->gc);
+	}
+}
+
+
 
 typedef void (*constructor)();
 extern "C" constructor start_ctors;
@@ -777,10 +802,12 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
 	CLIKeyboardEventHandler kbhandler(gdt, &taskManager, &ata0m);
 	KeyboardDriver keyboard(&interrupts, &kbhandler);
 
+     VideoGraphicsArray vga;
+        Simulator alba;
+        Desktop desktop(320, 200, 0x01, &vga, gdt, &taskManager, &alba);
+
 
 	drvManager.AddDriver(&keyboard);
-
-    Desktop desktop(320,200, 0xA8,0x00,0x00);
 
 	MouseDriver mouse(&interrupts, &desktop);
     drvManager.AddDriver(&mouse);
@@ -788,8 +815,6 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
         //i forgot to add this here and wondered why it wasnt working, the blight of man
         PeripheralComponentInterconnectController PCIController;
         PCIController.SelectDrivers(&drvManager, &interrupts);
-
-        VideoGraphicsArray vga;
 
         //activating drivers
         printf("Hardware init, Stage 2\n");
@@ -830,21 +855,28 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
 		}
 	}
 
-	//now in graphics mode
-	vga.SetMode(320, 200, 8);
+
+    KeyboardDriver keyboardDesktop(&interrupts, &desktop);
+	drvManager.Replace(&keyboardDesktop, 0);
 
 
-    //params meaning desktop, x,y,w,h,r,g,b
-	Window win1(&desktop, 10,10,20,20, 0x00,0x00,0xA8);
+    //now in graphics mode
+    vga.SetMode(320, 200, 8);
+
+    /*
+	Window win1(&desktop, 10, 10, 40, 20, "1", 0x04, &kbhandler);
 	desktop.AddChild(&win1);
 
-	Window win2(&desktop, 40,15,30,30, 0x00,0xA8,0x00);
+	Window win2(&desktop, 100, 15, 50, 30, "2", 0x19, &kbhandler);
 	desktop.AddChild(&win2);
 
+	Window win3(&desktop, 60, 45, 80, 65, "3", 0x32, &kbhandler);
+	desktop.AddChild(&win3);
+	*/
     while(true)
     {
         desktop.Draw(&vga);
-        sleep(15);
+        //sleep(15);
     }
 }
 

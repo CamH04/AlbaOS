@@ -1,6 +1,5 @@
-
-# sudo apt-get install g++ binutils libc6-dev-i386
-# sudo apt-get install grub-legacy xorriso
+# im sorry about this makefile >v<
+# sudo apt-get install g++ binutils libc6-dev-i386 grub-legacy xorriso
 
 GCCPARAMS = -m32 -Iinclude -fno-use-cxa-atexit -nostdlib -fno-builtin -fno-rtti -fno-exceptions -fno-leading-underscore -Wno-write-strings -fno-threadsafe-statics -lm
 ASPARAMS = --32
@@ -45,6 +44,7 @@ obj/%.o: src/%.s
 	mkdir -p $(@D)
 	as $(ASPARAMS) -o $@ $<
 
+		#the linker has truley baffled me as of today, i will never question it again. ima just let it do its thing
 albaos.bin: linker.ld $(objects)
 	ld $(LDPARAMS) -T $< -o $@ $(objects)
 

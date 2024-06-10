@@ -1,6 +1,7 @@
 # AlbaOS #
 AlbaOS is a 32 bit operating system developed by me from scratch as a hobby <3
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ![AlbaOsSplash](THUMB.JPG "Alba Os Splash Screen")
 
@@ -46,26 +47,28 @@ sudo apt-get install xorriso
 
 ## Stuff i've implemented 
 + working console output (printf) and coloured printf
-+ global descriptor tables / ports
-+ interrupts
-+ keyboard
-+ mouse
++ Global Descriptor Table (GDT)
++ Ports
++ Interrupts
++ Keyboard Drivers
++ Mouse Drivers
 + PCI (Peripheral Component Interconnect) and BAR (base address registers) 
 + Owl Art (:
 + Random numbers
 + Vga graphics mode
-+ basic graphics framework
-+ multitasking
-+ speaker audio with PIT
-+ Command Line With args
-+ heap with malloc
-+ networking
-+ hardware identification
-+ ata hard disk read, write and identification
-+ ofs file system 
-+ syscalls
-+ Programs (Nests)
-
++ Graphics framework
++ Multitasking
++ Speaker audio with PIT
++ The AlbaOS Command Line (ACL)
++ Heap with Malloc Implemtation
++ Amd_am79c ... Network Drivers
++ CPU Identification
++ Ata Hard Disk Read / Write and Identification
++ Object File System (OFS)
++ Syscalls
++ Programs (Nests):
++    - File Edit Nest
++ Many Bugs!
 
 ## Some Ascii art of my owls: 
 ```                
@@ -90,3 +93,6 @@ sudo apt-get install xorriso
 ---**-----**----
 ```
 
+## Website:
+With Docs, Articles And Other Hoopla
+[Link](https://albasoftware.netlify.app/albaos)

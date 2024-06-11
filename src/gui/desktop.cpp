@@ -93,8 +93,8 @@ void Desktop::MouseDraw(common::GraphicsContext* gc) {
 	uint8_t* cursorArt = nullptr;
 
 
-	uint8_t mouseW = 13;
-	uint8_t mouseH = 20;
+	uint8_t mouseW = 7;
+	uint8_t mouseH = 7;
 
 
 	if (this->sim == false) {

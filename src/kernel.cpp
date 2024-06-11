@@ -761,6 +761,22 @@ Desktop* LoadDesktopForTask(bool set, Desktop* desktop = 0) {
 	return retDesktop;
 }
 
+void reboot() {
+
+	asm volatile ("cli");
+
+	uint8_t read = 0x02;
+	Port8Bit resetPort(0x64);
+
+	while (read & 0x02) {
+
+		read = resetPort.Read();
+	}
+
+	resetPort.Write(0xfe);
+	asm volatile ("hlt");
+}
+
 void DrawDesktopTask() {
 
 	Desktop* desktop = LoadDesktopForTask(false);

@@ -27,6 +27,7 @@ char* IntToString(uint32_t num);
 uint16_t SetTextColor(bool set, uint16_t color);
 void initnetwork(char* string);
 uint16_t strlen(char* args);
+void reboot();
 
 uint32_t numOrVar(char* args, CommandLine* cli, uint8_t argNum);
 
@@ -44,10 +45,10 @@ void help_page1(){
     printf("version : tells you the version of AlbaOS!\n");
     printf("hardwareinfo : tells you about your hardware\n");
     printf("clear : clears the screen (you can also press tab)\n");
+    printf("reboot : reboots lol\n");
 }
 void help_page2(){
     printf("=== Fun Commands: ===\n");
-    printf("hackterminal: hack terminal game!\n");
     printf("owl number(0-8) : prints owl art!\n");
     printf("hello : starts the conversation with Dusty\n");
     printf("speak : Dusty will speak\n");
@@ -408,51 +409,18 @@ void deleteFile(char* args, CommandLine* cli) {
 	}
 }
 
-//TODO finish terminal game
-int attemptnum = 4;
-void terminalgamestart(){
-
-    printf("Alba Software TERMLINK PROTOCOL\n");
-    printf("ENTER PASSWORD NOW\n");
-    printf("ATTEMPT(S) LEFT: ");
-    printf(IntToString(attemptnum));
-    printf("\n");
-    printf("\n");
-
-    printf("0xF4F0 VIRAL 0F5BC MINES\n");
-    printf("0xF4FC DARED 0F5C8 LIKES\n");
-    printf("0xF508 WIRES 0F5D4 PARTS\n");
-    printf("0xF4F0 LINES 0F5BC HARAM\n");
-    printf("0xF520 LIVES 0xF5E LINED\n");
-    printf("0xF52C SORTS 0xF5F WARNS\n");
-    printf("0xF538 AGREE 0xF60 THREW\n");
-    printf("0xF544 FARMS 0xF61 SIDES\n");
+void rebootCLI(char* args, CommandLine* cli){
+    reboot();
 }
-void password(char* args, CommandLine* cli){
-    terminalgamestart();
-    uint32_t strlength = numOrVar(args, cli, 0);
-
-    char* cmp = argparse(args, 0);
 
 
-    if(strlen(cmp) > 0){
-        int n;
-        int y;
-        while(attemptnum > 0){
-            if(cmp != "LIVES"){
-                //idkman
-            }
-            else{
-                printf("Exact Match! +10EXP\n");
-            }
-        }
-        printf("You have been temporarily locked out! Contact the Administrator! \n");
-    }
-    else
-    {
-        printf("error: no arg\n");
-    }
-}
+
+
+
+
+
+
+
 
 
 
@@ -575,9 +543,9 @@ void CommandLine::hash_cli_init() {
     this->hash_add("singsong",SingMeASong);
     this->hash_add("hardwareinfo",hardwareinfo);
     this->hash_add("senddata",senddata);
-    this->hash_add("debugata",password);
+    this->hash_add("debugata",debugata);
     this->hash_add("emojiprint",emojiprint);
-    this->hash_add("hackterminal",password);
+    this->hash_add("reboot",rebootCLI);
     //file commands
 	this->hash_add("files", files);
 	this->hash_add("size", size);

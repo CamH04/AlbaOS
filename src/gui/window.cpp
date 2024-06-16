@@ -4,13 +4,7 @@ using namespace albaos::common;
 using namespace albaos::gui;
 
 
-Window::Window(Widget* parent,
-int32_t x, int32_t y,
-int32_t w, int32_t h,
-char* name,
-uint8_t color,
-App* app)
-: CompositeWidget(parent, x, y, w, h, name, color, true) {
+Window::Window(Widget* parent,int32_t x, int32_t y,int32_t w, int32_t h,char* name,uint8_t color,App* app): CompositeWidget(parent, x, y, w, h, name, color, true) {
 
 	this->Dragging = false;
 
@@ -28,6 +22,7 @@ App* app)
 		this->buf[i] = color;
 	}
 }
+
 
 
 Window::~Window() {

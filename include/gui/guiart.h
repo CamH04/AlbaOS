@@ -8,8 +8,6 @@
 namespace albaos {
 
 		static common::uint8_t cursorNormal[7*7] = {
-            // FOR NOW IMPORTED FROM OSAKAOS
-
 			//replace 1 with 2 = ':%s/0x37/0x40/g'
 			//0x50 = eyes
 			//0x3f = white, 0x00 = black

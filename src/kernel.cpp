@@ -420,6 +420,7 @@ void AltCharCode(uint8_t c, uint8_t &NumCharCode) {
 
     NumCharCode <<= (4 * bitShift);
 }
+
 bool EnterGUI = false;
 //"put Keybaord in command line pls" the class
 class CLIKeyboardEventHandler : public KeyboardEventHandler, public CommandLine {
@@ -449,20 +450,6 @@ public:
 
             this->pressed = true;
             this->keyChar = c;
-            /*
-			if (this->alt) {
-
-				AltCharCode(c, NumCharCode);
-				return;
-			}
-
-			if (this->alt == false && this->NumCharCode != 0) {
-
-				c = this->NumCharCode;
-				keyChar = this->NumCharCode;
-			}
-			this->NumCharCode = 0;
-            */
             if (this->ctrl) {
 				switch (c) {
 					case 'c':
@@ -615,7 +602,7 @@ public:
 
 };
 
-
+/*
 class MouseToConsole : public MouseEventHandler
 {
     uint8_t x, y;
@@ -650,7 +637,7 @@ public:
     }
 
 };
-
+*/
 
 //sleeps zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
 void sleep(uint32_t ms) {
@@ -817,16 +804,15 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     AdvancedTechnologyAttachment ata0m(0x1F0, true);
 	CLIKeyboardEventHandler kbhandler(gdt, &taskManager, &ata0m);
 	KeyboardDriver keyboard(&interrupts, &kbhandler);
+    drvManager.AddDriver(&keyboard);
+
 
      VideoGraphicsArray vga;
-        Simulator alba;
-        Desktop desktop(320, 200, 0x01, &vga, gdt, &taskManager, &alba);
-
-
-	drvManager.AddDriver(&keyboard);
-
+	Simulator alba;
+	Desktop desktop(320, 200, 0x01, &vga, gdt, &taskManager, &alba);
 	MouseDriver mouse(&interrupts, &desktop);
-    drvManager.AddDriver(&mouse);
+
+	drvManager.AddDriver(&mouse);
 
         //i forgot to add this here and wondered why it wasnt working, the blight of man
         PeripheralComponentInterconnectController PCIController;
@@ -844,7 +830,7 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     printf("\n  ");
     printf("\v");
 
-
+	interrupts.boot = true;
     //the user stuff from here -------------------------------------------
     owlart OA;
     OA.MenuHello();
@@ -861,6 +847,7 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     printf("press tab or use the clear command (  clear  ) to clear terminal @v@\n");
     kbhandler.cli = true;
 	kbhandler.hash_cli_init();
+    kbhandler.OnKeyDown('\b');
 	while (EnterGUI == false) {
 
 		kbhandler.cli = true;
@@ -888,7 +875,8 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
 
 	Window win3(&desktop, 60, 45, 80, 65, "3", 0x32, &kbhandler);
 	desktop.AddChild(&win3);
-	*/
+    */
+
     while(true)
     {
         desktop.Draw(&vga);

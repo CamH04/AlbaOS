@@ -17,7 +17,7 @@ namespace albaos
 
         class InterruptHandler
         {
-        protected:
+        public:
             albaos::common::uint8_t InterruptNumber;
             InterruptManager* interruptManager;
             InterruptHandler(InterruptManager* interruptManager, albaos::common::uint8_t InterruptNumber);
@@ -107,12 +107,17 @@ namespace albaos
                 static albaos::common::uint32_t HandleInterrupt(albaos::common::uint8_t interrupt, albaos::common::uint32_t esp);
                 albaos::common::uint32_t DoHandleInterrupt(albaos::common::uint8_t interrupt, albaos::common::uint32_t esp);
 
+
                 Port8BitSlow programmableInterruptControllerMasterCommandPort;
                 Port8BitSlow programmableInterruptControllerMasterDataPort;
                 Port8BitSlow programmableInterruptControllerSlaveCommandPort;
                 Port8BitSlow programmableInterruptControllerSlaveDataPort;
 
             public:
+                albaos::common::uint16_t interruptCount;
+				bool boot = false;
+
+
                 InterruptManager(albaos::common::uint16_t hardwareInterruptOffset, albaos::GlobalDescriptorTable* globalDescriptorTable, albaos::TaskManager* taskManager);
                 ~InterruptManager();
                 albaos::common::uint16_t HardwareInterruptOffset();

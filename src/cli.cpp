@@ -42,10 +42,10 @@ void help_page1(){
     printf("\n");
     printf("=== Useful Commands: ===\n");
     printf("help number(0 - 3): list of commands\n");
-    printf("version : tells you the version of AlbaOS!\n");
-    printf("hardwareinfo : tells you about your hardware\n");
+    printf("v : tells you the version of AlbaOS!\n");
+    printf("hwi : tells you about your hardware\n");
     printf("clear : clears the screen (you can also press tab)\n");
-    printf("reboot : reboots lol\n");
+    printf("rb : reboots lol\n");
 }
 void help_page2(){
     printf("=== Fun Commands: ===\n");
@@ -63,8 +63,8 @@ void help_page2(){
 void help_page3(){
     printf("=== File Commands: ===\n");
     printf("files: lists files \n");
-    printf("size number(sector): tells size of file \n");
-    printf("delete filename: deletes file XvX \n");
+    printf("fs filename: tells size of file \n");
+    printf("d filename: deletes file XvX \n");
     printf("debugata: idenf dump of master disk\n");
 }
 
@@ -536,20 +536,20 @@ void CommandLine::hash_cli_init() {
     this->hash_add("speak",speak);
     this->hash_add("random",random);
     this->hash_add("owl",owl);
-    this->hash_add("version",version);
+    this->hash_add("v",version);
     this->hash_add("changetext",changetext);
     this->hash_add("textnum",textnum);
     this->hash_add("pic",pic);
     this->hash_add("singsong",SingMeASong);
-    this->hash_add("hardwareinfo",hardwareinfo);
+    this->hash_add("hwi",hardwareinfo);
     this->hash_add("senddata",senddata);
     this->hash_add("debugata",debugata);
     this->hash_add("emojiprint",emojiprint);
-    this->hash_add("reboot",rebootCLI);
+    this->hash_add("rb",rebootCLI);
     //file commands
 	this->hash_add("files", files);
-	this->hash_add("size", size);
-	this->hash_add("delete", deleteFile);
+	this->hash_add("fs", size);
+	this->hash_add("d", deleteFile);
 
 
 

@@ -13,7 +13,7 @@ void sleep(common::uint32_t ms);
 char* IntToString(uint32_t num);
 void PlayNote(char ch, uint8_t octave, common::uint16_t time);
 uint16_t FrequencyMatch(char ch, uint8_t octave);
-
+double random(void);
 
 void playstart::singasong(){
     drivers::Speaker PCSPEAKER;
@@ -86,6 +86,9 @@ void playstart::song2() {
 		sleep(100);
     }
 	printf("i hope you liked a gentlemans song\n");
+}
+void playstart::song3(){
+//TODO
 }
 
 

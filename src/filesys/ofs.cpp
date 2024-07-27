@@ -20,7 +20,7 @@ bool albaos::filesystem::FileIf(uint32_t sector) {
 	ata0m.Read28(sector, file, 4, 0);
 
 	bool fileExists = file[0] == 0xf0 && file[1] == 0x10 &&
-			  file[2] == 0x70 && file[3] == 0xe0;
+			file[2] == 0x70 && file[3] == 0xe0;
 
 
 	return file[0] != 0x00;
@@ -39,11 +39,6 @@ uint32_t albaos::filesystem::fnv1a(char* str) {
 		hash ^= str[i];
 		hash *= 0x01000193;
 	}
-
-
-	//hash within sectors available on disk
-	//hahahahahahahahahahahahahaha
-	//return (hash % 2048) + 1024;
 	return (hash % 4096) + 1024;
 }
 
@@ -144,13 +139,13 @@ uint32_t albaos::filesystem::RemoveTable(char* name) {
 	uint32_t location = fnv1a(name);
 	bool newest = false;
 
-	//check if removing newest file or not
+	//check if removing newest file
 	ata0m.Read28(fileStartSector+fileNum, sectorData, 4, 0);
 
 	uint32_t newLocation = (sectorData[0] << 24) |
-		      (sectorData[1] << 16) |
-		      (sectorData[2] << 8) |
-		      (sectorData[3]);
+			(sectorData[1] << 16) |
+			(sectorData[2] << 8) |
+			(sectorData[3]);
 
 
 	if (location == newLocation) {
@@ -174,9 +169,9 @@ uint32_t albaos::filesystem::RemoveTable(char* name) {
 			ata0m.Read28(fileStartSector+j, sectorData, 4, 0);
 
 			findLocation = (sectorData[0] << 24) |
-				       (sectorData[1] << 16) |
-				       (sectorData[2] << 8) |
-				       (sectorData[3]);
+					(sectorData[1] << 16) |
+					(sectorData[2] << 8) |
+					(sectorData[3]);
 
 			if (location == findLocation) {
 
@@ -192,18 +187,12 @@ uint32_t albaos::filesystem::RemoveTable(char* name) {
 		//get rid of newest
 		ata0m.Write28(fileStartSector+fileNum, nullData, 4, 0);
 		ata0m.Flush();
-
-		//put it where the removed was
 		if (!newest) {
 
 			ata0m.Write28(fileStartSector+replace, sectorData, 4, 0);
 			ata0m.Flush();
 		}
-	} else {
-		//get rid of only file entry
-		//ata0m.Write28(fileStartSector, nullData, 4, 0);
 	}
-
 	return 0;
 }
 
@@ -237,9 +226,9 @@ uint32_t albaos::filesystem::GetFileName(uint16_t fileNum, char fileName[33]) {
 	ata0m.Read28(fileStartSector+fileNum, sectorData, 4, 0);
 
 	location = (sectorData[0] << 24) |
-		   (sectorData[1] << 16) |
-		   (sectorData[2] << 8) |
-		   (sectorData[3]);
+		(sectorData[1] << 16) |
+		(sectorData[2] << 8) |
+		(sectorData[3]);
 
 	if (location) {
 
@@ -274,7 +263,8 @@ bool albaos::filesystem::NewFile(char* name, uint8_t* file, uint32_t size) {
 		return false;
 	}
 
-	//OFS FILE STRUCTURE BELOW
+	//=============================================================================
+	//file system
 
 	//first 8 bytes for file nums and size
 	uint8_t sectorData[512];
@@ -291,16 +281,12 @@ bool albaos::filesystem::NewFile(char* name, uint8_t* file, uint32_t size) {
 	sectorData[6] = (size >> 16) & 0xff;
 	sectorData[7] = (size >> 24);
 
-	//byte 8 to 40 for file name
+	//byte 8 to 40 = file name
 	for (int i = 0; name[i] != '\0'; i++) {
 
 		sectorData[i+8] = (uint8_t)name[i];
 	}
-
-	//byte 40 to 72 for tag string
-
-
-	//END OF OFS FILE STRUCTURE
+	//=============================================================================
 
 
 	//first sector is reserved for file metadata
@@ -326,7 +312,7 @@ bool albaos::filesystem::WriteFile(char* name, uint8_t* file, uint32_t size) {
 
 	if (FileIf(location) == false) {
 
-		printf("write what?\n");
+		printf("file doesnt exist @v@\n");
 		return false;
 	}
 
@@ -428,7 +414,6 @@ bool albaos::filesystem::WriteLBA(char* name, uint8_t* file, uint32_t lba) {
 			sectorData[j] = file[dataIndex];
 			dataIndex++;
 		}
-		//ata0m.Write28(startSector+i, sectorData, upperOffset, lowerOffset);
 		ata0m.Write28(startSector+i, sectorData, 512, 0);
 		ata0m.Flush();
 
@@ -515,7 +500,8 @@ bool albaos::filesystem::ReadLBA(char* name, uint8_t* file, uint32_t lba) {
 	uint32_t sectorNum = 4;
 
 
-	//fix later, end of lba 3 doesn't work
+	//TODO end of lba 3 doesn't work, fix it
+	// update from 3 days later, i shall not yet lmao im losing it
 	switch (lba % 4) {
 
 		case 0:
@@ -537,8 +523,6 @@ bool albaos::filesystem::ReadLBA(char* name, uint8_t* file, uint32_t lba) {
 
 
 	for (uint16_t i = 0; i < sectorNum; i++) {
-
-		//if (i == (sectorNum - 1) && (lba % 4) != 3) {
 		if (i == (sectorNum - 1) && (lba % 4) != 3) {
 
 			upperOffset = size % 512;
@@ -570,11 +554,8 @@ bool albaos::filesystem::DeleteFile(char* name) {
 
 		return false;
 	}
-
-	//remove from table
 	RemoveTable(name);
-
-	//delete actual file data
+	//delete file data
 	uint8_t zeros[1920];
 	for (int i = 0; i < 1920; i++) { zeros[i] = 0x00; }
 
@@ -583,11 +564,10 @@ bool albaos::filesystem::DeleteFile(char* name) {
 		WriteLBA(name, zeros, i);
 	}
 
-	//get rid of magic numbers + other metadata
+	//del all metadata
 	AdvancedTechnologyAttachment ata0m(0x1F0, true);
 
 	ata0m.Write28(location, zeros, 512, 0);
 	ata0m.Flush();
-
 	return true;
 }

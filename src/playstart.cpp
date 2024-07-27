@@ -1,6 +1,5 @@
 #include <playstart.h>
 #include <drivers/audio.h>
-//#include <SDL/SDL_mixer.h>
 
 
 using namespace albaos;
@@ -13,7 +12,7 @@ void sleep(common::uint32_t ms);
 char* IntToString(uint32_t num);
 void PlayNote(char ch, uint8_t octave, common::uint16_t time);
 uint16_t FrequencyMatch(char ch, uint8_t octave);
-double random(void);
+double Random(void);
 
 void playstart::singasong(){
     drivers::Speaker PCSPEAKER;
@@ -51,11 +50,14 @@ void playstart::song1() {
 	printf("Rip Terry o7 \n");
     for (common::uint8_t i = 0; i <= songnotelength - 1; i++) {
 
-        PlayNote(notes1[i], octave1[i], time1[i]);
+		// * 2 to double the time of playing because desktop vm is too fast
+        PlayNote(notes1[i], octave1[i], time1[i] * 2);
 		sleep(100);
     }
 	printf("i hope you liked gods song\n");
 }
+//TODO update
+// a gallant gentlemen
 void playstart::song2() {
 
 	//100bpm
@@ -82,13 +84,30 @@ void playstart::song2() {
 	printf("Rip Lawrence o7 \n");
     for (common::uint8_t i = 0; i <= songnotelength - 1; i++) {
 
-        PlayNote(notes2[i], octave2[i], time2[i]);
+        PlayNote(notes2[i], octave2[i], time2[i] * 2);
 		sleep(100);
     }
 	printf("i hope you liked a gentlemans song\n");
 }
+//TODO update for random notes
 void playstart::song3(){
-//TODO
+	char notes3[] = {
+		'C','E','D','A',
+		'C','E','D','G'
+	};
+
+	common::uint8_t octave3[] = {
+		4,4,4,3,
+		4,4,4,4
+	};
+
+	uint16_t songnotelength = 8;
+    printf("Starting song: Tyto\n");
+    for (common::uint8_t i = 0; i <= songnotelength - 1; i++) {
+		PlayNote(notes3[i], octave3[i], Random() * 100);
+		sleep(100);
+    }
+	printf("Volare sicut tyto noctua \n");
 }
 
 

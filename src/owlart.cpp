@@ -144,3 +144,15 @@ void owlart::pic(){
     SetTextColor(false,7);
     printf("+");
 }
+
+void owlart::seal1(){
+        printf("\n");
+        printf("   bannana!\n");
+        printf("     / |        \n");
+        printf("     | \\        \n");
+        printf("     |  |     \n");
+        printf("\\   | \\|\n");
+        printf("| \\_/ \\ \\ \n");
+        printf(" \\____/\\/ \n");
+
+}

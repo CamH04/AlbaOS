@@ -24,6 +24,7 @@
                 void OwlArtLove();
                 void OwlArtLoveCLIVER();
                 void pic();
+                void seal1();
 
         };
     }

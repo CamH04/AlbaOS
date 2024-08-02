@@ -49,7 +49,7 @@ void help_page1(){
 }
 void help_page2(){
     printf("=== Fun Commands: ===\n");
-    printf("owl number(0-8) : prints owl art!\n");
+    printf("owl number(0-9) : prints some art!\n");
     printf("hello : starts the conversation with Dusty\n");
     printf("speak : Dusty will speak\n");
     printf("changetext number(0-16): changes text colour\n");
@@ -58,14 +58,12 @@ void help_page2(){
     printf("singsong number(0-idkyet): Dusty will sing you a song!\n");
     printf("emojiprint: prints emojis and the offset code (for devs)\n");
     printf("random: will generate a random number for you\n");
-    printf("senddata (text): sends string across network\n");
 }
 void help_page3(){
     printf("=== File Commands: ===\n");
     printf("files: lists files \n");
     printf("fs filename: tells size of file \n");
     printf("d filename: deletes file XvX \n");
-    printf("debugata: idenf dump of master disk\n");
 }
 
 
@@ -222,8 +220,11 @@ void owl(char* args, CommandLine* cli){
         case 8:
             OA.OwlArtLoveCLIVER();
             break;
+        case 9:
+            OA.seal1();
+            break;
         default:
-            printf("Not a valid value -v-\n");
+            printf("I have that many yet -v-\n");
     }
 }
 
@@ -255,6 +256,9 @@ void SingMeASong(char* args, CommandLine* cli){
             PS.song2();
             s.NoSound();
             break;
+        case 3:
+            PS.song3();
+            s.NoSound();
         default:
             printf("We dont have that many songs yet -V- \n");
             break;
@@ -262,11 +266,8 @@ void SingMeASong(char* args, CommandLine* cli){
 }
 
 void hardwareinfo(char* args, CommandLine* cli){
-    printf("== Os ==\n");
-    printf("AlbaOs\n");
-    printf("\n");
     printf("== Vga Output ==\n");
-    printf("320,200\n");
+    printf("320,200 px\n");
     printf("\n");
     cpuidentif CPUFINDER;
     printf("== Cpu Info: ==\n");
@@ -274,6 +275,7 @@ void hardwareinfo(char* args, CommandLine* cli){
     printf("\n");
 }
 
+/*
 void senddata(char* args, CommandLine* cli){
 
     uint32_t ValueIn = findarg(args, cli, 0);
@@ -289,6 +291,7 @@ void debugata(char* args, CommandLine* cli){
     ata0m.Identify();
     printf("\n");
 }
+*/
 
 void emojiprint(char* args, CommandLine* cli){
     char* ch = " ";
@@ -435,8 +438,6 @@ void rebootCLI(char* args, CommandLine* cli){
 
 
 void test(char* args, CommandLine* cli){
-
-
 }
 
 
@@ -542,8 +543,6 @@ void CommandLine::hash_cli_init() {
     this->hash_add("pic",pic);
     this->hash_add("singsong",SingMeASong);
     this->hash_add("hwi",hardwareinfo);
-    this->hash_add("senddata",senddata);
-    this->hash_add("debugata",debugata);
     this->hash_add("emojiprint",emojiprint);
     this->hash_add("rb",rebootCLI);
     //file commands

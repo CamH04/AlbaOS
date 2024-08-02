@@ -140,7 +140,7 @@ uint32_t KeyboardDriver::HandleInterrupt(uint32_t esp)
             case 0x56: break;
             case 0x2C: if (handler->shift ^ handler->caps) { handler->OnKeyDown('Z'); } else { handler->OnKeyDown('z'); } break;
             case 0x2D: if (handler->shift ^ handler->caps) { handler->OnKeyDown('X'); } else { handler->OnKeyDown('x'); } break;
-            case 0x2E: if (handler->shift ^ handler->caps) { handler->OnKeyDown('C'); } else { handler->OnKeyDown('c'); } break;
+            case 0x2E: if (handler->shift ^ handler->caps) { handler->OnKeyDown('C'); } else { handler->OnKeyDown('c'); keyHex = 0x2E; } break;
             case 0x2F: if (handler->shift ^ handler->caps) { handler->OnKeyDown('V'); } else { handler->OnKeyDown('v'); } break;
             case 0x30: if (handler->shift ^ handler->caps) { handler->OnKeyDown('B'); } else { handler->OnKeyDown('b'); } break;
             case 0x31: if (handler->shift ^ handler->caps) { handler->OnKeyDown('N'); } else { handler->OnKeyDown('n'); } break;

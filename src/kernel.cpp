@@ -791,7 +791,6 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
 {
 
     GlobalDescriptorTable* gdt;
-
     TaskManager taskManager;
     //old multitasking debugging stuff
     //Task taskexample(&gdt, functionForTask);
@@ -877,11 +876,12 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
 	desktop.AddChild(&win3);
     */
 
-    while(true)
+    while(keyboard.keyHex != 0x2E)
     {
         desktop.Draw(&vga);
         //sleep(15);
     }
+    //TODO return to cli / reboot
 }
 
 

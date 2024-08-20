@@ -1,6 +1,7 @@
 #ifndef __ALBAOS__ART_H
 #define __ALBAOS__ART_H
 
+#include <common/asl.h>
 #include <common/types.h>
 
 

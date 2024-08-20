@@ -1,6 +1,7 @@
 #ifndef __ALBAOS__CLI_H
 #define __ALBAOS__CLI_H
 
+#include <common/asl.h>
 #include <common/types.h>
 #include <drivers/ata.h>
 #include <filesys/ofs.h>

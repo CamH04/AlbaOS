@@ -6,6 +6,7 @@ ASPARAMS = --32
 LDPARAMS = -melf_i386
 
 objects = obj/loader.o \
+	  obj/common/asl.o\
 	  obj/gdt.o \
 	  obj/memorymanagement.o \
 	  obj/owlart.o \

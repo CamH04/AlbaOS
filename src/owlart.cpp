@@ -1,13 +1,15 @@
+#include <common/asl.h>
 #include <owlart.h>
 #include <common/types.h>
 
 using namespace albaos;
 using namespace albaos::common;
 
+asl ASLOA;
+
 void printf(char* str);
 void cprintf(char* str, uint8_t forecolor, uint8_t backcolor, uint8_t x, uint8_t y);
 void putchar(unsigned char ch, unsigned char forecolor, unsigned char backcolor, uint8_t x, uint8_t y);
-uint16_t SetTextColor(bool set, uint16_t color);
 
 
 // primary use of this is to ovveride lines if need be
@@ -136,12 +138,12 @@ void owlart::pic(){
     for (int j = 0; j < 80; j++){ //80 so we can get 16 rows
         for (int i = 0; i < numOfAvalibeCol; i++)
         {
-            SetTextColor(true,i);
+            ASLOA.SetTextColor(true,i);
             printf("+");
         }
     }
     //back to white text
-    SetTextColor(false,7);
+    ASLOA.SetTextColor(false,7);
     printf("+");
 }
 

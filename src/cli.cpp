@@ -1,3 +1,4 @@
+#include <common/asl.h>
 #include <cli.h>
 #include <owlart.h>
 #include <playstart.h>
@@ -13,6 +14,8 @@ using namespace albaos::drivers;
 using namespace albaos::filesystem;
 using namespace albaos::common;
 
+asl ASLCLI;
+
 void putchar(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t);
 void printfTUI(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, bool);
 void printf(char*);
@@ -21,10 +24,8 @@ uint16_t hash(char* cmd);
 //func from kernel
 char* argparse(char*, uint8_t);
 uint8_t argcount(char*);
-uint32_t Random();
 uint32_t StringToInt(char* args);
 char* IntToString(uint32_t num);
-uint16_t SetTextColor(bool set, uint16_t color);
 void initnetwork(char* string);
 uint16_t strlen(char* args);
 void reboot();
@@ -129,10 +130,10 @@ void version(char* args, CommandLine* cli){
         char* ch = " ";
         ch[0] = 2;
 
-        SetTextColor(true,i);
+        ASLCLI.SetTextColor(true,i);
         printf(ch);
     }
-    SetTextColor(true,7);//back to white text
+    ASLCLI.SetTextColor(true,7);//back to white text
     printf("\n");
 }
 
@@ -152,7 +153,7 @@ void changetext(char* args, CommandLine* cli) {
     }
     else{
         //i spelt it the american way in kernel . ffs
-        SetTextColor(true, newColour);
+        ASLCLI.SetTextColor(true, newColour);
     }
     printf("\v");
 }
@@ -160,12 +161,12 @@ void textnum(char* args, CommandLine* cli) {
     int numOfAvalibeCol = 16;
     for (int i = 0; i < numOfAvalibeCol; i++)
     {
-        SetTextColor(true,i);
+        ASLCLI.SetTextColor(true,i);
         char* numStr = IntToString(i);
         printf(numStr);
         printf(" , ");
     }
-    SetTextColor(true,7);//back to white text
+    ASLCLI.SetTextColor(true,7);//back to white text
     printf("\n");
 }
 void speak(char* args, CommandLine* cli){
@@ -175,7 +176,7 @@ void speak(char* args, CommandLine* cli){
 	PCSPEAKER.NoSound();
 }
 void random(char* args, CommandLine* cli){
-    common::uint16_t prngresult = Random();
+    common::uint16_t prngresult = ASLCLI.Random();
 
     prngresult = prngresult % cli->cmdIndex++;
 

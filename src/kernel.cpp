@@ -36,10 +36,9 @@ asl ASL;
 //TODO add this stuff to the ASL
 //=======================================================================================================================================================================================
 
-static uint8_t x = 0, y = 0;
 
 void printf(char* str) {
-
+    static uint8_t x = 0, y = 0;
     static bool cliCursor = false;
 
     uint16_t attrib = ASL.SetTextColor(false);
@@ -134,22 +133,6 @@ void printf(char* str) {
     }
 }
 
-void printc(char c){
-    uint16_t Ccolour = ASL.SetTextColor(false);
-    volatile uint16_t* CVideoMemory;
-    CVideoMemory = (volatile uint16_t *)0xb8000 + (y * 80 + x) ;
-    *CVideoMemory = c | (Ccolour << 8);
-}
-
-void printfhere(const char* str, uint8_t line) {
-
-    for (uint16_t i = 0; str[i] != '\0'; i++) {
-
-        volatile uint16_t* VideoMemory = (volatile uint16_t*)0xb8000 + (80*line+i);
-        *VideoMemory = str[i] | 0x700;
-    }
-}
-
 // UI  Prints =============================================
 void putcharTUI(unsigned char ch, unsigned char forecolor,
         unsigned char backcolor, uint8_t x, uint8_t y) {
@@ -228,14 +211,6 @@ void printfTUI(char* str, uint8_t forecolor, uint8_t backcolor, uint8_t x, uint8
 }
 
 //==========================
-void printfHex(uint8_t key)
-{
-    char* foo = "00";
-    char* hex = "0123456789ABCDEF";
-    foo[0] = hex[(key >> 4) & 0xF];
-    foo[1] = hex[key & 0xF];
-    printf(foo);
-}
 
 //string manip functions
 uint16_t strlen(char* args) {
@@ -310,56 +285,6 @@ char* IntToString(uint32_t num) {
         return str;
 }
 
-void printfHex16(uint16_t key)
-{
-    printfHex((key >> 8) & 0xFF);
-    printfHex( key & 0xFF);
-}
-void printfHex32(uint32_t key)
-{
-    printfHex((key >> 24) & 0xFF);
-    printfHex((key >> 16) & 0xFF);
-    printfHex((key >> 8) & 0xFF);
-    printfHex( key & 0xFF);
-}
-
-
-void memWrite(uint32_t memory, uint32_t inputVal) {
-
-	volatile uint32_t* value;
-	value = (volatile uint32_t*)memory;
-	*value = inputVal;
-}
-
-uint32_t memRead(uint32_t memory) {
-
-	volatile uint32_t* value;
-	value = (volatile uint32_t*)memory;
-
-	return *value;
-}
-
-
-
-//for cool chars :)
-void AltCharCode(uint8_t c, uint8_t &NumCharCode) {
-
-    static uint8_t count = 0;
-    bool bitShift = (count % 2 == 0);
-    count++;
-
-    if (c <= '9' && c >= '0') {
-
-        NumCharCode += (c - '0');
-    }
-
-    if (c <= 'f' && c >= 'a') {
-
-        NumCharCode += (c - 'a') + 10;
-    }
-
-    NumCharCode <<= (4 * bitShift);
-}
 //=======================================================================================================================================================================================
 
 bool EnterGUI = false;
@@ -543,43 +468,6 @@ public:
 
 };
 
-/*
-class MouseToConsole : public MouseEventHandler
-{
-    uint8_t x, y;
-public:
-    MouseToConsole()
-    {
-        uint16_t* VideoMemory = (uint16_t*)0xb8000;
-        x = 40;
-        y = 12;
-        VideoMemory[80*y+x] = (VideoMemory[80*y+x] & 0x0F00) << 4
-                            | (VideoMemory[80*y+x] & 0xF000) >> 4
-                            | (VideoMemory[80*y+x] & 0x00FF);
-    }
-
-    virtual void OnMouseMove(int xoffset, int yoffset)
-    {
-        static uint16_t* VideoMemory = (uint16_t*)0xb8000;
-        VideoMemory[80*y+x] = (VideoMemory[80*y+x] & 0x0F00) << 4
-                            | (VideoMemory[80*y+x] & 0xF000) >> 4
-                            | (VideoMemory[80*y+x] & 0x00FF);
-
-        x += xoffset;
-        if(x >= 80) x = 79;
-        if(x < 0) x = 0;
-        y += yoffset;
-        if(y >= 25) y = 24;
-        if(y < 0) y = 0;
-
-        VideoMemory[80*y+x] = (VideoMemory[80*y+x] & 0x0F00) << 4
-                            | (VideoMemory[80*y+x] & 0xF000) >> 4
-                            | (VideoMemory[80*y+x] & 0x00FF);
-    }
-
-};
-*/
-
 //sleeps zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
 void sleep(uint32_t ms) {
 
@@ -648,13 +536,6 @@ uint8_t argcount(char* args) {
     return i-1;
 }
 
-
-void initnetwork(char* string){
-
-    DriverManager drvManager;
-    amd_am79c973* eth0 = (amd_am79c973*)(drvManager.drivers[2]);
-    eth0->Send((uint8_t*)string, strlen(string));
-}
 
 Desktop* LoadDesktopForTask(bool set, Desktop* desktop = 0) {
 
@@ -802,13 +683,3 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     }
     //TODO return to cli / reboot
 }
-
-
-
-
-
-
-
-
-
-

@@ -8,51 +8,38 @@ using namespace albaos::common;
 asl ASLOA;
 
 void printf(char* str);
-void cprintf(char* str, uint8_t forecolor, uint8_t backcolor, uint8_t x, uint8_t y);
-void putchar(unsigned char ch, unsigned char forecolor, unsigned char backcolor, uint8_t x, uint8_t y);
 
 
-// primary use of this is to ovveride lines if need be
-void owlart::printfhere(char *str, uint8_t line) {
-    uint16_t attrib = 0x07;
-
-    volatile uint16_t* vidmem;
-    for (int i = 0; str[i] != '\0'; i++) {
-        vidmem = (volatile uint16_t*)0xb8000 + (80*line+i);
-        *vidmem = str[i] | (attrib << 8);
-
-    }
-}
-// eg printfhere("help me god",0);
-//    printfhere("its too late for this",1);
+// eg ASLOA.printfhere("help me god",0);
+//    ASLOA.printfhere("its too late for this",1);
 void owlart::MenuHello(){
-    printfhere("                                                                                ",0);
-    printfhere("                                                                                ",1);
-    printfhere("                                  (^,^)  (^,^)                                  ",2);
-    printfhere("                                  /)_)/  /)_)/                                  ",3);
-    printfhere("                                ---**-----**----                                ",4);
-    printfhere("                                                                                ",5);
-    printfhere("================================================================================",6);
-    printfhere("              Welcome To AlbaOS!      0v0      Welcome To AlbaOS!               ",7);
-    printfhere("================================================================================",8);
-    printfhere("                                                                                ",9);
-    printfhere("                                                                                ",10);
-    printfhere("                                                                                ",11);
-    printfhere("                                                                                ",12);
-    printfhere("                                                                                ",13);
-    printfhere("                                                                                ",14);
-    printfhere("                                                                                ",15);
-    printfhere("                                                                                ",16);
-    printfhere("                                                                                ",17);
-    printfhere("                                                                                ",18);
-    printfhere("                                                                                ",19);
-    printfhere("                                                                                ",20);
-    printfhere("                                                                                ",21);
-    printfhere("                                                                                ",22);
-    printfhere("                         Press Any Key To Get Started!                          ",23);
-    printfhere("                                                                                ",24);
+    ASLOA.printfhere("                                                                                ",0);
+    ASLOA.printfhere("                                                                                ",1);
+    ASLOA.printfhere("                                  (^,^)  (^,^)                                  ",2);
+    ASLOA.printfhere("                                  /)_)/  /)_)/                                  ",3);
+    ASLOA.printfhere("                                ---**-----**----                                ",4);
+    ASLOA.printfhere("                                                                                ",5);
+    ASLOA.printfhere("================================================================================",6);
+    ASLOA.printfhere("              Welcome To AlbaOS!      0v0      Welcome To AlbaOS!               ",7);
+    ASLOA.printfhere("================================================================================",8);
+    ASLOA.printfhere("                                                                                ",9);
+    ASLOA.printfhere("                                                                                ",10);
+    ASLOA.printfhere("                                                                                ",11);
+    ASLOA.printfhere("                                                                                ",12);
+    ASLOA.printfhere("                                                                                ",13);
+    ASLOA.printfhere("                                                                                ",14);
+    ASLOA.printfhere("                                                                                ",15);
+    ASLOA.printfhere("                                                                                ",16);
+    ASLOA.printfhere("                                                                                ",17);
+    ASLOA.printfhere("                                                                                ",18);
+    ASLOA.printfhere("                                                                                ",19);
+    ASLOA.printfhere("                                                                                ",20);
+    ASLOA.printfhere("                                                                                ",21);
+    ASLOA.printfhere("                                                                                ",22);
+    ASLOA.printfhere("                         Press Any Key To Get Started!                          ",23);
+    ASLOA.printfhere("                                                                                ",24);
     //cprintfs have to go last
-    cprintf("<3", 0x0C, 0x0C, 39, 1);
+    ASLOA.cprintf("<3", 0x0C, 0x0C, 39, 1);
 
 
 }
@@ -118,7 +105,7 @@ void owlart::OwlArtSad()
 void owlart::OwlArtLove()
 {
     printf("\n");
-    cprintf("<3", 0x0C, 0x0C, 7, 0);
+    ASLOA.cprintf("<3", 0x0C, 0x0C, 7, 0);
     printf("  (^,^)  (^,^)  \n");
     printf("  /)_)/  /)_)/  \n");
     printf("---**-----**----\n");

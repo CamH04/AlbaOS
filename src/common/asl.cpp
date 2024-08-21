@@ -1,5 +1,7 @@
 #include <common/asl.h>
 #include <drivers/pit.h>
+#include <drivers/amd_am79c973.h>
+
 
 // most of this has been moved from kernel to here (AlbaOS Standard Lib)
 
@@ -14,6 +16,12 @@
 using namespace albaos;
 using namespace albaos::common;
 using namespace albaos::drivers;
+
+asl WOOPS;
+
+//TODO move printf to here!!!!!!!!!!!!!!!!
+void printf(char* str);
+
 
 
 
@@ -77,8 +85,7 @@ void asl::putchar(unsigned char ch, unsigned char forecolor,unsigned char backco
 }
 
 
-void cprintf(char* str, uint8_t forecolor, uint8_t backcolor, uint8_t x, uint8_t y) {
-    asl WOOPS;
+void asl::cprintf(char* str, uint8_t forecolor, uint8_t backcolor, uint8_t x, uint8_t y) {
     for (int i = 0; str[i] != '\0'; i++) {
         if (str[i] == '\n') {
             y++;
@@ -98,3 +105,99 @@ void cprintf(char* str, uint8_t forecolor, uint8_t backcolor, uint8_t x, uint8_t
         }
     }
 }
+
+void asl::printc(char c){
+    static uint8_t x = 0, y = 0;
+    uint16_t Ccolour = WOOPS.SetTextColor(false);
+    volatile uint16_t* CVideoMemory;
+    CVideoMemory = (volatile uint16_t *)0xb8000 + (y * 80 + x) ;
+    *CVideoMemory = c | (Ccolour << 8);
+}
+
+
+void asl::printfhere(const char* str, uint8_t line) {
+
+    for (uint16_t i = 0; str[i] != '\0'; i++) {
+
+        volatile uint16_t* VideoMemory = (volatile uint16_t*)0xb8000 + (80*line+i);
+        *VideoMemory = str[i] | 0x700;
+    }
+}
+void asl::printfHex(uint8_t key)
+{
+    char* foo = "00";
+    char* hex = "0123456789ABCDEF";
+    foo[0] = hex[(key >> 4) & 0xF];
+    foo[1] = hex[key & 0xF];
+    printf(foo);
+}
+void asl::printfHex16(uint16_t key)
+{
+    printfHex((key >> 8) & 0xFF);
+    printfHex( key & 0xFF);
+}
+void asl::printfHex32(uint32_t key)
+{
+    printfHex((key >> 24) & 0xFF);
+    printfHex((key >> 16) & 0xFF);
+    printfHex((key >> 8) & 0xFF);
+    printfHex( key & 0xFF);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void asl::memWrite(uint32_t memory, uint32_t inputVal) {
+
+	volatile uint32_t* value;
+	value = (volatile uint32_t*)memory;
+	*value = inputVal;
+}
+
+uint32_t asl::memRead(uint32_t memory) {
+
+	volatile uint32_t* value;
+	value = (volatile uint32_t*)memory;
+
+	return *value;
+}
+
+/*
+void initnetwork(char* string){
+
+    DriverManager drvManager;
+    amd_am79c973* eth0 = (amd_am79c973*)(drvManager.drivers[2]);
+    eth0->Send((uint8_t*)string, strlen(string));
+}
+*/
+/*
+//for cool chars :)
+void asl::AltCharCode(uint8_t c, uint8_t &NumCharCode) {
+
+    static uint8_t count = 0;
+    bool bitShift = (count % 2 == 0);
+    count++;
+
+    if (c <= '9' && c >= '0') {
+
+        NumCharCode += (c - '0');
+    }
+
+    if (c <= 'f' && c >= 'a') {
+
+        NumCharCode += (c - 'a') + 10;
+    }
+
+    NumCharCode <<= (4 * bitShift);
+}
+*/

@@ -1,4 +1,6 @@
+#include <common/asl.h>
 #include <drivers/amd_am79c973.h>
+
 
 using namespace albaos;
 using namespace albaos::common;
@@ -104,7 +106,6 @@ int amd_am79c973::Reset()
 }
 
 void printf(char*);
-void printfHex(uint8_t);
 
 uint32_t amd_am79c973::HandleInterrupt(common::uint32_t esp)
 {
@@ -167,10 +168,10 @@ void amd_am79c973::Receive()
                 size -= 4;
 
             uint8_t* buffer = (uint8_t*)(recvBufferDescr[currentRecvBuffer].address);
-
+            asl ASLAMD;
             for(int i = 0; i < size; i++)
             {
-                printfHex(buffer[i]);
+                ASLAMD.printfHex(buffer[i]);
                 printf(" ");
             }
         }

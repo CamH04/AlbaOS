@@ -1,5 +1,5 @@
+#include <common/asl.h>
 #include <hardwarecommunication/pci.h>
-
 #include <memorymanagement.h>
 #include <drivers/amd_am79c973.h>
 
@@ -67,7 +67,6 @@ bool PeripheralComponentInterconnectController::DeviceHasFunctions(common::uint1
 
 
 void printf(char* str);
-void printfHex(uint8_t);
 
 void PeripheralComponentInterconnectController::SelectDrivers(DriverManager* driverManager, albaos::hardwarecommunication::InterruptManager* interrupts)
 {
@@ -97,23 +96,24 @@ void PeripheralComponentInterconnectController::SelectDrivers(DriverManager* dri
 
                 }
 
+                asl ASLPCI;
 
                 printf("PCI BUS ");
-                printfHex(bus & 0xFF);
+                ASLPCI.printfHex(bus & 0xFF);
 
                 printf(", DEVICE ");
-                printfHex(device & 0xFF);
+                ASLPCI.printfHex(device & 0xFF);
 
                 printf(", FUNCTION ");
-                printfHex(function & 0xFF);
+                ASLPCI.printfHex(function & 0xFF);
 
                 printf(" = VENDOR ");
-                printfHex((dev.vendor_id & 0xFF00) >> 8);
-                printfHex(dev.vendor_id & 0xFF);
+                ASLPCI.printfHex((dev.vendor_id & 0xFF00) >> 8);
+                ASLPCI.printfHex(dev.vendor_id & 0xFF);
 
                 printf(", DEVICE ");
-                printfHex((dev.device_id & 0xFF00) >> 8);
-                printfHex(dev.device_id & 0xFF);
+                ASLPCI.printfHex((dev.device_id & 0xFF00) >> 8);
+                ASLPCI.printfHex(dev.device_id & 0xFF);
                 printf("\n");
             }
         }

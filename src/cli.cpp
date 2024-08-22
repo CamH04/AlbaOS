@@ -7,6 +7,7 @@
 #include <cpuid.h>
 #include <drivers/amd_am79c973.h>
 #include <filesys/ofs.h>
+#include <drivers/cmos.h>
 
 
 using namespace albaos;
@@ -120,7 +121,7 @@ void version(char* args, CommandLine* cli){
     printf("==================================================\n");
     printf("\n");
     printf("                     (0v0)           \n");
-    printf("             AlbaOS: Ver: Beta - 0.98\n");
+    printf("             AlbaOS: Ver: 1.0\n");
     printf("\n");
     printf("==================================================\n");
     //print colours
@@ -439,6 +440,8 @@ void rebootCLI(char* args, CommandLine* cli){
 
 
 void test(char* args, CommandLine* cli){
+    Cmos CMOS;
+    CMOS.GetRAMFromCMOS(true);
 }
 
 

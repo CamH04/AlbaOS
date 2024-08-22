@@ -15,7 +15,6 @@ namespace albaos {
 			public:
 				hardwarecommunication::Port8Bit PIT2;
 				hardwarecommunication::Port8Bit PITcommand;
-
 				hardwarecommunication::Port8Bit speakerPort;
 
 			public:

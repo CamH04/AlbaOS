@@ -17,6 +17,7 @@ objects = obj/loader.o \
 	  obj/multitasking.o \
 	  obj/drivers/amd_am79c973.o \
 	  obj/hardwarecommunication/pci.o \
+	  obj/drivers/cmos.o \
 	  obj/drivers/keyboard.o \
 	  obj/drivers/mouse.o \
 	  obj/drivers/vga.o \

@@ -32,7 +32,6 @@ uint16_t Cmos::GetRAMFromCMOS(bool print){
         printf(IntToString(ram));
         printf("kb");
         printf("\n");
-
     }
     return ram;
 }

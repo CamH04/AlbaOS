@@ -268,32 +268,19 @@ void SingMeASong(char* args, CommandLine* cli){
 }
 
 void hardwareinfo(char* args, CommandLine* cli){
-    printf("== Vga Output ==\n");
+    printf("== Video ==\n");
     printf("320,200 px\n");
     printf("\n");
+
     cpuidentif CPUFINDER;
-    printf("== Cpu Info: ==\n");
+    printf("== Cpu: ==\n");
     CPUFINDER.cpufind();
     printf("\n");
-}
 
-/*
-void senddata(char* args, CommandLine* cli){
-
-    uint32_t ValueIn = findarg(args, cli, 0);
-    char* StrValueIn = IntToString(ValueIn);
-    initnetwork(StrValueIn);
-    printf("\n");
+    printf("== RAM: ==\n");
+    Cmos CMOS;
+    CMOS.GetRAMFromCMOS(true);
 }
-
-void debugata(char* args, CommandLine* cli){
-    printf("this command has been archived VvV\n");
-    printf("S-ATA primary master: \n");
-    AdvancedTechnologyAttachment ata0m(true, 0x1F0);
-    ata0m.Identify();
-    printf("\n");
-}
-*/
 
 void emojiprint(char* args, CommandLine* cli){
     char* ch = " ";
@@ -440,8 +427,6 @@ void rebootCLI(char* args, CommandLine* cli){
 
 
 void test(char* args, CommandLine* cli){
-    Cmos CMOS;
-    CMOS.GetRAMFromCMOS(true);
 }
 
 

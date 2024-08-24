@@ -172,32 +172,13 @@ uint32_t asl::memRead(uint32_t memory) {
 	return *value;
 }
 
-/*
-void initnetwork(char* string){
+//string manip functions
+uint16_t asl::strlen(char* args) {
 
-    DriverManager drvManager;
-    amd_am79c973* eth0 = (amd_am79c973*)(drvManager.drivers[2]);
-    eth0->Send((uint8_t*)string, strlen(string));
+        uint16_t length = 0;
+
+        for (length = 0; args[length] != '\0'; length++) {
+
+        }
+        return length;
 }
-*/
-/*
-//for cool chars :)
-void asl::AltCharCode(uint8_t c, uint8_t &NumCharCode) {
-
-    static uint8_t count = 0;
-    bool bitShift = (count % 2 == 0);
-    count++;
-
-    if (c <= '9' && c >= '0') {
-
-        NumCharCode += (c - '0');
-    }
-
-    if (c <= 'f' && c >= 'a') {
-
-        NumCharCode += (c - 'a') + 10;
-    }
-
-    NumCharCode <<= (4 * bitShift);
-}
-*/

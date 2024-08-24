@@ -212,17 +212,6 @@ void printfTUI(char* str, uint8_t forecolor, uint8_t backcolor, uint8_t x, uint8
 
 //==========================
 
-//string manip functions
-uint16_t strlen(char* args) {
-
-        uint16_t length = 0;
-
-        for (length = 0; args[length] != '\0'; length++) {
-
-        }
-        return length;
-}
-
 uint32_t StringToInt(char* args){
     uint32_t number = 0;
     uint16_t i = 0;
@@ -492,7 +481,7 @@ char* argparse(char* args, uint8_t num) {
     uint8_t bufferIndex = 0;
 
 
-    for (int i = 0; i < (strlen(args) + 1); i++) {
+    for (int i = 0; i < (ASL.strlen(args) + 1); i++) {
 
         if (args[i] == ' ' || args[i] == '\0') {
 

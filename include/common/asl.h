@@ -24,7 +24,10 @@ namespace albaos
             void printfHex(uint8_t key);
             void printfHex16(uint16_t key);
             void printfHex32(uint32_t key);
+            void reboot();
+            void shutdown();
 
+            void putcharTUI(unsigned char ch, unsigned char forecolor,unsigned char backcolor, uint8_t x, uint8_t y);
 
 
 

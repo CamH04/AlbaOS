@@ -16,14 +16,44 @@
 using namespace albaos;
 using namespace albaos::common;
 using namespace albaos::drivers;
+using namespace albaos::hardwarecommunication;
 
 asl WOOPS;
 
 //TODO move printf to here!!!!!!!!!!!!!!!!
 void printf(char* str);
 
+// UI  Prints =============================================
+void asl::putcharTUI(unsigned char ch, unsigned char forecolor,
+        unsigned char backcolor, uint8_t x, uint8_t y) {
 
+    uint16_t attrib = (backcolor << 4) | (forecolor & 0x0f);
+    volatile uint16_t* vidmem;
+    vidmem = (volatile uint16_t*)0xb8000 + (80*y+x);
+    *vidmem = ch | (attrib << 8);
+}
 
+void asl::reboot() {
+
+	asm volatile ("cli");
+
+	uint8_t read = 0x02;
+	Port8Bit resetPort(0x64);
+
+	while (read & 0x02) {
+
+		read = resetPort.Read();
+	}
+
+	resetPort.Write(0xfe);
+	asm volatile ("hlt");
+}
+//doesnt work idk why
+void asl::shutdown() {
+	Port8Bit resetPort(0x604);
+	resetPort.Write(0x2000);
+
+}
 
 uint16_t asl::SetTextColor(bool set, uint16_t color) {
 

@@ -1,5 +1,7 @@
 #include <nests/filenest.h>
 #include <filesys/ofs.h>
+#include <common/asl.h>
+
 
 
 using namespace albaos;
@@ -8,14 +10,15 @@ using namespace albaos::drivers;
 using namespace albaos::filesystem;
 
 void printf(char*);
-void putcharTUI(unsigned char, unsigned char, unsigned char, uint8_t, uint8_t);
 void TUI(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, bool);
 void printfTUI(char*, uint8_t, uint8_t, uint8_t, uint8_t);
+
+
 
 char* IntToString(uint32_t);
 void sleep(uint32_t);
 
-
+asl ASLFILENEST;
 
 void fileTUI() {
 	TUI(0x07, 0x05, 10, 5, 70, 19, true);
@@ -139,7 +142,7 @@ void file(bool pressed, char key, bool ctrl, bool reset) {
 						for (int y = 0; y < 24; y++) {
 							for (int x = 0; x < 80; x++) {
 
-								putcharTUI(file[80*y+x], 0x0f, 0x00, x, y);
+								ASLFILENEST.putcharTUI(file[80*y+x], 0x0f, 0x00, x, y);
 							}
 						}
 						return;
@@ -208,7 +211,7 @@ void file(bool pressed, char key, bool ctrl, bool reset) {
 						for (uint8_t i = 0; i < 80; i++) {
 
 							file[80*y+i] = copyLine[i];
-							putcharTUI(file[80*y+i], 0x0f, 0x00, i, y);
+							ASLFILENEST.putcharTUI(file[80*y+i], 0x0f, 0x00, i, y);
 						}
 						printfTUI("Pasted line from clipboard.", 0x0f, 0x05, 33, 24);
 						y += (1 * (y < 23));
@@ -218,7 +221,7 @@ void file(bool pressed, char key, bool ctrl, bool reset) {
 						for (uint8_t i = 0; i < 80; i++) {
 
 							file[80*y+i] = 0x00;
-							putcharTUI(0x00, 0x0f, 0x00, i, y);
+							ASLFILENEST.putcharTUI(0x00, 0x0f, 0x00, i, y);
 						}
 						printfTUI("Deleted line.", 0x0f, 0x05, 33, 24);
 						y += (1 * (y < 23));
@@ -233,7 +236,7 @@ void file(bool pressed, char key, bool ctrl, bool reset) {
 
 					for (int y = 0; y < 24; y++) {
 						for (int x = 0; x < 80; x++) {
-							putcharTUI(file[80*y+x], 0x0f, 0x00, x, y);
+							ASLFILENEST.putcharTUI(file[80*y+x], 0x0f, 0x00, x, y);
 						}
 					}
 					printfTUI("   ", 0x01, 0x01, 76, 24);
@@ -307,7 +310,7 @@ void file(bool pressed, char key, bool ctrl, bool reset) {
 					break;
 				default:
 
-					putcharTUI(key, 0xff, 0x00, x, y);
+					ASLFILENEST.putcharTUI(key, 0xff, 0x00, x, y);
 					file[80*y+x] = key;
 					x++;
 

@@ -15,6 +15,7 @@ using namespace albaos::drivers;
 using namespace albaos::filesystem;
 using namespace albaos::common;
 
+
 asl ASLCLI;
 
 void putchar(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t);
@@ -29,7 +30,6 @@ uint32_t StringToInt(char* args);
 char* IntToString(uint32_t num);
 void initnetwork(char* string);
 uint16_t strlen(char* args);
-void reboot();
 
 uint32_t numOrVar(char* args, CommandLine* cli, uint8_t argNum);
 
@@ -402,7 +402,7 @@ void deleteFile(char* args, CommandLine* cli) {
 }
 
 void rebootCLI(char* args, CommandLine* cli){
-    reboot();
+    ASLCLI.reboot();
 }
 
 
@@ -427,6 +427,7 @@ void rebootCLI(char* args, CommandLine* cli){
 
 
 void test(char* args, CommandLine* cli){
+
 }
 
 

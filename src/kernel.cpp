@@ -36,7 +36,6 @@ asl ASL;
 //TODO add this stuff to the ASL
 //=======================================================================================================================================================================================
 
-
 void printf(char* str) {
     static uint8_t x = 0, y = 0;
     static bool cliCursor = false;
@@ -133,15 +132,6 @@ void printf(char* str) {
     }
 }
 
-// UI  Prints =============================================
-void putcharTUI(unsigned char ch, unsigned char forecolor,
-        unsigned char backcolor, uint8_t x, uint8_t y) {
-
-    uint16_t attrib = (backcolor << 4) | (forecolor & 0x0f);
-    volatile uint16_t* vidmem;
-    vidmem = (volatile uint16_t*)0xb8000 + (80*y+x);
-    *vidmem = ch | (attrib << 8);
-}
 
 void TUI(uint8_t forecolor, uint8_t backcolor,
         uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2,
@@ -151,7 +141,7 @@ void TUI(uint8_t forecolor, uint8_t backcolor,
 
         for (uint8_t x = 0; x < 80; x++) {
 
-            putcharTUI(0xff, 0x00, backcolor, x, y);
+            ASL.putcharTUI(0xff, 0x00, backcolor, x, y);
         }
     }
 
@@ -161,7 +151,7 @@ void TUI(uint8_t forecolor, uint8_t backcolor,
 
         while (x1 < x2) {
 
-            putcharTUI(0xff, 0x00, forecolor, x1, y1);
+            ASL.putcharTUI(0xff, 0x00, forecolor, x1, y1);
             x1++;
         }
         y1++;
@@ -169,7 +159,7 @@ void TUI(uint8_t forecolor, uint8_t backcolor,
         //side shadow
         if (shadow) {
 
-            putcharTUI(0xff, 0x00, 0x00, x1, y1);
+            ASL.putcharTUI(0xff, 0x00, 0x00, x1, y1);
         }
         x1 = resetX;
     }
@@ -179,7 +169,7 @@ void TUI(uint8_t forecolor, uint8_t backcolor,
 
         for (resetX++; resetX < (x2 + 1); resetX++) {
 
-            putcharTUI(0xff, 0x00, 0x00, resetX, y1);
+            ASL.putcharTUI(0xff, 0x00, 0x00, resetX, y1);
         }
     }
 }
@@ -193,7 +183,7 @@ void printfTUI(char* str, uint8_t forecolor, uint8_t backcolor, uint8_t x, uint8
             y++;
             x = 0;
         } else {
-            putcharTUI(str[i], forecolor, backcolor, x, y);
+            ASL.putcharTUI(str[i], forecolor, backcolor, x, y);
             x++;
         }
 
@@ -537,21 +527,6 @@ Desktop* LoadDesktopForTask(bool set, Desktop* desktop = 0) {
 	return retDesktop;
 }
 
-void reboot() {
-
-	asm volatile ("cli");
-
-	uint8_t read = 0x02;
-	Port8Bit resetPort(0x64);
-
-	while (read & 0x02) {
-
-		read = resetPort.Read();
-	}
-
-	resetPort.Write(0xfe);
-	asm volatile ("hlt");
-}
 
 void DrawDesktopTask() {
 

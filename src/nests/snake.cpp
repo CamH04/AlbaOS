@@ -11,7 +11,6 @@ Speaker PCSPEAKER;
 
 void TUI(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, bool);
 void printfTUI(char*, uint8_t, uint8_t, uint8_t, uint8_t);
-
 void sleep(uint32_t);
 
 // ported from OsakaOS to ALbaOS :)
@@ -19,7 +18,7 @@ void sleep(uint32_t);
 void snakeTUI() {
 
 	TUI(0x00, 0x00, 0, 0, 0, 0, false);
-	printfTUI("(press ctrl+c to exit.)", 0x0f, 0x00, 0, 0);
+	printfTUI(" (press ctrl+c to exit)", 0x0f, 0x00, 0, 0);
 	printfTUI("SCORE = ", 0x0f, 0x00, 40, 0);
 
 	for (int i = 0; i < 80; i++) {
@@ -34,7 +33,7 @@ void snakeInit() {
 
 	//tail
 	ASLSNAKE.putcharTUI(0xff, 0x06, 0x06, 40, 9);
-
+    //body
 	ASLSNAKE.putcharTUI(0xff, 0x0a, 0x0a, 40, 10);
 	ASLSNAKE.putcharTUI(0xff, 0x0a, 0x0a, 40, 11);
 
@@ -74,10 +73,6 @@ void snake(char key) {
 	if (dead && key != 'r') {
 			return;
 	}
-
-
-
-	//if (tail <= tailUpdate) {
 	if (score <= tail) {
 
 		//remove snake body from previous tail
@@ -235,13 +230,13 @@ void snake(char key) {
 
 		printfTUI("Press 'r' to restart.", 0x0f, 0x04, 30, 13);
 
-		PCSPEAKER.PlaySound(294);
+		PCSPEAKER.Speak(294);
 		sleep(300);
 
-		PCSPEAKER.PlaySound(220);
+		PCSPEAKER.Speak(220);
 		sleep(300);
 
-		PCSPEAKER.PlaySound(208);
+		PCSPEAKER.Speak(208);
 		sleep(300);
 
 		return;
@@ -276,7 +271,7 @@ void snake(char key) {
 			speed -= 2;
 		}
 
-		PCSPEAKER.PlaySound(1000);
+		PCSPEAKER.Speak(1000);
 	}
 
 

@@ -449,10 +449,10 @@ public:
 				case 1:
                     printf("\v");
                     fileMain(0, 'c', 1);
-					printf("Exiting file edit nest\n");
+					printf("\nExiting file edit nest\n\n");
 					break;
                 case 2:
-					printf("Exiting snake nest \n");
+					printf("\nExiting snake nest \n\n");
 					break;
 				default:
                     printf("\v");
@@ -636,6 +636,7 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
 		while (kbhandler.cliMode) {
 
 			kbhandler.cli = false;
+            kbhandler.nestSelect(kbhandler.cliMode, kbhandler.pressed,kbhandler.keyChar, kbhandler.ctrl, 0);
 		}
 	}
 

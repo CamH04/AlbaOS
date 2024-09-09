@@ -41,12 +41,12 @@ void help_page1(){
     printf("        ctrl+w to write to file :)\n");
     printf("ctrl+c : return to CLI \n");
     printf("ctrl+g : Enter GUI\n");
+    printf("tab: clears screen\n");
     printf("\n");
     printf("=== Useful Commands: ===\n");
     printf("help number(0 - 3): list of commands\n");
     printf("v : tells you the version of AlbaOS!\n");
     printf("hwi : tells you about your hardware\n");
-    printf("clear : clears the screen (you can also press tab)\n");
     printf("rb : reboots lol\n");
 }
 void help_page2(){
@@ -142,10 +142,6 @@ void hello(char* args, CommandLine* cli){
     printf("Hiiiii ^v^\n");
 }
 
-void clear(char* args, CommandLine* cli) {
-    //you could also just press tab
-    printf("\v");
-}
 void changetext(char* args, CommandLine* cli) {
     //chnage
     uint16_t newColour = (uint16_t)(StringToInt(args));
@@ -523,7 +519,6 @@ void CommandLine::hash_cli_init() {
     //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     this->hash_add("help", help);
     this->hash_add("hello", hello);
-    this->hash_add("clear",clear);
     this->hash_add("speak",speak);
     this->hash_add("random",random);
     this->hash_add("owl",owl);

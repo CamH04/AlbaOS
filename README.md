@@ -68,6 +68,8 @@ sudo apt-get install xorriso
 + Syscalls
 + Programs (Nests):
 +    - File Edit Nest
++ CMOS Driver
++ The AlbaOS Standard Library (ASL)
 + Many Bugs!
 
 ## Some Ascii art of my owls: 

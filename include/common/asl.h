@@ -15,6 +15,7 @@ namespace albaos
 
 
             double Random(void);
+            uint16_t betterRandom();
 
             //printstuff
             void putchar(unsigned char ch, unsigned char forecolor,unsigned char backcolor, albaos::common::uint8_t x, albaos::common::uint8_t y);

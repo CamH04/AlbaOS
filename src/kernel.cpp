@@ -22,6 +22,7 @@
 #include <app.h>
 #include <drivers/pit.h>
 #include <nests/filenest.h>
+#include <nests/snake.h>
 #include <gui/sim.h>
 
 using namespace albaos;
@@ -286,6 +287,9 @@ public:
             case 1:
                 if (type) {fileMain(pressed, ch, ctrl);}
                 break;
+            case 2:
+					snake(ch);
+					break;
             default:
                 break;
         }
@@ -304,6 +308,11 @@ public:
 					case 'e':
                         // edit file
 						this->cliMode = 1;
+						nestSet(this->cliMode);
+						break;
+                    case 's':
+                        // edit file
+						this->cliMode = 2;
 						nestSet(this->cliMode);
 						break;
                     case 'g':
@@ -423,6 +432,12 @@ public:
 					fileTUI();
 					fileMain(0, 'c', 1);
 					break;
+                case 2:
+					//snake game
+					snake('r');
+					snakeTUI();
+					snakeInit();
+					break;
 				default:
 					printf("Mode not found.\n");
 					break;
@@ -435,6 +450,9 @@ public:
                     printf("\v");
                     fileMain(0, 'c', 1);
 					printf("Exiting file edit nest\n");
+					break;
+                case 2:
+					printf("Exiting snake nest \n");
 					break;
 				default:
                     printf("\v");

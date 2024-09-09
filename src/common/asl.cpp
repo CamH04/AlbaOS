@@ -67,10 +67,31 @@ uint16_t asl::SetTextColor(bool set, uint16_t color) {
 }
 
 
+
 //RANDOM NUMBERS
 //god help me random numbers are somthing else
 //uses Lehmer random number generation
 //Steve Park & Dave Geyer are legends btw read, their stuff
+uint16_t asl::betterRandom() {
+    //Linear-feedback shift register
+	PIT pit;
+	uint16_t seed = (uint16_t)pit.readCount();
+	uint16_t lfsr = seed;
+	uint16_t period = 0;
+
+	do {
+		uint16_t lsb = lfsr & 1u;
+		lfsr >>= 1;
+		lfsr ^= (-lsb) & 0xb400u;
+
+		period++;
+
+	} while (period < seed);
+
+
+	return lfsr;
+}
+
 double asl::Random(void) // betwwen 1 and 0
 {
     PIT pit;

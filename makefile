@@ -33,6 +33,7 @@ objects = obj/loader.o \
 	  obj/app.o \
 	  obj/maths.o \
 	  obj/nests/filenest.o \
+	  obj/nests/snake.o \
 	  obj/playstart.o \
 	  obj/cpuid.o \
 	  obj/syscalls.o \

@@ -27,7 +27,6 @@ uint16_t hash(char* cmd);
 char* argparse(char*, uint8_t);
 uint8_t argcount(char*);
 uint32_t StringToInt(char* args);
-char* IntToString(uint32_t num);
 void initnetwork(char* string);
 uint16_t strlen(char* args);
 
@@ -159,7 +158,7 @@ void textnum(char* args, CommandLine* cli) {
     for (int i = 0; i < numOfAvalibeCol; i++)
     {
         ASLCLI.SetTextColor(true,i);
-        char* numStr = IntToString(i);
+        char* numStr = ASLCLI.IntToString(i);
         printf(numStr);
         printf(" , ");
     }
@@ -177,7 +176,7 @@ void random(char* args, CommandLine* cli){
 
     prngresult = prngresult % cli->cmdIndex++;
 
-    printf(IntToString(prngresult));
+    printf(ASLCLI.IntToString(prngresult));
     printf("\n");
 }
 void owl(char* args, CommandLine* cli){
@@ -283,14 +282,14 @@ void emojiprint(char* args, CommandLine* cli){
     int chamount = 256;
     for(int i = 11; i <= chamount; i++){
         ch[0] = i;
-        printf(IntToString(i));
+        printf(ASLCLI.IntToString(i));
         printf("-");
         printf(ch);
         printf(",");
     }
     for(int i = 1; i < 11; i++){
         ch[0] = i;
-        printf(IntToString(i));
+        printf(ASLCLI.IntToString(i));
         printf("-");
         printf(ch);
         printf(",");
@@ -333,7 +332,7 @@ void files(char* args, CommandLine* cli) {
 
 		if (cli->mute == false) {
 
-			printf(IntToString(location));
+			printf(ASLCLI.IntToString(location));
 			printf("    ");
 			printf(name);
 			printf("\n");
@@ -341,7 +340,7 @@ void files(char* args, CommandLine* cli) {
 	}
 
 
-	char* strNum = IntToString(fileNum);
+	char* strNum = ASLCLI.IntToString(fileNum);
 
 	if (cli->mute == false) {
 
@@ -364,10 +363,10 @@ void size(char* args, CommandLine* cli) {
 			printf("'");
 			printf(args);
 			printf("' is ");
-			printf(IntToString(size / 1000));
+			printf(ASLCLI.IntToString(size / 1000));
 			printf("kb large. ");
             printf(" (");
-            printf(IntToString(size));
+            printf(ASLCLI.IntToString(size));
             printf(" bytes) 0v0\n");
 		} else {
 			printf("doesnt exist @v@\n");

@@ -23,6 +23,45 @@ asl WOOPS;
 //TODO move printf to here!!!!!!!!!!!!!!!!
 void printf(char* str);
 
+
+char* asl::IntToString(uint32_t num) {
+
+        uint32_t numChar = 1;
+        uint8_t i = 1;
+
+        if (num % 10 != num) {
+
+                while ((num / (numChar)) >= 10) {
+
+                        numChar *= 10;
+                        i++;
+                }
+
+                char* str = "4294967296";
+                uint8_t strIndex = 0;
+
+                while (i) {
+
+                        str[strIndex] = (char)(((num / (numChar)) % 10) + 48);
+
+                        if (numChar >= 10) {
+
+                                numChar /= 10;
+                        }
+                        strIndex++;
+                        i--;
+                }
+
+                str[strIndex] = '\0';
+                return str;
+        }
+        char* str = " ";
+        str[0] = (num + 48);
+
+        return str;
+}
+
+
 // UI  Prints =============================================
 void asl::putcharTUI(unsigned char ch, unsigned char forecolor,
         unsigned char backcolor, uint8_t x, uint8_t y) {

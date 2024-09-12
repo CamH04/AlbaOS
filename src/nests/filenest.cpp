@@ -15,8 +15,6 @@ void TUI(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, bool);
 void printfTUI(char*, uint8_t, uint8_t, uint8_t, uint8_t);
 
 
-
-char* IntToString(uint32_t);
 void sleep(uint32_t);
 
 asl ASLFILENEST;
@@ -133,7 +131,7 @@ void file(bool pressed, char key, bool ctrl, bool reset) {
 						TUI(0x0f, 0x05, 0, 23, 79, 24, false);
 						printfTUI(fileName, 0x0f, 0x05, 0, 24);
 						printfTUI("LBA:", 0x0f, 0x05, 72, 24);
-						printfTUI(IntToString(lba), 0x0f, 0x05, 76, 24);
+						printfTUI(ASLFILENEST.IntToString(lba), 0x0f, 0x05, 76, 24);
 
 
 						//read file if it already exists
@@ -241,7 +239,7 @@ void file(bool pressed, char key, bool ctrl, bool reset) {
 						}
 					}
 					printfTUI("   ", 0x01, 0x01, 76, 24);
-					printfTUI(IntToString(lba), 0x0f, 0x05, 76, 24);
+					printfTUI(ASLFILENEST.IntToString(lba), 0x0f, 0x05, 76, 24);
 				}
 				return;
 			}

@@ -1,9 +1,12 @@
 #include <drivers/cmos.h>
+#include <common/asl.h>
 
 using namespace albaos;
 using namespace albaos::common;
 using namespace albaos::drivers;
 using namespace albaos::hardwarecommunication;
+
+asl ASLCMOS;
 
 char* IntToString(uint32_t num);
 void printf(char* str);
@@ -29,7 +32,7 @@ uint16_t Cmos::GetRAMFromCMOS(bool print){
     ram = lowmem | highmem << 8;
 
     if(print == true){
-        printf(IntToString(ram));
+        printf(ASLCMOS.IntToString(ram));
         printf("kb");
         printf("\n");
     }

@@ -18,6 +18,8 @@ using namespace albaos::common;
 
 asl ASLCLI;
 
+void sleep(uint32_t ms);
+
 void putchar(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t);
 void printfTUI(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, bool);
 void printf(char*);
@@ -397,6 +399,8 @@ void deleteFile(char* args, CommandLine* cli) {
 }
 
 void rebootCLI(char* args, CommandLine* cli){
+    printf("volare sicut tyto noctua , to fly like a nightingale");
+    sleep(1000);
     ASLCLI.reboot();
 }
 

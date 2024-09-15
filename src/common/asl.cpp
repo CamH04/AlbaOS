@@ -23,6 +23,44 @@ asl WOOPS;
 //TODO move printf to here!!!!!!!!!!!!!!!!
 void printf(char* str);
 
+void asl::TUI(uint8_t forecolor, uint8_t backcolor,uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2,bool shadow) {
+
+    for (uint8_t y = 0; y < 25; y++) {
+
+        for (uint8_t x = 0; x < 80; x++) {
+
+            putcharTUI(0xff, 0x00, backcolor, x, y);
+        }
+    }
+
+    uint8_t resetX = x1;
+
+    while (y1 < y2) {
+
+        while (x1 < x2) {
+
+            putcharTUI(0xff, 0x00, forecolor, x1, y1);
+            x1++;
+        }
+        y1++;
+
+        //side shadow
+        if (shadow) {
+
+            putcharTUI(0xff, 0x00, 0x00, x1, y1);
+        }
+        x1 = resetX;
+    }
+
+    //bottom shadow
+    if (shadow) {
+
+        for (resetX++; resetX < (x2 + 1); resetX++) {
+
+            putcharTUI(0xff, 0x00, 0x00, resetX, y1);
+        }
+    }
+}
 
 char* asl::IntToString(uint32_t num) {
 
@@ -89,8 +127,15 @@ void asl::reboot() {
 }
 //doesnt work idk why
 void asl::shutdown() {
-	Port8Bit resetPort(0x604);
-	resetPort.Write(0x2000);
+	asm volatile ("cli");
+	uint8_t read = 0x02;
+	Port8Bit resetPort(0x64);
+	while (read & 0x02) {
+
+		read = resetPort.Read();
+	}
+	resetPort.Write(0x20);
+	asm volatile ("hlt");
 
 }
 

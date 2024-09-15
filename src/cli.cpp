@@ -422,7 +422,7 @@ void rebootCLI(char* args, CommandLine* cli){
 
 
 void test(char* args, CommandLine* cli){
-
+ASLCLI.shutdown();
 }
 
 

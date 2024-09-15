@@ -133,48 +133,6 @@ void printf(char* str) {
     }
 }
 
-
-void TUI(uint8_t forecolor, uint8_t backcolor,
-        uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2,
-        bool shadow) {
-
-    for (uint8_t y = 0; y < 25; y++) {
-
-        for (uint8_t x = 0; x < 80; x++) {
-
-            ASL.putcharTUI(0xff, 0x00, backcolor, x, y);
-        }
-    }
-
-    uint8_t resetX = x1;
-
-    while (y1 < y2) {
-
-        while (x1 < x2) {
-
-            ASL.putcharTUI(0xff, 0x00, forecolor, x1, y1);
-            x1++;
-        }
-        y1++;
-
-        //side shadow
-        if (shadow) {
-
-            ASL.putcharTUI(0xff, 0x00, 0x00, x1, y1);
-        }
-        x1 = resetX;
-    }
-
-    //bottom shadow
-    if (shadow) {
-
-        for (resetX++; resetX < (x2 + 1); resetX++) {
-
-            ASL.putcharTUI(0xff, 0x00, 0x00, resetX, y1);
-        }
-    }
-}
-
 void printfTUI(char* str, uint8_t forecolor, uint8_t backcolor, uint8_t x, uint8_t y) {
 
     for (int i = 0; str[i] != '\0'; i++) {

@@ -9,7 +9,6 @@ using namespace albaos::drivers;
 asl ASLSNAKE;
 Speaker PCSPEAKER;
 
-void TUI(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, bool);
 void printfTUI(char*, uint8_t, uint8_t, uint8_t, uint8_t);
 void sleep(uint32_t);
 
@@ -17,7 +16,7 @@ void sleep(uint32_t);
 
 void snakeTUI() {
 
-	TUI(0x00, 0x00, 0, 0, 0, 0, false);
+	ASLSNAKE.TUI(0x00, 0x00, 0, 0, 0, 0, false);
 	printfTUI(" (press ctrl+c to exit)", 0x0f, 0x00, 0, 0);
 	printfTUI("SCORE = ", 0x0f, 0x00, 40, 0);
 
@@ -218,7 +217,7 @@ void snake(char key) {
 
 		dead = true;
 
-		TUI(0x04, 0x04, 0, 0, 0, 0, false);
+		ASLSNAKE.TUI(0x04, 0x04, 0, 0, 0, 0, false);
 		printfTUI("-GAME OVER-", 0x0f, 0x04, 35, 10);
 
 		printfTUI("Score was ", 0x0f, 0x04, 34, 12);

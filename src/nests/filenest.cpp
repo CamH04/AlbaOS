@@ -11,7 +11,6 @@ using namespace albaos::drivers;
 using namespace albaos::filesystem;
 
 void printf(char*);
-void TUI(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, bool);
 void printfTUI(char*, uint8_t, uint8_t, uint8_t, uint8_t);
 
 
@@ -20,7 +19,7 @@ void sleep(uint32_t);
 asl ASLFILENEST;
 
 void fileTUI() {
-	TUI(0x07, 0x05, 10, 5, 70, 19, true);
+	ASLFILENEST.TUI(0x07, 0x05, 10, 5, 70, 19, true);
 	printfTUI("AlbaOs File Nest", 0x00, 0x07, 29, 7);
 	printfTUI("Search file name up to 32 characters.", 0x00, 0x07, 22, 8);
         printfTUI("Enter file name: ", 0x00, 0x07, 12, 11);
@@ -128,7 +127,7 @@ void file(bool pressed, char key, bool ctrl, bool reset) {
 						}
 						searchStr[0] = '\0';
 						search = false;
-						TUI(0x0f, 0x05, 0, 23, 79, 24, false);
+						ASLFILENEST.TUI(0x0f, 0x05, 0, 23, 79, 24, false);
 						printfTUI(fileName, 0x0f, 0x05, 0, 24);
 						printfTUI("LBA:", 0x0f, 0x05, 72, 24);
 						printfTUI(ASLFILENEST.IntToString(lba), 0x0f, 0x05, 76, 24);

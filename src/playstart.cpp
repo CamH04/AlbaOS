@@ -50,9 +50,7 @@ void playstart::song1() {
     printf("Starting song: Risen\n");
 	printf("Rip Terry o7 \n");
     for (common::uint8_t i = 0; i <= songnotelength - 1; i++) {
-
-		// * 2 to double the time of playing because desktop vm is too fast
-        PlayNote(notes1[i], octave1[i], time1[i]);
+        PlayNote(notes1[i], octave1[i], time1[i] / 2);
 		ASLPS.sleep(100);
     }
 	printf("i hope you liked gods song\n");
@@ -85,12 +83,11 @@ void playstart::song2() {
 	printf("Rip Lawrence o7 \n");
     for (common::uint8_t i = 0; i <= songnotelength - 1; i++) {
 
-        PlayNote(notes2[i], octave2[i], time2[i]);
+        PlayNote(notes2[i], octave2[i], time2[i / 2]);
 		ASLPS.sleep(100);
     }
 	printf("i hope you liked a gentlemans song\n");
 }
-//TODO update for random notes
 void playstart::song3(){
 	char notes3[] = {
 		'C','E','D','A',
@@ -105,7 +102,7 @@ void playstart::song3(){
 	uint16_t songnotelength = 8;
     printf("Starting song: Tyto\n");
     for (common::uint8_t i = 0; i <= songnotelength - 1; i++) {
-		PlayNote(notes3[i], octave3[i], ASLPS.Random() * 100);
+		PlayNote(notes3[i], octave3[i], ASLPS.Random() * 100 );
 		ASLPS.sleep(100);
     }
 	printf("Volare sicut tyto noctua \n");

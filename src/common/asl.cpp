@@ -344,18 +344,6 @@ void asl::printfHex32(uint32_t key)
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 void asl::memWrite(uint32_t memory, uint32_t inputVal) {
 
 	volatile uint32_t* value;

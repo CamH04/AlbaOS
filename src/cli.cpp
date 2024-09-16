@@ -232,7 +232,6 @@ void SingMeASong(char* args, CommandLine* cli){
     playstart PS;
     Speaker s;
     uint32_t ValueIn = findarg(args, cli, 0);
-
     switch (ValueIn){
         case 0:
             //song 1

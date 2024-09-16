@@ -16,9 +16,8 @@ namespace albaos
 
             double Random(void);
             uint16_t betterRandom();
-
             char* IntToString(uint32_t num);
-
+            void sleep(uint32_t ms);
             //printstuff
             void putchar(unsigned char ch, unsigned char forecolor,unsigned char backcolor, albaos::common::uint8_t x, albaos::common::uint8_t y);
             void cprintf(char* str, albaos::common::uint8_t forecolor, albaos::common::uint8_t backcolor, albaos::common::uint8_t x, albaos::common::uint8_t y);
@@ -29,13 +28,8 @@ namespace albaos
             void printfHex32(uint32_t key);
             void reboot();
             void shutdown();
-
             void putcharTUI(unsigned char ch, unsigned char forecolor,unsigned char backcolor, uint8_t x, uint8_t y);
             void TUI(uint8_t forecolor, uint8_t backcolor,uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2,bool shadow);
-
-
-
-
             uint32_t memRead(albaos::common::uint32_t memory);
             void memWrite(albaos::common::uint32_t memory, albaos::common::uint32_t inputVal);
             uint16_t strlen(char* args);

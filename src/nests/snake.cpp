@@ -10,7 +10,6 @@ asl ASLSNAKE;
 Speaker PCSPEAKER;
 
 void printfTUI(char*, uint8_t, uint8_t, uint8_t, uint8_t);
-void sleep(uint32_t);
 
 // ported from OsakaOS to ALbaOS :)
 
@@ -188,7 +187,7 @@ void snake(char key) {
 
 				snakeTUI();
 				snakeInit();
-				sleep(250);
+				ASLSNAKE.sleep(250);
 
 				return;
 				break;
@@ -230,13 +229,13 @@ void snake(char key) {
 		printfTUI("Press 'r' to restart.", 0x0f, 0x04, 30, 13);
 
 		PCSPEAKER.Speak(294);
-		sleep(300);
+		ASLSNAKE.sleep(300);
 
 		PCSPEAKER.Speak(220);
-		sleep(300);
+		ASLSNAKE.sleep(300);
 
 		PCSPEAKER.Speak(208);
-		sleep(300);
+		ASLSNAKE.sleep(300);
 
 		return;
 	}
@@ -294,6 +293,6 @@ void snake(char key) {
 	ASLSNAKE.putcharTUI((score % 10) + 48, 0x0f, 0x00, 50, 0);
 
 
-	sleep(speed);
+	ASLSNAKE.sleep(speed);
 }
 

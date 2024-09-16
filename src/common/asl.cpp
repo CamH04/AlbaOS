@@ -23,6 +23,21 @@ asl WOOPS;
 //TODO move printf to here!!!!!!!!!!!!!!!!
 void printf(char* str);
 
+//sleeps zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+void asl::sleep(uint32_t ms) {
+
+    //like arduino (ms) zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+    PIT pit;
+
+    for (uint32_t i = 0; i < ms; i++) {
+
+        pit.setCount(1193182/1000);
+        uint32_t start = pit.readCount();
+
+        while ((start - pit.readCount()) < 1000) {}
+    }
+}
+
 void asl::TUI(uint8_t forecolor, uint8_t backcolor,uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2,bool shadow) {
 
     for (uint8_t y = 0; y < 25; y++) {

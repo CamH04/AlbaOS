@@ -1,12 +1,12 @@
 #include <drivers/audio.h>
+#include <common/asl.h>
 
 using namespace albaos;
 using namespace albaos::common;
 using namespace albaos::drivers;
 using namespace albaos::hardwarecommunication;
 
-
-void sleep(uint32_t ms);
+asl ASLAUDIO;
 
 
 Speaker::Speaker()
@@ -54,7 +54,7 @@ void Speaker::Speak(uint32_t freq) {
 	uint32_t reset = PIT2.Read();
 
 	this->PlaySound(freq);
-	sleep(40);
+	ASLAUDIO.sleep(40);
 	this->NoSound();
 
 	PIT2.Write(reset);

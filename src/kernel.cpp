@@ -385,21 +385,6 @@ public:
 
 };
 
-//sleeps zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
-void sleep(uint32_t ms) {
-
-    //like arduino (ms) zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
-    PIT pit;
-
-    for (uint32_t i = 0; i < ms; i++) {
-
-        pit.setCount(1193182/1000);
-        uint32_t start = pit.readCount();
-
-        while ((start - pit.readCount()) < 1000) {}
-    }
-}
-
 char* argparse(char* args, uint8_t num) {
 
     char buffer[256];

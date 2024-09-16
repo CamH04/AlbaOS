@@ -9,7 +9,6 @@ using namespace albaos::drivers;
 
 void printf(char*);
 void printc(char);
-void sleep(common::uint32_t ms);
 char* IntToString(uint32_t num);
 void PlayNote(char ch, uint8_t octave, common::uint16_t time);
 uint16_t FrequencyMatch(char ch, uint8_t octave);
@@ -54,7 +53,7 @@ void playstart::song1() {
 
 		// * 2 to double the time of playing because desktop vm is too fast
         PlayNote(notes1[i], octave1[i], time1[i]);
-		sleep(100);
+		ASLPS.sleep(100);
     }
 	printf("i hope you liked gods song\n");
 }
@@ -87,7 +86,7 @@ void playstart::song2() {
     for (common::uint8_t i = 0; i <= songnotelength - 1; i++) {
 
         PlayNote(notes2[i], octave2[i], time2[i]);
-		sleep(100);
+		ASLPS.sleep(100);
     }
 	printf("i hope you liked a gentlemans song\n");
 }
@@ -107,7 +106,7 @@ void playstart::song3(){
     printf("Starting song: Tyto\n");
     for (common::uint8_t i = 0; i <= songnotelength - 1; i++) {
 		PlayNote(notes3[i], octave3[i], ASLPS.Random() * 100);
-		sleep(100);
+		ASLPS.sleep(100);
     }
 	printf("Volare sicut tyto noctua \n");
 }
@@ -117,7 +116,7 @@ void playstart::song3(){
 void playstart::PlayNote(char ch, common::uint8_t octave, common::uint16_t time) {
     drivers::Speaker PCSPEAKER;
 	PCSPEAKER.PlaySound(FrequencyMatch(ch, octave));
-	sleep(time);
+	ASLPS.sleep(time);
 }
 
 uint16_t FrequencyMatch(char ch, uint8_t octave) {

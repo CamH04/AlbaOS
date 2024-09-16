@@ -29,6 +29,7 @@ namespace albaos
             void shutdown();
             void putcharTUI(unsigned char ch, unsigned char forecolor,unsigned char backcolor, uint8_t x, uint8_t y);
             void TUI(uint8_t forecolor, uint8_t backcolor,uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2,bool shadow);
+            void printfTUI(char* str, uint8_t forecolor, uint8_t backcolor, uint8_t x, uint8_t y);
             uint32_t memRead(albaos::common::uint32_t memory);
             void memWrite(albaos::common::uint32_t memory, albaos::common::uint32_t inputVal);
             uint16_t strlen(char* args);

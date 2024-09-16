@@ -76,6 +76,33 @@ void asl::TUI(uint8_t forecolor, uint8_t backcolor,uint8_t x1, uint8_t y1, uint8
         }
     }
 }
+
+
+void asl::printfTUI(char* str, uint8_t forecolor, uint8_t backcolor, uint8_t x, uint8_t y) {
+
+    for (int i = 0; str[i] != '\0'; i++) {
+
+        if (str[i] == '\n') {
+
+            y++;
+            x = 0;
+        } else {
+            putcharTUI(str[i], forecolor, backcolor, x, y);
+            x++;
+        }
+
+        if (x >= 80) {
+
+            y++;
+            x = 0;
+        }
+
+        if (y >= 25) {
+
+            y = 0;
+        }
+    }
+}
 uint32_t asl::StringToInt(char* args){
     uint32_t number = 0;
     uint16_t i = 0;

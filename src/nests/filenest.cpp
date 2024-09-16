@@ -11,7 +11,6 @@ using namespace albaos::drivers;
 using namespace albaos::filesystem;
 
 void printf(char*);
-void printfTUI(char*, uint8_t, uint8_t, uint8_t, uint8_t);
 
 
 void sleep(uint32_t);
@@ -20,10 +19,10 @@ asl ASLFILENEST;
 
 void fileTUI() {
 	ASLFILENEST.TUI(0x07, 0x05, 10, 5, 70, 19, true);
-	printfTUI("AlbaOs File Nest", 0x00, 0x07, 29, 7);
-	printfTUI("Search file name up to 32 characters.", 0x00, 0x07, 22, 8);
-        printfTUI("Enter file name: ", 0x00, 0x07, 12, 11);
-	printfTUI("0123456789abcdef0123456789abcdef", 0x00, 0x00, 29, 11);
+	ASLFILENEST.printfTUI("AlbaOs File Nest", 0x00, 0x07, 29, 7);
+	ASLFILENEST.printfTUI("Search file name up to 32 characters.", 0x00, 0x07, 22, 8);
+        ASLFILENEST.printfTUI("Enter file name: ", 0x00, 0x07, 12, 11);
+	ASLFILENEST.printfTUI("0123456789abcdef0123456789abcdef", 0x00, 0x00, 29, 11);
 }
 
 
@@ -109,8 +108,8 @@ void file(bool pressed, char key, bool ctrl, bool reset) {
 
 					if (index == 0) {
 
-						printfTUI("0123456789abcdef0123456789abcdef", 0x07, 0x07, 12, 14);
-						printfTUI("Must enter valid file name.", 0x00, 0x07, 12, 14);
+						ASLFILENEST.printfTUI("0123456789abcdef0123456789abcdef", 0x07, 0x07, 12, 14);
+						ASLFILENEST.printfTUI("Must enter valid file name.", 0x00, 0x07, 12, 14);
 						return;
 					} else {
 						//allocating new file
@@ -128,9 +127,9 @@ void file(bool pressed, char key, bool ctrl, bool reset) {
 						searchStr[0] = '\0';
 						search = false;
 						ASLFILENEST.TUI(0x0f, 0x05, 0, 23, 79, 24, false);
-						printfTUI(fileName, 0x0f, 0x05, 0, 24);
-						printfTUI("LBA:", 0x0f, 0x05, 72, 24);
-						printfTUI(ASLFILENEST.IntToString(lba), 0x0f, 0x05, 76, 24);
+						ASLFILENEST.printfTUI(fileName, 0x0f, 0x05, 0, 24);
+						ASLFILENEST.printfTUI("LBA:", 0x0f, 0x05, 72, 24);
+						ASLFILENEST.printfTUI(ASLFILENEST.IntToString(lba), 0x0f, 0x05, 76, 24);
 
 
 						//read file if it already exists
@@ -160,7 +159,7 @@ void file(bool pressed, char key, bool ctrl, bool reset) {
 
 			char* displayStr = searchStr;
 			displayStr[index] = '_';
-			printfTUI(displayStr, 0xff, 0x00, 29, 11);
+			ASLFILENEST.printfTUI(displayStr, 0xff, 0x00, 29, 11);
 
 		//FILE EDITOR
 		} else {
@@ -170,7 +169,7 @@ void file(bool pressed, char key, bool ctrl, bool reset) {
 			if (ctrl) {
 
 				//remove previous message
-				printfTUI("0123456789abcdef0123456789abcdef", 0x05, 0x05, 33, 24);
+				ASLFILENEST.printfTUI("0123456789abcdef0123456789abcdef", 0x05, 0x05, 33, 24);
 
 				switch (key) {
 
@@ -179,11 +178,11 @@ void file(bool pressed, char key, bool ctrl, bool reset) {
 						if (FileIf(fnv1a(fileName))) {
 
 							WriteLBA(fileName, file, lba);
-							printfTUI("File has been saved.", 0x0f, 0x05, 33, 24);
+							ASLFILENEST.printfTUI("File has been saved.", 0x0f, 0x05, 33, 24);
 						} else {
 
 							NewFile(fileName, file, (lba + 1) * 1920);
-							printfTUI("File was created.", 0x0f, 0x05, 33, 24);
+							ASLFILENEST.printfTUI("File was created.", 0x0f, 0x05, 33, 24);
 						}
 						return;
 						break;
@@ -202,7 +201,7 @@ void file(bool pressed, char key, bool ctrl, bool reset) {
 
 							copyLine[i] = file[80*y+i];
 						}
-						printfTUI("Copied line to clipboard.", 0x0f, 0x05, 33, 24);
+						ASLFILENEST.printfTUI("Copied line to clipboard.", 0x0f, 0x05, 33, 24);
 						break;
 					//paste line
 					case 'P':
@@ -211,7 +210,7 @@ void file(bool pressed, char key, bool ctrl, bool reset) {
 							file[80*y+i] = copyLine[i];
 							ASLFILENEST.putcharTUI(file[80*y+i], 0x0f, 0x00, i, y);
 						}
-						printfTUI("Pasted line from clipboard.", 0x0f, 0x05, 33, 24);
+						ASLFILENEST.printfTUI("Pasted line from clipboard.", 0x0f, 0x05, 33, 24);
 						y += (1 * (y < 23));
 						break;
 					//delete line
@@ -221,7 +220,7 @@ void file(bool pressed, char key, bool ctrl, bool reset) {
 							file[80*y+i] = 0x00;
 							ASLFILENEST.putcharTUI(0x00, 0x0f, 0x00, i, y);
 						}
-						printfTUI("Deleted line.", 0x0f, 0x05, 33, 24);
+						ASLFILENEST.printfTUI("Deleted line.", 0x0f, 0x05, 33, 24);
 						y += (1 * (y < 23));
 						break;
 					default:
@@ -237,8 +236,8 @@ void file(bool pressed, char key, bool ctrl, bool reset) {
 							ASLFILENEST.putcharTUI(file[80*y+x], 0x0f, 0x00, x, y);
 						}
 					}
-					printfTUI("   ", 0x01, 0x01, 76, 24);
-					printfTUI(ASLFILENEST.IntToString(lba), 0x0f, 0x05, 76, 24);
+					ASLFILENEST.printfTUI("   ", 0x01, 0x01, 76, 24);
+					ASLFILENEST.printfTUI(ASLFILENEST.IntToString(lba), 0x0f, 0x05, 76, 24);
 				}
 				return;
 			}

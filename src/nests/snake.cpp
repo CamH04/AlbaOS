@@ -9,15 +9,13 @@ using namespace albaos::drivers;
 asl ASLSNAKE;
 Speaker PCSPEAKER;
 
-void printfTUI(char*, uint8_t, uint8_t, uint8_t, uint8_t);
-
 // ported from OsakaOS to ALbaOS :)
 
 void snakeTUI() {
 
 	ASLSNAKE.TUI(0x00, 0x00, 0, 0, 0, 0, false);
-	printfTUI(" (press ctrl+c to exit)", 0x0f, 0x00, 0, 0);
-	printfTUI("SCORE = ", 0x0f, 0x00, 40, 0);
+	ASLSNAKE.printfTUI(" (press ctrl+c to exit)", 0x0f, 0x00, 0, 0);
+	ASLSNAKE.printfTUI("SCORE = ", 0x0f, 0x00, 40, 0);
 
 	for (int i = 0; i < 80; i++) {
 
@@ -217,16 +215,16 @@ void snake(char key) {
 		dead = true;
 
 		ASLSNAKE.TUI(0x04, 0x04, 0, 0, 0, 0, false);
-		printfTUI("-GAME OVER-", 0x0f, 0x04, 35, 10);
+		ASLSNAKE.printfTUI("-GAME OVER-", 0x0f, 0x04, 35, 10);
 
-		printfTUI("Score was ", 0x0f, 0x04, 34, 12);
+		ASLSNAKE.printfTUI("Score was ", 0x0f, 0x04, 34, 12);
 		char* foo = "   ";
 		foo[0] = (score / 100) + 48;
 		foo[1] = ((score / 10) % 10) + 48;
 		foo[2] = (score % 10) + 48;
-		printfTUI(foo, 0x0f, 0x04, 44, 12);
+		ASLSNAKE.printfTUI(foo, 0x0f, 0x04, 44, 12);
 
-		printfTUI("Press 'r' to restart.", 0x0f, 0x04, 30, 13);
+		ASLSNAKE.printfTUI("Press 'r' to restart.", 0x0f, 0x04, 30, 13);
 
 		PCSPEAKER.Speak(294);
 		ASLSNAKE.sleep(300);

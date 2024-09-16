@@ -26,12 +26,8 @@ uint16_t hash(char* cmd);
 //func from kernel
 char* argparse(char*, uint8_t);
 uint8_t argcount(char*);
-uint32_t StringToInt(char* args);
-void initnetwork(char* string);
 uint16_t strlen(char* args);
-
 uint32_t numOrVar(char* args, CommandLine* cli, uint8_t argNum);
-
 uint32_t findarg(char* args, CommandLine* cli, uint8_t ArgNum);
 
 void help_page1(){
@@ -143,7 +139,7 @@ void hello(char* args, CommandLine* cli){
 
 void changetext(char* args, CommandLine* cli) {
     //chnage
-    uint16_t newColour = (uint16_t)(StringToInt(args));
+    uint16_t newColour = (uint16_t)(ASLCLI.StringToInt(args));
     if (!newColour) {
         return;
     }
@@ -314,7 +310,7 @@ uint32_t numOrVar(char* args, CommandLine* cli, uint8_t argNum) {
 	} else if (name[0] == '@' && name[2] == '\0') {
 		return (uint8_t)(name[1]);
 	} else {
-		return StringToInt(name);
+		return ASLCLI.StringToInt(name);
 	}
 }
 
@@ -461,7 +457,7 @@ uint32_t findarg(char* args, CommandLine* cli, uint8_t ArgNum){
         }else if (name[0] == '>' && name[1] == 'R' && name[2] == '\0'){
             return cli->returnVal;
         }else{
-            return StringToInt(name);
+            return ASLCLI.StringToInt(name);
         }
 }
 

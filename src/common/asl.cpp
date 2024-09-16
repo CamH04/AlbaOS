@@ -76,7 +76,29 @@ void asl::TUI(uint8_t forecolor, uint8_t backcolor,uint8_t x1, uint8_t y1, uint8
         }
     }
 }
+uint32_t asl::StringToInt(char* args){
+    uint32_t number = 0;
+    uint16_t i = 0;
+    bool foundNum = false;
 
+    for(uint16_t i = 0; args[i] != '\0'; i++){
+        if((args[i] >= 58 || args[i] <= 47) && args[i] != ' '){
+            return 0;
+        }
+        if(args[i] != ' '){
+            number *= 10;
+            number += ((uint32_t)args[i] -  48);
+            foundNum = true;
+            args[i] = ' ';
+        }
+        else{
+            if(foundNum){
+                return number;
+            }
+        }
+    }
+    return number;
+}
 char* asl::IntToString(uint32_t num) {
 
         uint32_t numChar = 1;

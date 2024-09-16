@@ -159,32 +159,6 @@ void printfTUI(char* str, uint8_t forecolor, uint8_t backcolor, uint8_t x, uint8
     }
 }
 
-//==========================
-
-uint32_t StringToInt(char* args){
-    uint32_t number = 0;
-    uint16_t i = 0;
-    bool foundNum = false;
-
-    for(uint16_t i = 0; args[i] != '\0'; i++){
-        if((args[i] >= 58 || args[i] <= 47) && args[i] != ' '){
-            return 0;
-        }
-        if(args[i] != ' '){
-            number *= 10;
-            number += ((uint32_t)args[i] -  48);
-            foundNum = true;
-            args[i] = ' ';
-        }
-        else{
-            if(foundNum){
-                return number;
-            }
-        }
-    }
-    return number;
-}
-
 //=======================================================================================================================================================================================
 
 bool EnterGUI = false;

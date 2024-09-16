@@ -12,11 +12,10 @@ namespace albaos
         public:
 
             uint16_t SetTextColor(bool set, albaos::common::uint16_t color = 0x07);
-
-
             double Random(void);
             uint16_t betterRandom();
             char* IntToString(uint32_t num);
+            uint32_t StringToInt(char* args);
             void sleep(uint32_t ms);
             //printstuff
             void putchar(unsigned char ch, unsigned char forecolor,unsigned char backcolor, albaos::common::uint8_t x, albaos::common::uint8_t y);

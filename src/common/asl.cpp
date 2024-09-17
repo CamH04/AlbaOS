@@ -215,6 +215,58 @@ uint16_t asl::SetTextColor(bool set, uint16_t color) {
 }
 
 
+char* asl::argparse(char* args, uint8_t num) {
+
+    char buffer[256];
+
+    bool valid = false;
+    uint8_t argIndex = 0;
+    uint8_t bufferIndex = 0;
+
+
+    for (int i = 0; i < (strlen(args) + 1); i++) {
+
+        if (args[i] == ' ' || args[i] == '\0') {
+
+            if (valid) {
+
+                if (argIndex == num) {
+
+                    buffer[bufferIndex] = '\0';
+                    char* arg = buffer;
+                    return arg;
+                }
+                argIndex++;
+            }
+            valid = false;
+
+        } else {
+            if (argIndex == num) {
+
+                buffer[bufferIndex] = args[i];
+                bufferIndex++;
+            }
+            valid = true;
+        }
+    }
+
+    return "how";
+}
+
+uint8_t asl::argcount(char* args) {
+
+    uint8_t i = 0;
+    char* foo = argparse(args, i);
+
+    while (foo != "how") {
+
+        foo = argparse(args, i);
+        i++;
+    }
+
+    return i-1;
+}
+
 
 //RANDOM NUMBERS
 //god help me random numbers are somthing else

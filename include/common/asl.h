@@ -33,6 +33,8 @@ namespace albaos
             uint32_t memRead(albaos::common::uint32_t memory);
             void memWrite(albaos::common::uint32_t memory, albaos::common::uint32_t inputVal);
             uint16_t strlen(char* args);
+            char* argparse(char* args, uint8_t num);
+            uint8_t argcount(char* args);
 
         };
     }

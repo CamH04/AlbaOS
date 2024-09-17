@@ -24,8 +24,6 @@ void printf(char*);
 uint16_t hash(char* cmd);
 
 //func from kernel
-char* argparse(char*, uint8_t);
-uint8_t argcount(char*);
 uint16_t strlen(char* args);
 uint32_t numOrVar(char* args, CommandLine* cli, uint8_t argNum);
 uint32_t findarg(char* args, CommandLine* cli, uint8_t ArgNum);
@@ -293,7 +291,7 @@ void emojiprint(char* args, CommandLine* cli){
 }
 
 uint32_t numOrVar(char* args, CommandLine* cli, uint8_t argNum) {
-	char* name = argparse(args, argNum);
+	char* name = ASLCLI.argparse(args, argNum);
 	uint16_t hashVar = hash(name) % 1024;
 	if (cli->varTable[hashVar] != 0xffffffff) {
 		return cli->varTable[hashVar];
@@ -448,7 +446,7 @@ uint16_t hash(char* cmd) {
 
 //a small break to find args
 uint32_t findarg(char* args, CommandLine* cli, uint8_t ArgNum){
-        char* name = argparse(args, ArgNum);
+        char* name = ASLCLI.argparse(args, ArgNum);
         uint16_t HashTemp = hash(name) % 1024;
 
         if (cli->varTable[HashTemp] != 0xffffffff){

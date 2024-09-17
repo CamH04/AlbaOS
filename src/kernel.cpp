@@ -328,7 +328,6 @@ public:
 
 };
 
-
 Desktop* LoadDesktopForTask(bool set, Desktop* desktop = 0) {
 
 	static Desktop* retDesktop = 0;
@@ -383,12 +382,15 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     drvManager.AddDriver(&keyboard);
 
 
-     VideoGraphicsArray vga;
+
+    VideoGraphicsArray vga;
+    //now in graphics mode
 	Simulator alba;
 	Desktop desktop(320, 200, 0x01, &vga, gdt, &taskManager, &alba);
 	MouseDriver mouse(&interrupts, &desktop);
 
 	drvManager.AddDriver(&mouse);
+
 
         //i forgot to add this here and wondered why it wasnt working, the blight of man
         PeripheralComponentInterconnectController PCIController;
@@ -400,8 +402,8 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
 
     //please dont spurt out 1billion GPF errors
     printf("Hardware init, Stage 3\n");
-
     interrupts.Activate();
+
     printf("Welcome To AlbaOS!");
     printf("\n  ");
     printf("\v");
@@ -434,26 +436,9 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
             kbhandler.nestSelect(kbhandler.cliMode, kbhandler.pressed,kbhandler.keyChar, kbhandler.ctrl, 0);
 		}
 	}
-
-
+	 vga.SetMode(320, 200, 8);
     KeyboardDriver keyboardDesktop(&interrupts, &desktop);
 	drvManager.Replace(&keyboardDesktop, 0);
-
-
-    //now in graphics mode
-    vga.SetMode(320, 200, 8);
-
-    /*
-	Window win1(&desktop, 10, 10, 40, 20, "1", 0x04, &kbhandler);
-	desktop.AddChild(&win1);
-
-	Window win2(&desktop, 100, 15, 50, 30, "2", 0x19, &kbhandler);
-	desktop.AddChild(&win2);
-
-	Window win3(&desktop, 60, 45, 80, 65, "3", 0x32, &kbhandler);
-	desktop.AddChild(&win3);
-    */
-
     while(keyboard.keyHex != 0x2E)
     {
         desktop.Draw(&vga);

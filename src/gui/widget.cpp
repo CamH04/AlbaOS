@@ -5,10 +5,6 @@ using namespace albaos::common;
 using namespace albaos::gui;
 
 
-uint16_t strlen(char* str);
-void sleep(uint32_t);
-
-
 Widget::Widget(Widget* parent,  int32_t x, int32_t y,
 				int32_t w, int32_t h,
 				char* name,

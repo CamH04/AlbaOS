@@ -23,6 +23,33 @@ asl WOOPS;
 //TODO move printf to here!!!!!!!!!!!!!!!!
 void printf(char* str);
 
+
+
+uint16_t hash(char* cmd);
+uint32_t asl::Trollfnv1a(char* str) {
+
+	uint32_t hash = 0x811c9dc5;
+
+
+	for (int i = 0; str[i] != '\0'; i++) {
+
+		hash ^= str[i];
+		hash *= 0x01000193;
+	}
+
+
+	//hash within sectors available on disk
+	return (hash % 2048) + 1024;
+}
+
+uint16_t asl::hash(char* cmd) {
+
+    uint32_t val = Trollfnv1a(cmd);
+    return (val >> 16) ^ (val & 0xffff);
+}
+
+
+
 //sleeps zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
 void asl::sleep(uint32_t ms) {
 

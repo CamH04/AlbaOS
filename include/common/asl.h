@@ -10,7 +10,8 @@ namespace albaos
     {
         class asl{
         public:
-
+            uint32_t Trollfnv1a(char* str);
+            uint16_t hash(char* cmd);
             uint16_t SetTextColor(bool set, albaos::common::uint16_t color = 0x07);
             double Random(void);
             uint16_t betterRandom();

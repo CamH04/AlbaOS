@@ -17,17 +17,12 @@ using namespace albaos::common;
 
 
 asl ASLCLI;
-
-void putchar(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t);
-void printfTUI(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, bool);
-void printf(char*);
-uint16_t hash(char* cmd);
-
-//func from kernel
-uint16_t strlen(char* args);
+void printf(char* str);
 uint32_t numOrVar(char* args, CommandLine* cli, uint8_t argNum);
 uint32_t findarg(char* args, CommandLine* cli, uint8_t ArgNum);
 
+
+//commands =====================================================
 void help_page1(){
     printf("=== Keybinds: ===\n");
     printf("ctrl+e : enter you into file editing nest\n");
@@ -41,6 +36,7 @@ void help_page1(){
     printf("v : tells you the version of AlbaOS!\n");
     printf("hwi : tells you about your hardware\n");
     printf("rb : reboots lol\n");
+    printf("add (any amount of numbers): adds the numbers\n");
 }
 void help_page2(){
     printf("=== Fun Commands: ===\n");
@@ -61,8 +57,6 @@ void help_page3(){
     printf("d filename: deletes file XvX \n");
 }
 
-
-//commands
 void help(char* args, CommandLine* cli){
 
     uint32_t ValueIn = findarg(args, cli, 0);
@@ -290,27 +284,6 @@ void emojiprint(char* args, CommandLine* cli){
     printf("\n");
 }
 
-uint32_t numOrVar(char* args, CommandLine* cli, uint8_t argNum) {
-	char* name = ASLCLI.argparse(args, argNum);
-	uint16_t hashVar = hash(name) % 1024;
-	if (cli->varTable[hashVar] != 0xffffffff) {
-		return cli->varTable[hashVar];
-
-	} else if (name[0] == '$' && name[2] == '\0') {
-		if (name[1] <= '9' && name[1] >= '0') {
-			return cli->argTable[name[1]-'0'];
-		}
-		if (name[1] == 'R') {
-			return cli->returnVal;
-		}
-		return 0;
-	} else if (name[0] == '@' && name[2] == '\0') {
-		return (uint8_t)(name[1]);
-	} else {
-		return ASLCLI.StringToInt(name);
-	}
-}
-
 void files(char* args, CommandLine* cli) {
 
 	char name[33];
@@ -367,9 +340,6 @@ void size(char* args, CommandLine* cli) {
 	}
 
 }
-
-
-
 void deleteFile(char* args, CommandLine* cli) {
 
 	bool deleted = DeleteFile(args);
@@ -395,59 +365,41 @@ void rebootCLI(char* args, CommandLine* cli){
     ASLCLI.reboot();
 }
 
+void add (char* args, CommandLine* cli){
+    uint32_t ArgsStringCount = ASLCLI.strlen(args);
+    uint32_t NumAmount = ArgsStringCount / 2;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    //getting amount of nums in args
+    if (ArgsStringCount % 2 != 0){
+        NumAmount += 1;
+    }
+    uint32_t total = 0;
+    for (int i = 1; i <= NumAmount; i++){
+        total = total + findarg(args, cli, i - 1);
+    }
+    printf(ASLCLI.IntToString(total));
+    printf("\n");
+}
 
 
 void test(char* args, CommandLine* cli){
-ASLCLI.shutdown();
 }
 
 
 
-uint32_t Trollfnv1a(char* str) {
-
-	uint32_t hash = 0x811c9dc5;
 
 
-	for (int i = 0; str[i] != '\0'; i++) {
-
-		hash ^= str[i];
-		hash *= 0x01000193;
-	}
 
 
-	//hash within sectors available on disk
-	return (hash % 2048) + 1024;
-}
 
-uint16_t hash(char* cmd) {
 
-    uint32_t val = Trollfnv1a(cmd);
-    return (val >> 16) ^ (val & 0xffff);
-}
+
+
 
 //a small break to find args
 uint32_t findarg(char* args, CommandLine* cli, uint8_t ArgNum){
         char* name = ASLCLI.argparse(args, ArgNum);
-        uint16_t HashTemp = hash(name) % 1024;
+        uint16_t HashTemp = ASLCLI.hash(name) % 1024;
 
         if (cli->varTable[HashTemp] != 0xffffffff){
             return cli->varTable[HashTemp];
@@ -456,6 +408,27 @@ uint32_t findarg(char* args, CommandLine* cli, uint8_t ArgNum){
         }else{
             return ASLCLI.StringToInt(name);
         }
+}
+
+uint32_t numOrVar(char* args, CommandLine* cli, uint8_t argNum) {
+	char* name = ASLCLI.argparse(args, argNum);
+	uint16_t hashVar = ASLCLI.hash(name) % 1024;
+	if (cli->varTable[hashVar] != 0xffffffff) {
+		return cli->varTable[hashVar];
+
+	} else if (name[0] == '$' && name[2] == '\0') {
+		if (name[1] <= '9' && name[1] >= '0') {
+			return cli->argTable[name[1]-'0'];
+		}
+		if (name[1] == 'R') {
+			return cli->returnVal;
+		}
+		return 0;
+	} else if (name[0] == '@' && name[2] == '\0') {
+		return (uint8_t)(name[1]);
+	} else {
+		return ASLCLI.StringToInt(name);
+	}
 }
 
 CommandLine::CommandLine(GlobalDescriptorTable* gdt,
@@ -472,7 +445,7 @@ CommandLine::~CommandLine() {
 
 void CommandLine::hash_add(char* cmd, void func(char*, CommandLine* cli)) {
 
-    uint16_t hashIndex = hash(cmd);
+    uint16_t hashIndex = ASLCLI.hash(cmd);
 
 
     while (this->cmdTable[hashIndex] != nullptr) {
@@ -501,9 +474,9 @@ void CommandLine::hash_cli_init() {
     }
 
 
-    this->varTable[hash(">")] = 0x00;
-    this->varTable[hash(">CTRL")] = 0x00;
-    this->varTable[hash(">PRESS")] = 0x00;
+    this->varTable[ASLCLI.hash(">")] = 0x00;
+    this->varTable[ASLCLI.hash(">CTRL")] = 0x00;
+    this->varTable[ASLCLI.hash(">PRESS")] = 0x00;
 
 
     this->conditionIf = true;
@@ -529,6 +502,7 @@ void CommandLine::hash_cli_init() {
 	this->hash_add("fs", size);
 	this->hash_add("d", deleteFile);
 
+    this->hash_add("add", add);
 
 
 
@@ -563,11 +537,11 @@ char* CommandLine::command(char* cmd, uint8_t length) {
         }
         command[cmdLength] = '\0';
         arguments[argLength-1] = '\0';
-        uint16_t result = hash(command);
-        if (this->conditionIf == false && result != hash("fi")) {
+        uint16_t result = ASLCLI.hash(command);
+        if (this->conditionIf == false && result != ASLCLI.hash("fi")) {
             return "IF vjbsdjvysuvbsdjnvdkjsnvsjdbvsdi";
         }
-        if (this->conditionLoop == false && result != hash("pool")) {
+        if (this->conditionLoop == false && result != ASLCLI.hash("pool")) {
             return "LOOP fbaisaofnslalfnasjghfisdnld";
         }
 

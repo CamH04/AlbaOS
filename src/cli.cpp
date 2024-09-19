@@ -36,7 +36,6 @@ void help_page1(){
     printf("v : tells you the version of AlbaOS!\n");
     printf("hwi : tells you about your hardware\n");
     printf("rb : reboots lol\n");
-    printf("add (any amount of numbers): adds the numbers\n");
 }
 void help_page2(){
     printf("=== Fun Commands: ===\n");
@@ -56,6 +55,14 @@ void help_page3(){
     printf("fs filename: tells size of file \n");
     printf("d filename: deletes file XvX \n");
 }
+void help_page4(){
+    printf("=== Maths Commands: ===\n");
+    printf("add (any amount of numbers): adds the numbers\n");
+    printf("sub (any amount of numbers): subtracts the numbers\n");
+    printf("mul (any amount of numbers): multiplies the numbers\n");
+    printf("div (any amount of numbers): divides the numbers\n");
+    printf("mod (any amount of numbers): gives the remainder\n");
+}
 
 void help(char* args, CommandLine* cli){
 
@@ -73,6 +80,10 @@ void help(char* args, CommandLine* cli){
         case 3:
             help_page3();
             break;
+        case 4:
+            help_page4();
+            break;
+
         default:
             printf("we dont have that many pages -v-");
     }
@@ -380,10 +391,70 @@ void add (char* args, CommandLine* cli){
     printf(ASLCLI.IntToString(total));
     printf("\n");
 }
+void mul (char* args, CommandLine* cli){
+    uint32_t ArgsStringCount = ASLCLI.strlen(args);
+    uint32_t NumAmount = ArgsStringCount / 2;
+
+    //getting amount of nums in args
+    if (ArgsStringCount % 2 != 0){
+        NumAmount += 1;
+    }
+    uint32_t total = 1;
+    for (int i = 1; i <= NumAmount; i++){
+        total = total * findarg(args, cli, i - 1);
+    }
+    printf(ASLCLI.IntToString(total));
+    printf("\n");
+}
+void sub (char* args, CommandLine* cli){
+    uint32_t ArgsStringCount = ASLCLI.strlen(args);
+    uint32_t NumAmount = ArgsStringCount / 2;
+
+    //getting amount of nums in args
+    if (ArgsStringCount % 2 != 0){
+        NumAmount += 1;
+    }
+    uint32_t total = findarg(args, cli, 0);
+    for (int i = 1; i <= NumAmount; i++){
+        total = total - findarg(args, cli, i);
+    }
+    printf(ASLCLI.IntToString(total));
+    printf("\n");
+
+}
+void mod (char* args, CommandLine* cli){
+    uint32_t ArgsStringCount = ASLCLI.strlen(args);
+    uint32_t NumAmount = ArgsStringCount / 2;
+    //getting amount of nums in args
+    if (ArgsStringCount % 2 != 0){
+        NumAmount += 1;
+    }
+    uint32_t total = findarg(args, cli, 0);
+    for (int i = 1; i <= NumAmount - 1; i++){
+        total = total % findarg(args, cli, i);
+    }
+    printf(ASLCLI.IntToString(total));
+    printf("\n");
+}
+void div (char* args, CommandLine* cli){
+    uint32_t ArgsStringCount = ASLCLI.strlen(args);
+    uint32_t NumAmount = ArgsStringCount / 2;
+    //getting amount of nums in args
+    if (ArgsStringCount % 2 != 0){
+        NumAmount += 1;
+    }
+    uint32_t total = findarg(args, cli, 0);
+    for (int i = 1; i <= NumAmount - 1; i++){
+        total = total / findarg(args, cli, i);
+    }
+    printf(ASLCLI.IntToString(total));
+    printf("\n");
+}
 
 
 void test(char* args, CommandLine* cli){
 }
+
 
 
 
@@ -501,8 +572,12 @@ void CommandLine::hash_cli_init() {
 	this->hash_add("files", files);
 	this->hash_add("fs", size);
 	this->hash_add("d", deleteFile);
-
+    //maths commands
     this->hash_add("add", add);
+    this->hash_add("sub", sub);
+    this->hash_add("mul", mul);
+    this->hash_add("div", div);
+    this->hash_add("mod", mod);
 
 
 

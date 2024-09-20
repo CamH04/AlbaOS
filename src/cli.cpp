@@ -451,6 +451,10 @@ void div (char* args, CommandLine* cli){
     printf("\n");
 }
 
+void date(char* args, CommandLine* cli){
+    Cmos CMOS;
+    CMOS.GetRTCFromCMOS(true);
+}
 
 void test(char* args, CommandLine* cli){
 }
@@ -566,6 +570,7 @@ void CommandLine::hash_cli_init() {
     this->hash_add("pic",pic);
     this->hash_add("singsong",SingMeASong);
     this->hash_add("hwi",hardwareinfo);
+    this->hash_add("date", date);
     this->hash_add("emojiprint",emojiprint);
     this->hash_add("rb",rebootCLI);
     //file commands
@@ -578,7 +583,6 @@ void CommandLine::hash_cli_init() {
     this->hash_add("mul", mul);
     this->hash_add("div", div);
     this->hash_add("mod", mod);
-
 
 
     this->hash_add("test",test);

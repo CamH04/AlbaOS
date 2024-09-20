@@ -13,14 +13,16 @@ namespace albaos {
 		class Cmos {
 
 			public:
-				hardwarecommunication::Port8Bit lowmemLoc;
-				hardwarecommunication::Port8Bit highmemLoc;
+				hardwarecommunication::Port8Bit cmosAdress;
+				hardwarecommunication::Port8Bit cmosData;
 
 			public:
 				Cmos();
 				~Cmos();
 
                 common::uint16_t GetRAMFromCMOS(bool print);
+				common::uint8_t get_RTC_register(int reg);
+				common::uint8_t GetRTCFromCMOS(bool print);
 		};
 	}
 }

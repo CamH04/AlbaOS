@@ -179,7 +179,8 @@ public:
 						nestSet(this->cliMode);
 						break;
                     case 'g':
-                        EnterGUI = true;
+                        //TO RE ENABLE GUI UNCOMMENT THIS LINE =======================================================
+                        //EnterGUI = true;
                         break;
 					default:
 						break;
@@ -444,5 +445,5 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
         desktop.Draw(&vga);
         //sleep(15);
     }
-    //TODO return to cli / reboot
+    //reboot
 }

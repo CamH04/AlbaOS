@@ -28,7 +28,7 @@ void help_page1(){
     printf("ctrl+e : enter you into file editing nest\n");
     printf("        ctrl+w to write to file :)\n");
     printf("ctrl+c : return to CLI \n");
-    printf("ctrl+g : Enter GUI\n");
+    //printf("ctrl+g : Enter GUI\n");
     printf("tab: clears screen\n");
     printf("\n");
     printf("=== Useful Commands: ===\n");

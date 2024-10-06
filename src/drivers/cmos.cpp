@@ -45,7 +45,6 @@ uint8_t Cmos::get_RTC_register(int reg) {
 }
 uint8_t Cmos::GetRTCFromCMOS(bool print) {
     uint8_t second,minute,hour,day,month,year;
-
     second = get_RTC_register(0x00);
     minute = get_RTC_register(0x02);
     hour = get_RTC_register(0x04);

@@ -218,15 +218,6 @@ void asl::reboot() {
 }
 //doesnt work idk why
 void asl::shutdown() {
-	asm volatile ("cli");
-	uint8_t read = 0x02;
-	Port8Bit resetPort(0x64);
-	while (read & 0x02) {
-
-		read = resetPort.Read();
-	}
-	resetPort.Write(0x20);
-	asm volatile ("hlt");
 
 }
 

@@ -8,6 +8,8 @@
 #include <drivers/amd_am79c973.h>
 #include <filesys/ofs.h>
 #include <drivers/cmos.h>
+#include <hardwarecommunication/apm.h>
+
 
 
 using namespace albaos;
@@ -457,6 +459,8 @@ void date(char* args, CommandLine* cli){
 }
 
 void test(char* args, CommandLine* cli){
+    albaos::hardwarecommunication::apm APM;
+    APM.poweroff();
 }
 
 

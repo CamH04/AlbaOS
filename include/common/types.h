@@ -16,6 +16,11 @@ namespace albaos
 
         typedef const char*             string;
         typedef uint32_t                size_t;
+
+
+        typedef int                     dword;
+        typedef short                   word;
+        typedef char                    byte;
     }
 }
 

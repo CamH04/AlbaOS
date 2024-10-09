@@ -12,7 +12,6 @@ namespace albaos
         {
             protected:
                 Port(albaos::common::uint16_t portnumber);
-                // FIXME: Must be virtual (currently isnt because the kernel has no memory management yet)
                 ~Port();
                 albaos::common::uint16_t portnumber;
         };

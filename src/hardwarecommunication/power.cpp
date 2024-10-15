@@ -2,13 +2,17 @@
 #include <common/types.h>
 #include <common/asl.h>
 
+
+
+#define NULL 0
+
 using namespace albaos;
 using namespace albaos::common;
 using namespace albaos::hardwarecommunication;
 
+asl ASLPOWER;
 
 void printf(char* str);
-
 bool apm::poweroff(){
         char* power_state = "03h";
         bool APM_error = false;
@@ -28,6 +32,7 @@ bool apm::poweroff(){
                 : "r" (power_state)
                 : "%ah", "%al", "%bx", "%ecx"
         );
+		return true;
 }
 
 
@@ -85,7 +90,7 @@ unsigned int *acpiCheckRSDPtr(unsigned int *ptr)
 	byte check = 0;
 	int i;
 
-	if (memcmp(sig, rsdp, 8) == 0)
+	if (ASLPOWER.memcmp(sig, rsdp, 8) == 0)
 	{
 		// check checksum rsdpd
 		bptr = (byte *) ptr;
@@ -144,7 +149,7 @@ unsigned int *acpiGetRSDPtr(void)
 
 int acpiCheckHeader(unsigned int *ptr, char *sig)
 {
-	if (memcmp(ptr, sig, 4) == 0)
+	if (ASLPOWER.memcmp(ptr, sig, 4) == 0)
 	{
 		char *checkPtr = (char *) ptr;
 		int len = *(ptr + 1);
@@ -177,14 +182,14 @@ int acpiEnable(void)
 			{
 				if ( (inw((unsigned int) PM1a_CNT) &SCI_EN) == 1 )
 					break;
-				sleep(10);
+				ASLPOWER.sleep(10);
 			}
 			if (PM1b_CNT != 0)
 				for (; i<300; i++ )
 				{
 					if ( (inw((unsigned int) PM1b_CNT) &SCI_EN) == 1 )
 						break;
-					sleep(10);
+					ASLPOWER.sleep(10);
 				}
 			if (i<300) {
 				wrstr("enabled acpi.\n");
@@ -228,7 +233,7 @@ int initAcpi(void)
 					int dsdtLength = *(facp->DSDT+1) -36;
 					while (0 < dsdtLength--)
 					{
-						if ( memcmp(S5Addr, "_S5_", 4) == 0)
+						if ( ASLPOWER.memcmp(S5Addr, "_S5_", 4) == 0)
 							break;
 						S5Addr++;
 					}

@@ -13,7 +13,8 @@ namespace albaos
         };
         class acpi{
         public:
-        }
+
+        };
     }
 }
 

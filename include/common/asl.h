@@ -10,6 +10,12 @@ namespace albaos
     {
         class asl{
         public:
+            //memory
+            int memcmp (const void *str1, const void *str2, size_t count);
+            void memmove(void *dest, void *src, size_t n);
+            void memcpy(void *dest, void *src, size_t n);
+            uint32_t memRead(albaos::common::uint32_t memory);
+            void memWrite(albaos::common::uint32_t memory, albaos::common::uint32_t inputVal);
             uint32_t Trollfnv1a(char* str);
             uint16_t hash(char* cmd);
             uint16_t SetTextColor(bool set, albaos::common::uint16_t color = 0x07);
@@ -31,8 +37,6 @@ namespace albaos
             void putcharTUI(unsigned char ch, unsigned char forecolor,unsigned char backcolor, uint8_t x, uint8_t y);
             void TUI(uint8_t forecolor, uint8_t backcolor,uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2,bool shadow);
             void printfTUI(char* str, uint8_t forecolor, uint8_t backcolor, uint8_t x, uint8_t y);
-            uint32_t memRead(albaos::common::uint32_t memory);
-            void memWrite(albaos::common::uint32_t memory, albaos::common::uint32_t inputVal);
             uint16_t strlen(char* args);
             char* argparse(char* args, uint8_t num);
             uint8_t argcount(char* args);

@@ -24,8 +24,46 @@ asl WOOPS;
 void printf(char* str);
 
 
-
 uint16_t hash(char* cmd);
+
+int asl::memcmp(const void *str1, const void *str2, size_t count){
+  register const unsigned char *s1 = (const unsigned char*)str1;
+  register const unsigned char *s2 = (const unsigned char*)str2;
+
+  while (count-- > 0)
+    {
+      if (*s1++ != *s2++)
+	  return s1[-1] < s2[-1] ? -1 : 1;
+    }
+  return 0;
+}
+
+void asl::memmove(void *dest, void *src, size_t n){
+// Typecast src and dest addresses to (char *)
+char *csrc = (char *)src;
+char *cdest = (char *)dest;
+
+// Create a temporary array to hold data of src
+char *temp = new char[n];
+
+// Copy data from csrc[] to temp[]
+for (int i=0; i<n; i++)
+    temp[i] = csrc[i];
+
+// Copy data from temp[] to cdest[]
+for (int i=0; i<n; i++)
+    cdest[i] = temp[i];
+
+delete [] temp;
+}
+
+void asl::memcpy(void *dest, void *src, size_t n) {
+    char *csrc = (char *)src;
+    char *cdest = (char *)dest;
+    for (int i=0; i<n; i++)
+        cdest[i] = csrc[i];
+}
+
 uint32_t asl::Trollfnv1a(char* str) {
 
 	uint32_t hash = 0x811c9dc5;

@@ -72,7 +72,6 @@ install: albaos.bin
 
 
 run: albaos.iso
-	pulseaudio --kill
 	pulseaudio --start
 	qemu-system-x86_64 -enable-kvm \
 		-boot menu=on \

@@ -82,7 +82,7 @@ struct FACP
 
 
 // check if the given address has a valid header
-unsigned int *acpiCheckRSDPtr(unsigned int *ptr)
+unsigned int *acpi::acpiCheckRSDPtr(unsigned int *ptr)
 {
 	char *sig = "RSD PTR ";
 	struct RSDPtr *rsdp = (struct RSDPtr *) ptr;
@@ -112,7 +112,7 @@ unsigned int *acpiCheckRSDPtr(unsigned int *ptr)
 
 
 // finds the acpi header and returns the address of the rsdt
-unsigned int *acpiGetRSDPtr(void)
+unsigned int *acpi::acpiGetRSDPtr(void)
 {
 	unsigned int *addr;
 	unsigned int *rsdp;
@@ -141,7 +141,7 @@ unsigned int *acpiGetRSDPtr(void)
 	return NULL;
 }
 
-int acpiCheckHeader(unsigned int *ptr, char *sig)
+int acpi::acpiCheckHeader(unsigned int *ptr, char *sig)
 {
 	if (ASLPOWER.memcmp(ptr, sig, 4) == 0)
 	{
@@ -161,7 +161,7 @@ int acpiCheckHeader(unsigned int *ptr, char *sig)
 
 
 
-int acpiEnable(void)
+int acpi::acpiEnable(void)
 {
 	// check if acpi is enabled
 	if ( (ASLPOWER.inw((unsigned int) PM1a_CNT) &SCI_EN) == 0 )
@@ -201,7 +201,7 @@ int acpiEnable(void)
 		return 0;
 	}
 }
-int initAcpi(void)
+int acpi::initAcpi(void)
 {
 	unsigned int *ptr = acpiGetRSDPtr();
 
@@ -285,7 +285,7 @@ int initAcpi(void)
 
 
 
-void acpiPowerOff(void)
+void acpi::acpiPowerOff(void)
 {
 	// SCI_EN is set to 1 if acpi shutdown is possible
 	if (SCI_EN == 0)

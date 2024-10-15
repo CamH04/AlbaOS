@@ -22,9 +22,21 @@ asl WOOPS;
 
 //TODO move printf to here!!!!!!!!!!!!!!!!
 void printf(char* str);
-
-
 uint16_t hash(char* cmd);
+
+
+
+uint16_t asl::inw (unsigned short int __port){
+  unsigned short _v;
+  __asm__ __volatile__ ("inw %w1,%0":"=a" (_v):"Nd" (__port));
+  return _v;
+}
+void asl::outb (unsigned char __value, unsigned short int __port){
+  __asm__ __volatile__ ("outb %b0,%w1": :"a" (__value), "Nd" (__port));
+}
+void asl::outw (unsigned short int __value, unsigned short int __port){
+  __asm__ __volatile__ ("outw %w0,%w1": :"a" (__value), "Nd" (__port));
+}
 
 int asl::memcmp(const void *str1, const void *str2, size_t count){
   register const unsigned char *s1 = (const unsigned char*)str1;

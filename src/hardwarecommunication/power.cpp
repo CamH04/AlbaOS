@@ -1,5 +1,6 @@
 #include <hardwarecommunication/power.h>
 #include <common/types.h>
+#include <hardwarecommunication/port.h>
 #include <common/asl.h>
 
 
@@ -48,7 +49,6 @@ word SLP_TYPb;
 word SLP_EN;
 word SCI_EN;
 byte PM1_CNT_LEN;
-
 
 
 struct RSDPtr
@@ -102,12 +102,6 @@ unsigned int *acpiCheckRSDPtr(unsigned int *ptr)
 
 		// found valid rsdpd
 		if (check == 0) {
-			/*
-			 if (desc->Revision == 0)
-				wrstr("acpi 1");
-			else
-				wrstr("acpi 2");
-			*/
 			return (unsigned int *) rsdp->RsdtAddress;
 		}
 	}
@@ -170,40 +164,40 @@ int acpiCheckHeader(unsigned int *ptr, char *sig)
 int acpiEnable(void)
 {
 	// check if acpi is enabled
-	if ( (inw((unsigned int) PM1a_CNT) &SCI_EN) == 0 )
+	if ( (ASLPOWER.inw((unsigned int) PM1a_CNT) &SCI_EN) == 0 )
 	{
 		// check if acpi can be enabled
 		if (SMI_CMD != 0 && ACPI_ENABLE != 0)
 		{
-			outb((unsigned int) SMI_CMD, ACPI_ENABLE); // send acpi enable command
+			ASLPOWER.outb((unsigned int) SMI_CMD, ACPI_ENABLE); // send acpi enable command
 			// give 3 seconds time to enable acpi
 			int i;
 			for (i=0; i<300; i++ )
 			{
-				if ( (inw((unsigned int) PM1a_CNT) &SCI_EN) == 1 )
+				if ( (ASLPOWER.inw((unsigned int) PM1a_CNT) &SCI_EN) == 1 )
 					break;
 				ASLPOWER.sleep(10);
 			}
 			if (PM1b_CNT != 0)
 				for (; i<300; i++ )
 				{
-					if ( (inw((unsigned int) PM1b_CNT) &SCI_EN) == 1 )
+					if ( (ASLPOWER.inw((unsigned int) PM1b_CNT) &SCI_EN) == 1 )
 						break;
 					ASLPOWER.sleep(10);
 				}
 			if (i<300) {
-				wrstr("enabled acpi.\n");
+				printf("enabled acpi.\n");
 				return 0;
 			} else {
-				wrstr("couldn't enable acpi.\n");
+				printf("couldn't enable acpi.\n");
 				return -1;
 			}
 		} else {
-			wrstr("no known way to enable acpi.\n");
+			printf("no known way to enable acpi.\n");
 			return -1;
 		}
 	} else {
-		//wrstr("acpi was already enabled.\n");
+		//printf("acpi was already enabled.\n");
 		return 0;
 	}
 }
@@ -270,20 +264,20 @@ int initAcpi(void)
 
 							return 0;
 						} else {
-							wrstr("\\_S5 parse error.\n");
+							printf("\\_S5 parse error.\n");
 						}
 					} else {
-						wrstr("\\_S5 not present.\n");
+						printf("\\_S5 not present.\n");
 					}
 				} else {
-					wrstr("DSDT invalid.\n");
+					printf("DSDT invalid.\n");
 				}
 			}
 			ptr++;
 		}
-		wrstr("no valid FACP present.\n");
+		printf("no valid FACP present.\n");
 	} else {
-		wrstr("no acpi.\n");
+		printf("no acpi.\n");
 	}
 
 	return -1;
@@ -300,9 +294,9 @@ void acpiPowerOff(void)
 	acpiEnable();
 
 	// send the shutdown command
-	outw((unsigned int) PM1a_CNT, SLP_TYPa | SLP_EN );
+	ASLPOWER.outw((unsigned int) PM1a_CNT, SLP_TYPa | SLP_EN );
 	if ( PM1b_CNT != 0 )
-		outw((unsigned int) PM1b_CNT, SLP_TYPb | SLP_EN );
+		ASLPOWER.outw((unsigned int) PM1b_CNT, SLP_TYPb | SLP_EN );
 
-	wrstr("acpi poweroff failed.\n");
+	printf("acpi poweroff failed.\n");
 }

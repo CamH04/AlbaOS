@@ -11,6 +11,9 @@ namespace albaos
         class asl{
         public:
             //memory
+            uint16_t inw (unsigned short int __port);
+            void outb (unsigned char __value, unsigned short int __port);
+            void outw (unsigned short int __value, unsigned short int __port);
             int memcmp (const void *str1, const void *str2, size_t count);
             void memmove(void *dest, void *src, size_t n);
             void memcpy(void *dest, void *src, size_t n);

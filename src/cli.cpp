@@ -8,7 +8,7 @@
 #include <drivers/amd_am79c973.h>
 #include <filesys/ofs.h>
 #include <drivers/cmos.h>
-#include <hardwarecommunication/apm.h>
+#include <hardwarecommunication/power.h>
 
 
 
@@ -38,6 +38,8 @@ void help_page1(){
     printf("v : tells you the version of AlbaOS!\n");
     printf("hwi : tells you about your hardware\n");
     printf("rb : reboots lol\n");
+    printf("shutdown : shuts down\n");
+    printf("date: gives date\n");
 }
 void help_page2(){
     printf("=== Fun Commands: ===\n");
@@ -457,10 +459,10 @@ void date(char* args, CommandLine* cli){
     Cmos CMOS;
     CMOS.GetRTCFromCMOS(true);
 }
-
+void shutdown(char* args, CommandLine* cli){
+    ASLCLI.shutdown();
+}
 void test(char* args, CommandLine* cli){
-    albaos::hardwarecommunication::apm APM;
-    APM.poweroff();
 }
 
 
@@ -576,6 +578,7 @@ void CommandLine::hash_cli_init() {
     this->hash_add("hwi",hardwareinfo);
     this->hash_add("date", date);
     this->hash_add("emojiprint",emojiprint);
+    this->hash_add("shutdown",shutdown);
     this->hash_add("rb",rebootCLI);
     //file commands
 	this->hash_add("files", files);

@@ -5,6 +5,7 @@
 #include <owlart.h>
 #include <playstart.h>
 #include <syscalls.h>
+#include <hardwarecommunication/power.h>
 #include <hardwarecommunication/interrupts.h>
 #include <hardwarecommunication/pci.h>
 #include <drivers/amd_am79c973.h>
@@ -404,6 +405,10 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     //please dont spurt out 1billion GPF errors
     printf("Hardware init, Stage 3\n");
     interrupts.Activate();
+
+    acpi ACPI;
+    ACPI.initAcpi();
+    ACPI.acpiEnable();
 
     printf("Welcome To AlbaOS!");
     printf("\n  ");

@@ -190,6 +190,8 @@ int acpi::acpiEnable(void)
 				return 0;
 			} else {
 				printf("couldn't enable acpi.\n");
+				printf("shutdown command will not work!!!!!!!!\n");
+				ASLPOWER.sleep(1000);
 				return -1;
 			}
 		} else {
@@ -287,7 +289,6 @@ int acpi::initAcpi(void)
 
 void acpi::acpiPowerOff(void)
 {
-	// SCI_EN is set to 1 if acpi shutdown is possible
 	if (SCI_EN == 0)
 		return;
 

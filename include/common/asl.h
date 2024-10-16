@@ -14,7 +14,7 @@ namespace albaos
             uint16_t inw (unsigned short int __port);
             void outb (unsigned char __value, unsigned short int __port);
             void outw (unsigned short int __value, unsigned short int __port);
-            int memcmp (const void *str1, const void *str2, size_t count);
+            int memcmp(const void *s1, const void *s2, size_t n);
             void memmove(void *dest, void *src, size_t n);
             void memcpy(void *dest, void *src, size_t n);
             uint32_t memRead(albaos::common::uint32_t memory);

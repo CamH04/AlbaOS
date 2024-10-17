@@ -25,6 +25,12 @@ asl WOOPS;
 void printf(char* str);
 uint16_t hash(char* cmd);
 
+//time since ast cpu reset
+uint64_t asl::rdtsc(void){
+    uint32_t low, high;
+    asm volatile("rdtsc":"=a"(low),"=d"(high));
+    return ((uint64_t)high << 32) | low;
+}
 
 
 uint16_t asl::inw (unsigned short int __port){

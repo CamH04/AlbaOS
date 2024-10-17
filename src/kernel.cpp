@@ -130,6 +130,10 @@ void printf(char* str) {
         }
     }
 }
+void benchmark(){
+    printf(ASL.IntToString(ASL.rdtsc()));
+    printf("\n");
+}
 
 bool EnterGUI = false;
 //"put Keybaord in command line pls" the class
@@ -367,16 +371,13 @@ extern "C" void callConstructors()
 
 extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot_magic*/)
 {
-
     GlobalDescriptorTable* gdt;
     TaskManager taskManager;
     //old multitasking debugging stuff
     //Task taskexample(&gdt, functionForTask);
     InterruptManager interrupts(0x20, gdt, &taskManager);
     SyscallHandler syscalls(&interrupts, 0x80);
-
     printf("Hardware init, Stage 1\n");
-
     DriverManager drvManager;
     AdvancedTechnologyAttachment ata0m(0x1F0, true);
 	CLIKeyboardEventHandler kbhandler(gdt, &taskManager, &ata0m);
@@ -386,29 +387,31 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
 
 
     VideoGraphicsArray vga;
-    //now in graphics mode
 	Simulator alba;
 	Desktop desktop(320, 200, 0x01, &vga, gdt, &taskManager, &alba);
 	MouseDriver mouse(&interrupts, &desktop);
 
 	drvManager.AddDriver(&mouse);
 
-
-        //i forgot to add this here and wondered why it wasnt working, the blight of man
         PeripheralComponentInterconnectController PCIController;
         PCIController.SelectDrivers(&drvManager, &interrupts);
 
+    benchmark();
         //activating drivers
         printf("Hardware init, Stage 2\n");
         drvManager.ActivateAll();
+    benchmark();
 
-    //please dont spurt out 1billion GPF errors
     printf("Hardware init, Stage 3\n");
     interrupts.Activate();
+
+    benchmark();
 
     acpi ACPI;
     ACPI.initAcpi();
     ACPI.acpiEnable();
+
+    benchmark();
 
     printf("Welcome To AlbaOS!");
     printf("\n  ");
@@ -425,7 +428,6 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
         //hi the main menu is being printed rn
     }
     printf("\v");
-    //initialize command line hash table
     printf("Welcome to the AlbaOS Command Line! (ACL) \n");
 	printf("use the help command (  help  ) if you need assistance ^v^\n");
     printf("press tab or use the clear command (  clear  ) to clear terminal @v@\n");
@@ -450,5 +452,6 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
         desktop.Draw(&vga);
         //sleep(15);
     }
-    //reboot
+    ASL.reboot();
+
 }

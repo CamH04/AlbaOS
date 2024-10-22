@@ -31,6 +31,10 @@ uint64_t asl::rdtsc(void){
     asm volatile("rdtsc":"=a"(low),"=d"(high));
     return ((uint64_t)high << 32) | low;
 }
+void asl::benchmark(){
+    printf(IntToString(rdtsc()));
+    printf("\n");
+}
 
 
 uint16_t asl::inw (unsigned short int __port){

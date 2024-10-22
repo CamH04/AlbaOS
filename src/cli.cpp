@@ -40,6 +40,7 @@ void help_page1(){
     printf("rb : reboots lol\n");
     printf("shutdown : shuts down\n");
     printf("date: gives date\n");
+    printf("benchmark: displays the amount of clock cyles since last cpu reset\n");
 }
 void help_page2(){
     printf("=== Fun Commands: ===\n");
@@ -461,7 +462,12 @@ void date(char* args, CommandLine* cli){
 }
 void shutdown(char* args, CommandLine* cli){
     ASLCLI.shutdown();
+    //ASLCLI.outw(0x604, 0x2000);
 }
+void benchmark(char* args, CommandLine* cli){
+    ASLCLI.benchmark();
+}
+
 void test(char* args, CommandLine* cli){
 }
 
@@ -591,6 +597,7 @@ void CommandLine::hash_cli_init() {
     this->hash_add("div", div);
     this->hash_add("mod", mod);
 
+    this->hash_add("benchmark",benchmark);
 
     this->hash_add("test",test);
 }

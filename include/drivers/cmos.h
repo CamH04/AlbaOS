@@ -23,6 +23,7 @@ namespace albaos {
                 common::uint16_t GetRAMFromCMOS(bool print);
 				common::uint8_t get_RTC_register(int reg);
 				common::uint8_t GetRTCFromCMOS(bool print);
+				common::uint32_t get_update_in_progress_flag();
 		};
 	}
 }

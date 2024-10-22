@@ -130,10 +130,6 @@ void printf(char* str) {
         }
     }
 }
-void benchmark(){
-    printf(ASL.IntToString(ASL.rdtsc()));
-    printf("\n");
-}
 
 bool EnterGUI = false;
 //"put Keybaord in command line pls" the class
@@ -396,22 +392,18 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
         PeripheralComponentInterconnectController PCIController;
         PCIController.SelectDrivers(&drvManager, &interrupts);
 
-    benchmark();
+    ASL.benchmark();
         //activating drivers
         printf("Hardware init, Stage 2\n");
         drvManager.ActivateAll();
-    benchmark();
+    ASL.benchmark();
 
     printf("Hardware init, Stage 3\n");
     interrupts.Activate();
 
-    benchmark();
-
     acpi ACPI;
     ACPI.initAcpi();
     ACPI.acpiEnable();
-
-    benchmark();
 
     printf("Welcome To AlbaOS!");
     printf("\n  ");

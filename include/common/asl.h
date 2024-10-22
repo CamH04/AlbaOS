@@ -10,6 +10,7 @@ namespace albaos
     {
         class asl{
         public:
+            void benchmark();
             uint64_t rdtsc(void);
             //memory
             uint16_t inw (unsigned short int __port);

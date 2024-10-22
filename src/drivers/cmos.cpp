@@ -38,13 +38,23 @@ uint16_t Cmos::GetRAMFromCMOS(bool print){
     return ram;
 }
 
+//RTC CLOCK =================================================
+
+uint8_t second,minute,hour,day,month,year;
+//set bu acpi table
+uint32_t c_reg = 0x00;
+
+
+uint32_t Cmos::get_update_in_progress_flag(){
+    cmosAdress.Write(0x0A);
+    return (cmosData.Read() & 0x80);
+}
 
 uint8_t Cmos::get_RTC_register(int reg) {
       cmosAdress.Write(reg);
       return cmosData.Read();
 }
 uint8_t Cmos::GetRTCFromCMOS(bool print) {
-    uint8_t second,minute,hour,day,month,year;
     second = get_RTC_register(0x00);
     minute = get_RTC_register(0x02);
     hour = get_RTC_register(0x04);

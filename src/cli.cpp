@@ -458,7 +458,7 @@ void div (char* args, CommandLine* cli){
 
 void date(char* args, CommandLine* cli){
     Cmos CMOS;
-    CMOS.GetRTCFromCMOS(true);
+    CMOS.ReadRTC(true);
 }
 void shutdown(char* args, CommandLine* cli){
     ASLCLI.shutdown();

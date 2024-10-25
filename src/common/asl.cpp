@@ -2,7 +2,7 @@
 #include <drivers/pit.h>
 #include <hardwarecommunication/power.h>
 #include <drivers/amd_am79c973.h>
-
+#include <drivers/pit.h>
 
 // most of this has been moved from kernel to here (AlbaOS Standard Lib)
 
@@ -24,6 +24,15 @@ asl WOOPS;
 //TODO move printf to here!!!!!!!!!!!!!!!!
 void printf(char* str);
 uint16_t hash(char* cmd);
+
+
+
+uint64_t asl::getTicks() {
+    PIT pit;
+    pit.setCount(1193182/1000);
+    return (double)(pit.readCount());
+
+}
 
 //time since ast cpu reset
 uint64_t asl::rdtsc(void){
@@ -128,7 +137,43 @@ void asl::sleep(uint32_t ms) {
         while ((start - pit.readCount()) < 1000) {}
     }
 }
+uint8_t asl::Web2EGA(uint32_t colour) {
+uint8_t bytes[3];
+bytes[2] = colour >> 16;
+bytes[1] = (colour >> 8) & 0xff;
+bytes[0] = colour & 0xff;
 
+uint8_t result = 0;
+for (int i = 0; i < 3; i++) {
+
+	if(bytes[i] < 0x2b){
+        bytes[i] = 0x00;
+	}
+	else if (bytes[i] < 0x80) {
+        bytes[i] = 0x55;
+	}
+	else if (bytes[i] < 0xd5) {
+        bytes[i] = 0xaa;
+	}
+	else{
+        bytes[i] = 0xff;
+    }
+}
+for (int i = 0; i < 3; i++) {
+
+	switch (bytes[i]) {
+		case 0xff:
+			result |= (1 << (i+3));
+			result |= (1 << i);
+			break;
+		case 0x55: result |= (1 << (i+3)); break;
+		case 0xaa: result |= (1 << i); break;
+		default: break;
+	}
+}
+return result;
+
+}
 void asl::TUI(uint8_t forecolor, uint8_t backcolor,uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2,bool shadow) {
 
     for (uint8_t y = 0; y < 25; y++) {

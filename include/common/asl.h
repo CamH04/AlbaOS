@@ -11,6 +11,7 @@ namespace albaos
         class asl{
         public:
             void benchmark();
+            uint64_t getTicks();
             uint64_t rdtsc(void);
             //memory
             uint16_t inw (unsigned short int __port);
@@ -30,6 +31,7 @@ namespace albaos
             uint32_t StringToInt(char* args);
             void sleep(uint32_t ms);
             //printstuff
+            uint8_t Web2EGA(uint32_t colour);
             void putchar(unsigned char ch, unsigned char forecolor,unsigned char backcolor, albaos::common::uint8_t x, albaos::common::uint8_t y);
             void cprintf(char* str, albaos::common::uint8_t forecolor, albaos::common::uint8_t backcolor, albaos::common::uint8_t x, albaos::common::uint8_t y);
             void printc(char c);

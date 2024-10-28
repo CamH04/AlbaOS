@@ -123,7 +123,7 @@ uint8_t Cmos::ReadRTC(bool print) {
       }
     if(print == true){
         printf("Time: ");
-        printf(ASLCMOS.IntToString(hour + 1));
+        printf(ASLCMOS.IntToString(hour));
         printf(":");
         printf(ASLCMOS.IntToString(minute));
         printf("\n");

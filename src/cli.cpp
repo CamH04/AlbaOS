@@ -275,6 +275,8 @@ void hardwareinfo(char* args, CommandLine* cli){
     CPUFINDER.cpufind();
     printf("\n");
 
+    ASLCLI.PrintCpuSpeed();
+
     printf("== RAM: ==\n");
     Cmos CMOS;
     CMOS.GetRAMFromCMOS(true);

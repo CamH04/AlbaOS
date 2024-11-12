@@ -40,11 +40,29 @@ uint64_t asl::rdtsc(void){
     asm volatile("rdtsc":"=a"(low),"=d"(high));
     return ((uint64_t)high << 32) | low;
 }
+double asl::calculateClockSpeed() {
+    uint64_t start, end;
+    // Record start cycle count
+    start = rdtsc();
+    // Wait for 1 second
+    sleep(1000);
+    // Record end cycle count
+    end = rdtsc();
+    // Calculate clock speed in Hz
+    return (double)(end - start); // Since delay is 1 second, cycles = Hz
+}
 void asl::benchmark(){
     printf(IntToString(rdtsc()));
     printf("\n");
 }
-
+void asl::PrintCpuSpeed(){
+    printf("CPU Speed: ");
+    printf(IntToString((uint32_t)calculateClockSpeed() / 100000000));
+    printf(".");
+    /*i am sorry*/
+    printf(IntToString(((uint32_t)calculateClockSpeed()%100000000)/10000000 ));
+    printf(" GHz \n\n");
+}
 
 uint16_t asl::inw (unsigned short int __port){
   unsigned short _v;

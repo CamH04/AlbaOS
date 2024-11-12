@@ -10,6 +10,8 @@ namespace albaos
     {
         class asl{
         public:
+            void PrintCpuSpeed();
+            double calculateClockSpeed();
             void benchmark();
             uint64_t getTicks();
             uint64_t rdtsc(void);

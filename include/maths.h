@@ -10,7 +10,13 @@ namespace albaos {
 	namespace math {
 
 		common::uint32_t abs(common::int32_t x);
-
+		double absD(double x);
+		double sin(double x);
+		double cos(double x);
+		const double pi = 3.14159265358979323846;
+		double power(double x, double power);
+		double factorial(double x);
+		double fmod(double a, double b);
 
 
 		struct point {

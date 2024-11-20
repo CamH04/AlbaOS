@@ -27,7 +27,7 @@ uint16_t hash(char* cmd);
 
 
 
-uint64_t asl::getTicks() {
+uint64_t asl::GetTicks() {
     PIT pit;
     pit.setCount(1193182/1000);
     return (double)(pit.readCount());

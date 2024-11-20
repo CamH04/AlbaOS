@@ -29,6 +29,7 @@ objects = obj/loader.o \
 	  obj/gui/desktop.o \
 	  obj/gui/window.o \
 	  obj/gui/sim.o \
+	  obj/gui/raycasting.o \
 	  obj/filesys/ofs.o \
 	  obj/cli.o \
 	  obj/app.o \

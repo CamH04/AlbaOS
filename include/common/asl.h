@@ -13,7 +13,7 @@ namespace albaos
             void PrintCpuSpeed();
             double calculateClockSpeed();
             void benchmark();
-            uint64_t getTicks();
+            uint64_t GetTicks();
             uint64_t rdtsc(void);
             //memory
             uint16_t inw (unsigned short int __port);

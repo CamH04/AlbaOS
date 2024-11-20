@@ -10,7 +10,59 @@ uint32_t albaos::math::abs(int32_t x) {
 	int32_t y = x >> 31;
 	return ((x ^ y) - y);
 }
+double albaos::math::absD(double x) {
 
+	if (x < 0.0) { return -x; }
+	return x;
+}
+double albaos::math::sin(double x) {
+
+	x = fmod(x, 2*pi);
+	if (x < 0) { x = (2 * pi) - x; }
+
+	int8_t sign = 1;
+
+	if (x > pi) {
+
+		x -= pi;
+		sign = -1;
+	}
+	double result = x;
+	double coefficient = 3.0;
+
+	for (int i = 0; i < 10; i++) {
+
+		double pow = power(x, coefficient);
+		double frac = factorial(coefficient);
+
+		if (i % 2 == 0) { result -= (pow/frac); }
+		else { result += (pow/frac); }
+
+		coefficient += 2.0;
+	}
+	return ((double)sign)*result;
+}
+double albaos::math::cos(double x) {
+
+	return sin((pi / 2.0) - x);
+}
+double albaos::math::power(double x, double p) {
+
+	double n = x;
+	for (double i = 1.0; i < p; i += 1.0) { n *= x; }
+	return n;
+}
+double albaos::math::fmod(double a, double b) {
+
+	double frac = a / b;
+	int floor = frac > 0 ? (int)frac : (int)(frac - 0.999999999999999);
+	return (a - b * (double)floor);
+}
+double albaos::math::factorial(double x) {
+
+	if (x == 0) { return 1.0; }
+	return x * (factorial(x - 1.0));
+}
 
 void albaos::math::LineFillLow(int32_t x0, int32_t y0,
 				int32_t x1, int32_t y1,

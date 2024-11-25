@@ -24,6 +24,7 @@
 #include <drivers/pit.h>
 #include <nests/filenest.h>
 #include <nests/snake.h>
+#include <nests/raycastdemo.h>
 #include <gui/sim.h>
 
 using namespace albaos;
@@ -34,6 +35,7 @@ using namespace albaos::filesystem;
 using namespace albaos::gui;
 
 asl ASL;
+RaycastDemo r;
 
 void printf(char* str) {
     static uint8_t x = 0, y = 0;
@@ -154,6 +156,9 @@ public:
             case 2:
 					snake(ch);
 					break;
+            case 3:
+                    r.LoadData();
+                    break;
             default:
                 break;
         }
@@ -182,6 +187,10 @@ public:
                     case 'g':
                         //TO RE ENABLE GUI UNCOMMENT THIS LINE =======================================================
                         //EnterGUI = true;
+                        break;
+                    case 'r':
+                        this->cliMode = 3;
+                        nestSet(this->cliMode);
                         break;
 					default:
 						break;
@@ -303,6 +312,10 @@ public:
 					snakeTUI();
 					snakeInit();
 					break;
+                case 3:
+                    //raycaster
+                    r.LoadData();
+                    break;
 				default:
 					printf("Mode not found.\n");
 					break;

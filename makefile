@@ -35,6 +35,7 @@ objects = obj/loader.o \
 	  obj/app.o \
 	  obj/maths.o \
 	  obj/nests/filenest.o \
+	  obj/nests/raycastdemo.o \
 	  obj/nests/snake.o \
 	  obj/playstart.o \
 	  obj/cpuid.o \

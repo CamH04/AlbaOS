@@ -35,7 +35,6 @@ using namespace albaos::filesystem;
 using namespace albaos::gui;
 
 asl ASL;
-RaycastDemo r;
 
 void printf(char* str) {
     static uint8_t x = 0, y = 0;
@@ -157,7 +156,7 @@ public:
 					snake(ch);
 					break;
             case 3:
-                    r.LoadData();
+                    //r.LoadData();
                     break;
             default:
                 break;
@@ -189,8 +188,8 @@ public:
                         //EnterGUI = true;
                         break;
                     case 'r':
-                        this->cliMode = 3;
-                        nestSet(this->cliMode);
+                        //this->cliMode = 3;
+                        //nestSet(this->cliMode);
                         break;
 					default:
 						break;
@@ -314,7 +313,7 @@ public:
 					break;
                 case 3:
                     //raycaster
-                    r.LoadData();
+                    //r.LoadData();
                     break;
 				default:
 					printf("Mode not found.\n");

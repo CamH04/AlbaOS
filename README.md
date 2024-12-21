@@ -70,6 +70,7 @@ sudo apt-get install xorriso
 +    - File Edit Nest
 + CMOS Driver
 + The AlbaOS Standard Library (ASL)
++ Raycasting Engine
 + Many Bugs!
 
 ## Some Ascii art of my owls: 
@@ -94,6 +95,12 @@ sudo apt-get install xorriso
   /)_)/  /)_)/
 ---**-----**----
 ```
+
+## Alt Builds Of AlbaOS :
++ AlbaOS For Arm (raspberry pi)
++ AlbaOS For Arm (Cortex-A15)
++ AlbaOS For Mc (tweaked:cc)
+
 
 ## Website:
 With Docs, Articles And Other Hoopla

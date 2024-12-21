@@ -26,6 +26,34 @@ void printf(char* str);
 uint16_t hash(char* cmd);
 
 
+char* asl::FloatToString(float number) {
+    static char buffer[32];
+    char* ptr = buffer;
+    if (number < 0) {
+        *ptr++ = '-';
+        number = -number;
+    }
+    int integerPart = static_cast<int>(number);
+    float fractionalPart = number - integerPart;
+    char intBuffer[16];
+    int i = 0;
+    do {
+        intBuffer[i++] = '0' + (integerPart % 10);
+        integerPart /= 10;
+    } while (integerPart > 0);
+    while (i > 0) {
+        *ptr++ = intBuffer[--i];
+    }
+    *ptr++ = '.';
+    for (int j = 0; j < 6; ++j) {
+        fractionalPart *= 10;
+        int digit = static_cast<int>(fractionalPart);
+        *ptr++ = '0' + digit;
+        fractionalPart -= digit;
+    }
+    *ptr = '\0';
+    return buffer;
+}
 
 uint64_t asl::GetTicks() {
     PIT pit;

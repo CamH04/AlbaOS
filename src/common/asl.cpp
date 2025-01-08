@@ -59,7 +59,6 @@ uint64_t asl::GetTicks() {
     PIT pit;
     pit.setCount(1193182/1000);
     return (double)(pit.readCount());
-
 }
 
 //time since ast cpu reset
@@ -70,14 +69,10 @@ uint64_t asl::rdtsc(void){
 }
 double asl::calculateClockSpeed() {
     uint64_t start, end;
-    // Record start cycle count
     start = rdtsc();
-    // Wait for 1 second
     sleep(1000);
-    // Record end cycle count
     end = rdtsc();
-    // Calculate clock speed in Hz
-    return (double)(end - start); // Since delay is 1 second, cycles = Hz
+    return (double)(end - start); //delay is 1 second, cycles = Hz
 }
 void asl::benchmark(){
     printf(IntToString(rdtsc()));
@@ -105,36 +100,25 @@ void asl::outw (unsigned short int __value, unsigned short int __port){
 }
 
 
-int asl::memcmp(const void *s1, const void *s2, size_t n)
-{
+int asl::memcmp(const void *s1, const void *s2, size_t n){
     size_t i;
     uint8_t *p1 = (uint8_t *)s1, *p2 = (uint8_t *)s2;
-
     for (i = 0; i < n; i++) {
         if (p1[i] != p2[i]) {
             return p1[i] > p2[i] ? 1 : -1;
         }
     }
-
     return 0;
 }
 
 void asl::memmove(void *dest, void *src, size_t n){
-// Typecast src and dest addresses to (char *)
 char *csrc = (char *)src;
 char *cdest = (char *)dest;
-
-// Create a temporary array to hold data of src
 char *temp = new char[n];
-
-// Copy data from csrc[] to temp[]
 for (int i=0; i<n; i++)
     temp[i] = csrc[i];
-
-// Copy data from temp[] to cdest[]
 for (int i=0; i<n; i++)
     cdest[i] = temp[i];
-
 delete [] temp;
 }
 
@@ -146,23 +130,17 @@ void asl::memcpy(void *dest, void *src, size_t n) {
 }
 
 uint32_t asl::Trollfnv1a(char* str) {
-
 	uint32_t hash = 0x811c9dc5;
-
-
 	for (int i = 0; str[i] != '\0'; i++) {
 
 		hash ^= str[i];
 		hash *= 0x01000193;
 	}
-
-
 	//hash within sectors available on disk
 	return (hash % 2048) + 1024;
 }
 
 uint16_t asl::hash(char* cmd) {
-
     uint32_t val = Trollfnv1a(cmd);
     return (val >> 16) ^ (val & 0xffff);
 }
@@ -170,16 +148,11 @@ uint16_t asl::hash(char* cmd) {
 
 
 //sleeps zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
-void asl::sleep(uint32_t ms) {
-
-    //like arduino (ms) zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+void asl::sleep(uint32_t ms) {//like arduino (ms)
     PIT pit;
-
     for (uint32_t i = 0; i < ms; i++) {
-
         pit.setCount(1193182/1000);
         uint32_t start = pit.readCount();
-
         while ((start - pit.readCount()) < 1000) {}
     }
 }
@@ -188,10 +161,8 @@ uint8_t bytes[3];
 bytes[2] = colour >> 16;
 bytes[1] = (colour >> 8) & 0xff;
 bytes[0] = colour & 0xff;
-
 uint8_t result = 0;
 for (int i = 0; i < 3; i++) {
-
 	if(bytes[i] < 0x2b){
         bytes[i] = 0x00;
 	}
@@ -206,7 +177,6 @@ for (int i = 0; i < 3; i++) {
     }
 }
 for (int i = 0; i < 3; i++) {
-
 	switch (bytes[i]) {
 		case 0xff:
 			result |= (1 << (i+3));
@@ -221,37 +191,26 @@ return result;
 
 }
 void asl::TUI(uint8_t forecolor, uint8_t backcolor,uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2,bool shadow) {
-
     for (uint8_t y = 0; y < 25; y++) {
-
         for (uint8_t x = 0; x < 80; x++) {
-
             putcharTUI(0xff, 0x00, backcolor, x, y);
         }
     }
-
     uint8_t resetX = x1;
-
     while (y1 < y2) {
-
         while (x1 < x2) {
-
             putcharTUI(0xff, 0x00, forecolor, x1, y1);
             x1++;
         }
         y1++;
-
         //side shadow
         if (shadow) {
-
             putcharTUI(0xff, 0x00, 0x00, x1, y1);
         }
         x1 = resetX;
     }
-
     //bottom shadow
     if (shadow) {
-
         for (resetX++; resetX < (x2 + 1); resetX++) {
 
             putcharTUI(0xff, 0x00, 0x00, resetX, y1);
@@ -261,26 +220,19 @@ void asl::TUI(uint8_t forecolor, uint8_t backcolor,uint8_t x1, uint8_t y1, uint8
 
 
 void asl::printfTUI(char* str, uint8_t forecolor, uint8_t backcolor, uint8_t x, uint8_t y) {
-
     for (int i = 0; str[i] != '\0'; i++) {
-
         if (str[i] == '\n') {
-
             y++;
             x = 0;
         } else {
             putcharTUI(str[i], forecolor, backcolor, x, y);
             x++;
         }
-
         if (x >= 80) {
-
             y++;
             x = 0;
         }
-
         if (y >= 25) {
-
             y = 0;
         }
     }
@@ -309,25 +261,17 @@ uint32_t asl::StringToInt(char* args){
     return number;
 }
 char* asl::IntToString(uint32_t num) {
-
         uint32_t numChar = 1;
         uint8_t i = 1;
-
         if (num % 10 != num) {
-
                 while ((num / (numChar)) >= 10) {
-
                         numChar *= 10;
                         i++;
                 }
-
                 char* str = "4294967296";
                 uint8_t strIndex = 0;
-
                 while (i) {
-
                         str[strIndex] = (char)(((num / (numChar)) % 10) + 48);
-
                         if (numChar >= 10) {
 
                                 numChar /= 10;
@@ -335,13 +279,11 @@ char* asl::IntToString(uint32_t num) {
                         strIndex++;
                         i--;
                 }
-
                 str[strIndex] = '\0';
                 return str;
         }
         char* str = " ";
         str[0] = (num + 48);
-
         return str;
 }
 
@@ -349,7 +291,6 @@ char* asl::IntToString(uint32_t num) {
 // UI  Prints =============================================
 void asl::putcharTUI(unsigned char ch, unsigned char forecolor,
         unsigned char backcolor, uint8_t x, uint8_t y) {
-
     uint16_t attrib = (backcolor << 4) | (forecolor & 0x0f);
     volatile uint16_t* vidmem;
     vidmem = (volatile uint16_t*)0xb8000 + (80*y+x);
@@ -357,17 +298,12 @@ void asl::putcharTUI(unsigned char ch, unsigned char forecolor,
 }
 
 void asl::reboot() {
-
 	asm volatile ("cli");
-
 	uint8_t read = 0x02;
 	Port8Bit resetPort(0x64);
-
 	while (read & 0x02) {
-
 		read = resetPort.Read();
 	}
-
 	resetPort.Write(0xfe);
 	asm volatile ("hlt");
 }
@@ -378,34 +314,23 @@ void asl::shutdown() {
 }
 
 uint16_t asl::SetTextColor(bool set, uint16_t color) {
-
     static uint16_t newColor = 0x07;
-
     if (set) {
         newColor = color;
     }
-
     return newColor;
 }
 
 
 char* asl::argparse(char* args, uint8_t num) {
-
     char buffer[256];
-
     bool valid = false;
     uint8_t argIndex = 0;
     uint8_t bufferIndex = 0;
-
-
     for (int i = 0; i < (strlen(args) + 1); i++) {
-
         if (args[i] == ' ' || args[i] == '\0') {
-
             if (valid) {
-
                 if (argIndex == num) {
-
                     buffer[bufferIndex] = '\0';
                     char* arg = buffer;
                     return arg;
@@ -413,7 +338,6 @@ char* asl::argparse(char* args, uint8_t num) {
                 argIndex++;
             }
             valid = false;
-
         } else {
             if (argIndex == num) {
 
@@ -423,21 +347,16 @@ char* asl::argparse(char* args, uint8_t num) {
             valid = true;
         }
     }
-
     return "how";
 }
 
 uint8_t asl::argcount(char* args) {
-
     uint8_t i = 0;
     char* foo = argparse(args, i);
-
     while (foo != "how") {
-
         foo = argparse(args, i);
         i++;
     }
-
     return i-1;
 }
 
@@ -446,8 +365,7 @@ uint8_t asl::argcount(char* args) {
 //god help me random numbers are somthing else
 //uses Lehmer random number generation
 //Steve Park & Dave Geyer are legends btw read, their stuff
-uint16_t asl::betterRandom() {
-    //Linear-feedback shift register
+uint16_t asl::betterRandom() { //Linear-feedback shift register
 	PIT pit;
 	uint16_t seed = (uint16_t)pit.readCount();
 	uint16_t lfsr = seed;
@@ -466,15 +384,13 @@ uint16_t asl::betterRandom() {
 	return lfsr;
 }
 
-double asl::Random(void) // betwwen 1 and 0
-{
+double asl::Random(void){ // betwwen 1 and 0
     PIT pit;
     static long seed[STREAMS] = {(uint16_t)pit.readCount()};
     static int  stream        = 0;
     const long Q = MODULUS / MULTIPLIER;
     const long R = MODULUS % MULTIPLIER;
             long t;
-
     t = MULTIPLIER * (seed[stream] % Q) - R * (seed[stream] / Q);
     if (t > 0)
         seed[stream] = t;
@@ -502,7 +418,6 @@ YELLOW 0x0E
 WHITELIGHT 0x0F
 */
 void asl::putchar(unsigned char ch, unsigned char forecolor,unsigned char backcolor, uint8_t x, uint8_t y) {
-
     uint16_t attrib = (backcolor << 4) | (forecolor & 0x0f);
     volatile uint16_t* VideoMemory;
     VideoMemory = (volatile uint16_t*)0xb8000 + (80*y+x);
@@ -515,12 +430,10 @@ void asl::cprintf(char* str, uint8_t forecolor, uint8_t backcolor, uint8_t x, ui
         if (str[i] == '\n') {
             y++;
             x = 0;
-
         } else {
             WOOPS.putchar(str[i], forecolor, backcolor, x, y);
             x++;
         }
-
         if (x >= 80) {
             y++;
             x = 0;
@@ -541,28 +454,23 @@ void asl::printc(char c){
 
 
 void asl::printfhere(const char* str, uint8_t line) {
-
     for (uint16_t i = 0; str[i] != '\0'; i++) {
-
         volatile uint16_t* VideoMemory = (volatile uint16_t*)0xb8000 + (80*line+i);
         *VideoMemory = str[i] | 0x700;
     }
 }
-void asl::printfHex(uint8_t key)
-{
+void asl::printfHex(uint8_t key){
     char* foo = "00";
     char* hex = "0123456789ABCDEF";
     foo[0] = hex[(key >> 4) & 0xF];
     foo[1] = hex[key & 0xF];
     printf(foo);
 }
-void asl::printfHex16(uint16_t key)
-{
+void asl::printfHex16(uint16_t key){
     printfHex((key >> 8) & 0xFF);
     printfHex( key & 0xFF);
 }
-void asl::printfHex32(uint32_t key)
-{
+void asl::printfHex32(uint32_t key){
     printfHex((key >> 24) & 0xFF);
     printfHex((key >> 16) & 0xFF);
     printfHex((key >> 8) & 0xFF);
@@ -571,14 +479,12 @@ void asl::printfHex32(uint32_t key)
 
 
 void asl::memWrite(uint32_t memory, uint32_t inputVal) {
-
 	volatile uint32_t* value;
 	value = (volatile uint32_t*)memory;
 	*value = inputVal;
 }
 
 uint32_t asl::memRead(uint32_t memory) {
-
 	volatile uint32_t* value;
 	value = (volatile uint32_t*)memory;
 
@@ -587,9 +493,7 @@ uint32_t asl::memRead(uint32_t memory) {
 
 //string manip functions
 uint16_t asl::strlen(char* args) {
-
         uint16_t length = 0;
-
         for (length = 0; args[length] != '\0'; length++) {
 
         }

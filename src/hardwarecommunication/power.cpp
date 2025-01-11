@@ -15,24 +15,24 @@ asl ASLPOWER;
 
 void printf(char* str);
 bool apm::poweroff(){
-        char* power_state = "03h";
-        bool APM_error = false;
+		char* power_state = "03h";
+		bool APM_error = false;
 
-        asm volatile (
-                "movb $0x53, %%ah\n\t"
-                "movb $0x07, %%al\n\t"
-                "movw $0x0001, %%bx\n\t"
-                "movl %1, %%ecx\n\t"
-                "int $0x15\n\t"
-                "jc APM_error_label\n\t"
-                "jmp end_label\n\t"
-                "APM_error_label:\n\t"
-                "movb $1, %0\n\t"
-                "end_label:\n\t"
-                : "=r" (APM_error)
-                : "r" (power_state)
-                : "%ah", "%al", "%bx", "%ecx"
-        );
+		asm volatile (
+				"movb $0x53, %%ah\n\t"
+				"movb $0x07, %%al\n\t"
+				"movw $0x0001, %%bx\n\t"
+				"movl %1, %%ecx\n\t"
+				"int $0x15\n\t"
+				"jc APM_error_label\n\t"
+				"jmp end_label\n\t"
+				"APM_error_label:\n\t"
+				"movb $1, %0\n\t"
+				"end_label:\n\t"
+				: "=r" (APM_error)
+				: "r" (power_state)
+				: "%ah", "%al", "%bx", "%ecx"
+		);
 		return true;
 }
 
@@ -105,51 +105,42 @@ unsigned int *acpi::acpiCheckRSDPtr(unsigned int *ptr)
 			return (unsigned int *) rsdp->RsdtAddress;
 		}
 	}
-
 	return NULL;
 }
 
 
 
 // finds the acpi header and returns the address of the rsdt
-unsigned int *acpi::acpiGetRSDPtr(void)
-{
-	unsigned int *addr;
-	unsigned int *rsdp;
-
-	// search below the 1mb mark for RSDP signature
-	for (addr = (unsigned int *) 0x000E0000; (int) addr<0x00100000; addr += 0x10/sizeof(addr))
-	{
-		rsdp = acpiCheckRSDPtr(addr);
-		if (rsdp != NULL)
-			return rsdp;
-	}
-
-
-	// at address 0x40:0x0E is the RM segment of the ebda
-	int ebda = *((short *) 0x40E);	// get pointer
-	ebda = ebda*0x10 &0x000FFFFF;	// transform segment into linear address
-
-	// search Extended BIOS Data Area for the Root System Description Pointer signature
-	for (addr = (unsigned int *) ebda; (int) addr<ebda+1024; addr+= 0x10/sizeof(addr))
-	{
-		rsdp = acpiCheckRSDPtr(addr);
-		if (rsdp != NULL)
-			return rsdp;
-	}
-
-	return NULL;
+unsigned int *acpi::acpiGetRSDPtr(void) {
+    unsigned int *addr;
+    unsigned int *rsdp;
+    for (addr = (unsigned int *) 0x000E0000; (int) addr < 0x00100000; addr += 0x10 / sizeof(addr)) {
+        rsdp = acpiCheckRSDPtr(addr);
+        if (rsdp != NULL) {
+			printf("found a valid rsdp!\n");
+            return rsdp;
+        }
+    }
+    // At address 0x40:0x0E is the RM segment of the EBDA
+    int ebda = *((short *) 0x40E);  // Get EBDA pointer
+    ebda = ebda * 0x10 & 0x000FFFFF;  // Convert segment to linear address
+    // Search the Extended BIOS Data Area (EBDA) for the Root System Description Pointer signature
+    for (addr = (unsigned int *) ebda; (int) addr < ebda + 1024; addr += 0x10 / sizeof(addr)) {
+        rsdp = acpiCheckRSDPtr(addr);
+        if (rsdp != NULL) {
+            return rsdp;
+        }
+    }
+    printf("No valid RSDP found.\n");
+    return NULL;
 }
 
-int acpi::acpiCheckHeader(unsigned int *ptr, char *sig)
-{
-	if (ASLPOWER.memcmp(ptr, sig, 4) == 0)
-	{
+int acpi::acpiCheckHeader(unsigned int *ptr, char *sig){
+	if (ASLPOWER.memcmp(ptr, sig, 4) == 0){
 		char *checkPtr = (char *) ptr;
 		int len = *(ptr + 1);
 		char check = 0;
-		while (0<len--)
-		{
+		while (0<len--){
 			check += *checkPtr;
 			checkPtr++;
 		}
@@ -161,8 +152,7 @@ int acpi::acpiCheckHeader(unsigned int *ptr, char *sig)
 
 
 
-int acpi::acpiEnable(void)
-{
+int acpi::acpiEnable(void){
 	// check if acpi is enabled
 	if ( (ASLPOWER.inw((unsigned int) PM1a_CNT) &SCI_EN) == 0 )
 	{
@@ -189,6 +179,7 @@ int acpi::acpiEnable(void)
 				printf("enabled acpi.\n");
 				return 0;
 			} else {
+				printf("PM1b_CNT != 0 check failed.");
 				printf("couldn't enable acpi.\n");
 				printf("shutdown command will not work!!!!!!!!\n");
 				ASLPOWER.sleep(1000);
@@ -199,15 +190,23 @@ int acpi::acpiEnable(void)
 			return -1;
 		}
 	} else {
-		//printf("acpi was already enabled.\n");
+		printf("acpi was already enabled.\n");
 		return 0;
 	}
 }
 int acpi::initAcpi(void)
 {
 	unsigned int *ptr = acpiGetRSDPtr();
-
-	// check if address is correct  ( if acpi is available on this pc )
+	if (ptr == NULL) {
+		printf("RSDP not found. gibbing!!!!!!!!!!!!!!!!!!!\n");
+		return -1;  // RSDP not found, return early.
+	} else {
+		printf("Detected RSDP at: ");
+		//char* addressString = ASLPOWER.ArrayIntToString(ptr);
+		//printf(addressString);
+		printf("\n");
+		//delete[] addressString;
+	}
 	if (ptr != NULL && acpiCheckHeader(ptr, "RSDT") == 0)
 	{
 		// the RSDT contains an unknown number of pointers to acpi tables
@@ -215,8 +214,7 @@ int acpi::initAcpi(void)
 		entrys = (entrys-36) /4;
 		ptr += 36/4;	// skip header information
 
-		while (0<entrys--)
-		{
+		while (0<entrys--){
 			// check if the desired table is reached
 			if (acpiCheckHeader((unsigned int *) *ptr, "FACP") == 0)
 			{
@@ -226,6 +224,9 @@ int acpi::initAcpi(void)
 				{
 					// search the \_S5 package in the DSDT
 					char *S5Addr = (char *) facp->DSDT +36; // skip header
+					printf("Detected S5 Adress at: ");
+					printf(S5Addr);
+					printf("\n");
 					int dsdtLength = *(facp->DSDT+1) -36;
 					while (0 < dsdtLength--)
 					{

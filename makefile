@@ -80,7 +80,8 @@ run: albaos.iso
 		-drive id=disk,file=albaos.iso,format=raw,if=none \
 		-device piix4-ide,id=piix4 -device ide-hd,drive=disk,bus=piix4.0 \
 		-cpu 486 -smp 1 -m 8M \
-		-vga virtio
+		-vga virtio \
+		-machine type=pc,accel=kvm
 
 
 vrun: albaos.iso

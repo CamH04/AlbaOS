@@ -10,6 +10,9 @@ namespace albaos
     {
         class asl{
         public:
+            char* ArrayIntToString(unsigned int* arr);
+
+            char* CharPointerToString(const char* ptr);
             char* FloatToString(float number);
             void PrintCpuSpeed();
             double calculateClockSpeed();

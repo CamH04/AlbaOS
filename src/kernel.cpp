@@ -410,12 +410,14 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
         drvManager.ActivateAll();
     ASL.benchmark();
 
-    printf("Hardware init, Stage 3\n");
-    interrupts.Activate();
-
+    printf("ACPI POWER INIT!, Stage 2.5\n");
     acpi ACPI;
     ACPI.initAcpi();
     ACPI.acpiEnable();
+
+    printf("Hardware init, Stage 3\n");
+    interrupts.Activate();
+
 
     printf("Welcome To AlbaOS!");
     printf("\n  ");

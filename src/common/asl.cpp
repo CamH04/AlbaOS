@@ -26,6 +26,58 @@ void printf(char* str);
 uint16_t hash(char* cmd);
 
 
+char* asl::ArrayIntToString(unsigned int* arr) {
+    int len = 0;
+    while (arr[len] != -1) {
+        len++;
+    }
+    char* result = new char[len * 12 + len + 1];  // geussung each integer takes up to 11 digits + space
+
+    int idx = 0;
+    for (int i = 0; i < len; i++) {
+        int num = arr[i];
+        char buffer[12];
+        int pos = 0;
+        if (num < 0) {
+            buffer[pos++] = '-';
+            num = -num;
+        }
+        int numPos = pos;
+        do {
+            buffer[pos++] = '0' + (num % 10);
+            num /= 10;
+        } while (num > 0);
+        for (int j = numPos, k = pos - 1; j < k; j++, k--) {
+            char temp = buffer[j];
+            buffer[j] = buffer[k];
+            buffer[k] = temp;
+        }
+        for (int j = 0; j < pos; j++) {
+            result[idx++] = buffer[j];
+        }
+        if (i < len - 1) {
+            result[idx++] = ' ';
+        }
+    }
+    result[idx] = '\0';
+    return result;
+}
+
+char* asl::CharPointerToString(const char* ptr) {
+    if (ptr == nullptr) {
+        return nullptr;
+    }
+    int length = 0;
+    while (ptr[length] != '\0') { // until we hit the null terminator
+        length++;
+    }
+    char* result = new char[length + 1];
+    for (int i = 0; i < length; i++) {
+        result[i] = ptr[i];
+    }
+    result[length] = '\0';
+    return result;
+}
 char* asl::FloatToString(float number) {
     static char buffer[32];
     char* ptr = buffer;

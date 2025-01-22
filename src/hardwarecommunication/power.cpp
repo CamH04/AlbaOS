@@ -14,26 +14,25 @@ using namespace albaos::hardwarecommunication;
 asl ASLPOWER;
 
 void printf(char* str);
-bool apm::poweroff(){
-		char* power_state = "03h";
-		bool APM_error = false;
 
-		asm volatile (
-				"movb $0x53, %%ah\n\t"
-				"movb $0x07, %%al\n\t"
-				"movw $0x0001, %%bx\n\t"
-				"movl %1, %%ecx\n\t"
-				"int $0x15\n\t"
-				"jc APM_error_label\n\t"
-				"jmp end_label\n\t"
-				"APM_error_label:\n\t"
-				"movb $1, %0\n\t"
-				"end_label:\n\t"
-				: "=r" (APM_error)
-				: "r" (power_state)
-				: "%ah", "%al", "%bx", "%ecx"
-		);
-		return true;
+bool apm::poweroff() {
+    bool APM_error = false;
+    asm volatile(
+        "movb $0x53, %%ah\n\t"
+        "movb $0x07, %%al\n\t"
+        "movw $0x0001, %%bx\n\t"
+        "movw $0x0003, %%cx\n\t"
+        "int $0x15\n\t"
+        "jc 1f\n\t"
+        "jmp 2f\n\t"
+        "1:\n\t"
+        "movb $1, %0\n\t"
+        "2:\n\t"
+        : "=r"(APM_error)
+        :
+        : "memory", "%ah", "%al", "%bx", "%cx", "cc"
+    );
+    return !APM_error;
 }
 
 

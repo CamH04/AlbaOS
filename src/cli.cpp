@@ -16,6 +16,7 @@ using namespace albaos;
 using namespace albaos::drivers;
 using namespace albaos::filesystem;
 using namespace albaos::common;
+using albaos::hardwarecommunication::apm;
 
 
 asl ASLCLI;
@@ -464,13 +465,15 @@ void date(char* args, CommandLine* cli){
 }
 void shutdown(char* args, CommandLine* cli){
     ASLCLI.shutdown();
-    //ASLCLI.outw(0x604, 0x2000);
 }
 void benchmark(char* args, CommandLine* cli){
     ASLCLI.benchmark();
 }
 
 void test(char* args, CommandLine* cli){
+    apm APM;
+    // TODO init the apm bcz i forgot bcz im a moron ! :)
+    APM.poweroff();
 }
 
 

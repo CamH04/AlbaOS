@@ -413,9 +413,10 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     printf("ACPI POWER INIT!, Stage 2.5\n");
     acpi ACPI;
     ACPI.initAcpi();
-    ACPI.acpiEnable();
+    //ACPI.acpiEnable();
 
     printf("Hardware init, Stage 3\n");
+
     interrupts.Activate();
 
 

@@ -44,7 +44,6 @@ sudo apt-get install xorriso
 
 (note) : grub-legacy is unavailable but grub-common or grub2 will work fine
 
-
 ## Stuff i've implemented 
 + working console output (printf) and coloured printf
 + Global Descriptor Table (GDT)
@@ -71,10 +70,22 @@ sudo apt-get install xorriso
 + CMOS Driver
 + The AlbaOS Standard Library (ASL)
 + Raycasting Engine
++ Power Management (APM , ~ ACPI ~)
 + Many Bugs!
 
-## Some Ascii art of my owls: 
-```                
+## Alt Builds Of AlbaOS :
++ [AlbaOS For Arm (raspberry pi)](https://github.com/CamH04/AlbaOS-For-Arm/tree/master/rpi4)
++ [AlbaOS For Arm (Cortex-A15)](https://github.com/CamH04/AlbaOS-For-Arm/tree/master/CortexA15)
++ [AlbaOS For Mc (tweaked:cc)](https://github.com/CamH04/Alba-OS-MC)
++ [AlbaOS Rusty](https://github.com/CamH04/AlbaOS-Rusty)
+
+## Website:
+With Docs, Articles And Other Hoopla
+[Link](https://albasoftware.netlify.app/albaos)
+
+
+## Some Ascii art of my owls:
+```
 (0,0)
 /)_)/
  **
@@ -95,13 +106,3 @@ sudo apt-get install xorriso
   /)_)/  /)_)/
 ---**-----**----
 ```
-
-## Alt Builds Of AlbaOS :
-+ AlbaOS For Arm (raspberry pi)
-+ AlbaOS For Arm (Cortex-A15)
-+ AlbaOS For Mc (tweaked:cc)
-
-
-## Website:
-With Docs, Articles And Other Hoopla
-[Link](https://albasoftware.netlify.app/albaos)

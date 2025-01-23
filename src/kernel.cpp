@@ -377,7 +377,7 @@ extern "C" void callConstructors()
 }
 
 
-extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot_magic*/)
+extern "C" void kernelMain(const void* multiboot_structure, uint32_t multiboot_magic)
 {
     GlobalDescriptorTable* gdt;
     TaskManager taskManager;
@@ -391,8 +391,6 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
 	CLIKeyboardEventHandler kbhandler(gdt, &taskManager, &ata0m);
 	KeyboardDriver keyboard(&interrupts, &kbhandler);
     drvManager.AddDriver(&keyboard);
-
-
 
     VideoGraphicsArray vga;
 	Simulator alba;
@@ -410,10 +408,14 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
         drvManager.ActivateAll();
     ASL.benchmark();
 
-    printf("ACPI POWER INIT!, Stage 2.5\n");
+    printf("ACPI POWER INIT!, Stage 2 A\n");
     acpi ACPI;
     ACPI.initAcpi();
     //ACPI.acpiEnable();
+
+    printf("APM POWER INIT , STAGE 2 B \n");
+    apm APM;
+    APM.init();
 
     printf("Hardware init, Stage 3\n");
 
@@ -423,8 +425,8 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     printf("Welcome To AlbaOS!");
     printf("\n  ");
     printf("\v");
-
 	interrupts.boot = true;
+
     //the user stuff from here -------------------------------------------
     owlart OA;
     OA.MenuHello();
@@ -437,7 +439,7 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
     printf("\v");
     printf("Welcome to the AlbaOS Command Line! (ACL) \n");
 	printf("use the help command (  help  ) if you need assistance ^v^\n");
-    printf("press tab or use the clear command (  clear  ) to clear terminal @v@\n");
+    printf("press tab to clear terminal @v@\n");
     kbhandler.cli = true;
 	kbhandler.hash_cli_init();
     kbhandler.OnKeyDown('\b');
@@ -451,12 +453,11 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t /*multiboot
             kbhandler.nestSelect(kbhandler.cliMode, kbhandler.pressed,kbhandler.keyChar, kbhandler.ctrl, 0);
 		}
 	}
-	 vga.SetMode(320, 200, 8);
+    vga.SetMode(320, 200, 8);
     KeyboardDriver keyboardDesktop(&interrupts, &desktop);
 	drvManager.Replace(&keyboardDesktop, 0);
     while(keyboard.keyHex != 0x2E)
     {
         desktop.Draw(&vga);
-        //sleep(15);
     }
 }

@@ -11,7 +11,9 @@ namespace albaos
         class apm{
         public:
             bool poweroff();
+            bool init();
         };
+
 
         class acpi{
         public:

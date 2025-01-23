@@ -472,7 +472,7 @@ void benchmark(char* args, CommandLine* cli){
 
 void test(char* args, CommandLine* cli){
     apm APM;
-    // TODO init the apm bcz i forgot bcz im a moron ! :)
+    APM.init();
     APM.poweroff();
 }
 

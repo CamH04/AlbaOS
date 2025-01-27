@@ -185,7 +185,7 @@ public:
 						break;
                     case 'g':
                         //TO RE ENABLE GUI UNCOMMENT THIS LINE =======================================================
-                        //EnterGUI = true;
+                        EnterGUI = true;
                         break;
                     case 'r':
                         //this->cliMode = 3;
@@ -364,6 +364,13 @@ void DrawDesktopTask() {
 		desktop->Draw(desktop->gc);
 	}
 }
+
+
+
+
+
+
+
 
 
 

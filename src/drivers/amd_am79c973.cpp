@@ -44,7 +44,7 @@ amd_am79c973::amd_am79c973(PeripheralComponentInterconnectDeviceDescriptor *dev,
     registerAddressPort.Write(0);
     registerDataPort.Write(0x04);
 
-    initBlock.mode = 0x0000; // promiscuous mode = false ;)
+    initBlock.mode = 0x0000; // freaky mode = false ;P
     initBlock.reserved1 = 0;
     initBlock.numSendBuffers = 3;
     initBlock.reserved2 = 0;
@@ -114,14 +114,13 @@ uint32_t amd_am79c973::HandleInterrupt(common::uint32_t esp)
     registerAddressPort.Write(0);
     uint32_t temp = registerDataPort.Read();
 
-    /*TO MANY PPRINTING BECAUSE OF GODDAMN UNI WIFI
     if((temp & 0x8000) == 0x8000) printf("=== AMD am79c973 ERROR === \n");
     if((temp & 0x2000) == 0x2000) printf("  : AMD am79c973 COLLISION ERROR\n");
     if((temp & 0x1000) == 0x1000) printf("  : AMD am79c973 MISSED FRAME\n");
     if((temp & 0x0800) == 0x0800) printf("  : AMD am79c973 MEMORY ERROR\n");
     if((temp & 0x0400) == 0x0400) Receive();
     if((temp & 0x0200) == 0x0200) printf("=== AMD am79c973 DATA SENT :) === \n");
-    */
+
     registerAddressPort.Write(0);
     registerDataPort.Write(temp);
     //last time was 2 insted of 1, caused imminent death

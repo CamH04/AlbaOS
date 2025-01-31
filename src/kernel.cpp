@@ -8,7 +8,6 @@
 #include <hardwarecommunication/power.h>
 #include <hardwarecommunication/interrupts.h>
 #include <hardwarecommunication/pci.h>
-#include <drivers/amd_am79c973.h>
 #include <drivers/ata.h>
 #include <drivers/driver.h>
 #include <drivers/keyboard.h>
@@ -26,6 +25,10 @@
 #include <nests/snake.h>
 #include <nests/raycastdemo.h>
 #include <gui/sim.h>
+//31st jan 2025 8:08pm : networking stuff im starting this now
+#include <drivers/amd_am79c973.h>
+
+
 
 using namespace albaos;
 using namespace albaos::common;
@@ -184,7 +187,6 @@ public:
 						nestSet(this->cliMode);
 						break;
                     case 'g':
-                        //TO RE ENABLE GUI UNCOMMENT THIS LINE =======================================================
                         EnterGUI = true;
                         break;
                     case 'r':
@@ -341,7 +343,6 @@ public:
 
 
 };
-
 Desktop* LoadDesktopForTask(bool set, Desktop* desktop = 0) {
 
 	static Desktop* retDesktop = 0;
@@ -352,8 +353,6 @@ Desktop* LoadDesktopForTask(bool set, Desktop* desktop = 0) {
 
 	return retDesktop;
 }
-
-
 void DrawDesktopTask() {
 
 	Desktop* desktop = LoadDesktopForTask(false);
@@ -424,7 +423,9 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t multiboot_m
     apm APM;
     APM.init();
 
-    printf("Hardware init, Stage 3\n");
+    printf("Network init, Stage 3\n");
+
+    printf("Hardware init, Stage 4\n");
 
     interrupts.Activate();
 

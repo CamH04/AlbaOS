@@ -71,6 +71,7 @@ bool apm::init() {
     bx = 0x0001;
     result = apm_bios_call(ax, bx, 0, 0);
 	printf("APM init succesfull !!!!!!!!!!!!!!!!!!\n");
+	//ASLPOWER.sleep(3000);
     return !(result & 0x100);
 }
 

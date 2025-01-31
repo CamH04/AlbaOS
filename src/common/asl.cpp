@@ -25,7 +25,16 @@ asl WOOPS;
 void printf(char* str);
 uint16_t hash(char* cmd);
 
-
+//from little to big endien as internet is written in big endien
+uint16_t asl::SwitchEndian16Bit(uint16_t inp) {
+    return (inp>>8) | (inp<<8);
+}
+uint32_t asl::SwitchEndian32Bit(uint32_t inp) {
+    return ((inp>>24)&0xff)      |
+            ((inp<<8)&0xff0000)   |
+            ((inp>>8)&0xff00)     |
+            ((inp<<24)&0xff000000);
+}
 char* asl::ArrayIntToString(unsigned int* arr) {
     int len = 0;
     while (arr[len] != -1) {

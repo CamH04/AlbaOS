@@ -1,0 +1,2 @@
+Partition Table
+FAT32

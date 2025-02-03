@@ -67,10 +67,13 @@ sudo apt-get install xorriso
 + Syscalls
 + Programs (Nests):
 +    - File Edit Nest
++    - Snake Game Nest
 + CMOS Driver
 + The AlbaOS Standard Library (ASL)
-+ Raycasting Engine
-+ Power Management (APM , ~ ACPI ~)
++ Raycasting Engine (Sorta...)
++ Power Management (APM , ACPI)
++ Networking
++    - Ethernet Frames 
 + Many Bugs!
 
 ## Alt Builds Of AlbaOS :
@@ -80,8 +83,10 @@ sudo apt-get install xorriso
 + [AlbaOS Rusty](https://github.com/CamH04/AlbaOS-Rusty)
 
 ## Website:
-With Docs, Articles And Other Hoopla
+With Docs And Other Hoopla
 [Link](https://albasoftware.netlify.app/albaos)
+Articles
+[Link](https://albasoftware-articles.netlify.app/)
 
 
 ## Some Ascii art of my owls:

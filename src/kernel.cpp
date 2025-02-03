@@ -443,17 +443,17 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t multiboot_m
     APM.init();
 
     printf("Network init, Stage 3\n");
-    amd_am79c973* eth0 = (amd_am79c973*)(drvManager.drivers[2]);
-    printf("ALBA KERNEL : eth0 init\n");
+        amd_am79c973* eth0 = (amd_am79c973*)(drvManager.drivers[2]);
+        printf("ALBA KERNEL : eth0 init\n");
 
-    EthernetFrameProv etherframe(eth0);
-    printf("ALBA KERNEL : ethframe obj init\n");
+        EthernetFrameProv etherframe(eth0);
+        printf("ALBA KERNEL : ethframe obj init\n");
 
-    etherframe.Send(0xFFFFFFFFFFFF, 0x0608, (uint8_t*)"FOO", 3);
-    printf("ALBA KERNEL : ethframe sent\n");
+        //etherframe.Send(0xFFFFFFFFFFFF, 0x0608, (uint8_t*)"FOO", 3);
+        printf("ALBA KERNEL : ethframe sent\n");
+
 
     printf("Hardware init, Stage 4\n");
-
     interrupts.Activate();
 
 

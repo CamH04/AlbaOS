@@ -3,7 +3,7 @@
 
 https://wiki.osdev.org/Network_Stack
 
-Ethernet / Ethernet Frames
+~~Ethernet Frames~~
 ARP - address reselution protocal
 IPv4
     ICMP

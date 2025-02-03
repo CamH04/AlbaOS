@@ -13,6 +13,18 @@ namespace albaos
 {
     namespace drivers
     {
+        class amd_am79c973;
+
+        class RawDataHandler{
+        protected:
+            amd_am79c973* backend;
+        public:
+            RawDataHandler(amd_am79c973* backend);
+            ~RawDataHandler();
+
+            bool OnRawDataReceived(common::uint8_t* buffer , common::uint32_t size);
+            void Send(common::uint8_t* buffer , common::uint32_t size);
+        };
 
         class amd_am79c973 : public Driver, public hardwarecommunication::InterruptHandler
         {
@@ -60,6 +72,7 @@ namespace albaos
             common::uint8_t recvBuffers[2*1024+15][8];
             common::uint8_t currentRecvBuffer;
 
+            RawDataHandler* handler;
 
         public:
             amd_am79c973(albaos::hardwarecommunication::PeripheralComponentInterconnectDeviceDescriptor *dev,
@@ -72,8 +85,9 @@ namespace albaos
 
             void Send(common::uint8_t* buffer, int count);
             void Receive();
-
-
+            //
+            void SetHandler(RawDataHandler* handler);
+            common::uint64_t GetMACAddress();
         };
 
 

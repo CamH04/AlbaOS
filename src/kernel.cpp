@@ -27,7 +27,7 @@
 #include <gui/sim.h>
 //31st jan 2025 8:08pm : networking stuff im starting this now
 #include <drivers/amd_am79c973.h>
-
+#include <networking/eframe.h>// 4 days later: help me
 
 
 using namespace albaos;
@@ -35,6 +35,7 @@ using namespace albaos::common;
 using namespace albaos::drivers;
 using namespace albaos::hardwarecommunication;
 using namespace albaos::filesystem;
+using namespace albaos::networking;
 using namespace albaos::gui;
 
 asl ASL;
@@ -386,8 +387,26 @@ extern "C" void callConstructors()
 extern "C" void kernelMain(const void* multiboot_structure, uint32_t multiboot_magic)
 {
     GlobalDescriptorTable* gdt;
+
+    uint32_t* memupper = (uint32_t*)(((size_t)multiboot_structure) + 8);
+    size_t heap = 10*1024*1024;
+    MemoryManager memoryManager(heap, (*memupper)*1024 - heap - 10*1024);
+
+    printf("heap: 0x");
+    ASL.printfHex((heap >> 24) & 0xFF);
+    ASL.printfHex((heap >> 16) & 0xFF);
+    ASL.printfHex((heap >> 8 ) & 0xFF);
+    ASL.printfHex((heap      ) & 0xFF);
+
+    void* allocated = memoryManager.malloc(1024);
+    printf("\nallocated: 0x");
+    ASL.printfHex(((size_t)allocated >> 24) & 0xFF);
+    ASL.printfHex(((size_t)allocated >> 16) & 0xFF);
+    ASL.printfHex(((size_t)allocated >> 8 ) & 0xFF);
+    ASL.printfHex(((size_t)allocated      ) & 0xFF);
+    printf("\n");
+
     TaskManager taskManager;
-    //old multitasking debugging stuff
     //Task taskexample(&gdt, functionForTask);
     InterruptManager interrupts(0x20, gdt, &taskManager);
     SyscallHandler syscalls(&interrupts, 0x80);
@@ -411,7 +430,7 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t multiboot_m
     ASL.benchmark();
         //activating drivers
         printf("Hardware init, Stage 2\n");
-        drvManager.ActivateAll();
+    drvManager.ActivateAll();
     ASL.benchmark();
 
     printf("ACPI POWER INIT!, Stage 2 A\n");
@@ -424,6 +443,14 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t multiboot_m
     APM.init();
 
     printf("Network init, Stage 3\n");
+    amd_am79c973* eth0 = (amd_am79c973*)(drvManager.drivers[2]);
+    printf("ALBA KERNEL : eth0 init\n");
+
+    EthernetFrameProv etherframe(eth0);
+    printf("ALBA KERNEL : ethframe obj init\n");
+
+    etherframe.Send(0xFFFFFFFFFFFF, 0x0608, (uint8_t*)"FOO", 3);
+    printf("ALBA KERNEL : ethframe sent\n");
 
     printf("Hardware init, Stage 4\n");
 
@@ -432,12 +459,20 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t multiboot_m
 
     printf("Welcome To AlbaOS!");
     printf("\n  ");
-    printf("\v");
 	interrupts.boot = true;
+
+
+
+
+
+
+
+
+
 
     //the user stuff from here -------------------------------------------
     owlart OA;
-    OA.MenuHello();
+    //OA.MenuHello();
 
     playstart PS;
     PS.singasong();

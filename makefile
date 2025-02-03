@@ -32,6 +32,7 @@ objects = obj/loader.o \
 	  obj/gui/sim.o \
 	  obj/gui/raycasting.o \
 	  obj/filesys/ofs.o \
+	  obj/networking/eframe.o \
 	  obj/cli.o \
 	  obj/app.o \
 	  obj/maths.o \

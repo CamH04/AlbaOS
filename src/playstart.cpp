@@ -1,6 +1,7 @@
 #include <playstart.h>
 #include <drivers/audio.h>
 #include <common/asl.h>
+#include <common/asl_maths.h>
 
 
 using namespace albaos;
@@ -14,6 +15,7 @@ void PlayNote(char ch, uint8_t octave, common::uint16_t time);
 uint16_t FrequencyMatch(char ch, uint8_t octave);
 
 asl ASLPS;
+asl_maths ASLPSMATHS;
 
 void playstart::singasong(){
     drivers::Speaker PCSPEAKER;
@@ -102,7 +104,7 @@ void playstart::song3(){
 	uint16_t songnotelength = 8;
     printf("Starting song: Tyto\n");
     for (common::uint8_t i = 0; i <= songnotelength - 1; i++) {
-		PlayNote(notes3[i], octave3[i], ASLPS.Random() * 100 );
+		PlayNote(notes3[i], octave3[i], ASLPSMATHS.Random() * 100 );
 		ASLPS.sleep(100);
     }
 	printf("Volare sicut tyto noctua \n");

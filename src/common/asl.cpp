@@ -6,14 +6,6 @@
 
 // most of this has been moved from kernel to here (AlbaOS Standard Lib)
 
-//for random number gen
-#define MODULUS    2147483647
-#define MULTIPLIER 48271
-#define CHECK      399268537
-#define STREAMS    256
-#define A256       22925
-
-
 using namespace albaos;
 using namespace albaos::common;
 using namespace albaos::drivers;
@@ -23,7 +15,6 @@ asl WOOPS;
 
 //TODO move printf to here!!!!!!!!!!!!!!!!
 void printf(char* str);
-uint16_t hash(char* cmd);
 
 //from little to big endien as internet is written in big endien
 uint16_t asl::SwitchEndian16Bit(uint16_t inp) {
@@ -189,23 +180,6 @@ void asl::memcpy(void *dest, void *src, size_t n) {
     for (int i=0; i<n; i++)
         cdest[i] = csrc[i];
 }
-
-uint32_t asl::Trollfnv1a(char* str) {
-	uint32_t hash = 0x811c9dc5;
-	for (int i = 0; str[i] != '\0'; i++) {
-
-		hash ^= str[i];
-		hash *= 0x01000193;
-	}
-	//hash within sectors available on disk
-	return (hash % 2048) + 1024;
-}
-
-uint16_t asl::hash(char* cmd) {
-    uint32_t val = Trollfnv1a(cmd);
-    return (val >> 16) ^ (val & 0xffff);
-}
-
 
 
 //sleeps zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
@@ -419,45 +393,6 @@ uint8_t asl::argcount(char* args) {
         i++;
     }
     return i-1;
-}
-
-
-//RANDOM NUMBERS
-//god help me random numbers are somthing else
-//uses Lehmer random number generation
-//Steve Park & Dave Geyer are legends btw read, their stuff
-uint16_t asl::betterRandom() { //Linear-feedback shift register
-	PIT pit;
-	uint16_t seed = (uint16_t)pit.readCount();
-	uint16_t lfsr = seed;
-	uint16_t period = 0;
-
-	do {
-		uint16_t lsb = lfsr & 1u;
-		lfsr >>= 1;
-		lfsr ^= (-lsb) & 0xb400u;
-
-		period++;
-
-	} while (period < seed);
-
-
-	return lfsr;
-}
-
-double asl::Random(void){ // betwwen 1 and 0
-    PIT pit;
-    static long seed[STREAMS] = {(uint16_t)pit.readCount()};
-    static int  stream        = 0;
-    const long Q = MODULUS / MULTIPLIER;
-    const long R = MODULUS % MULTIPLIER;
-            long t;
-    t = MULTIPLIER * (seed[stream] % Q) - R * (seed[stream] / Q);
-    if (t > 0)
-        seed[stream] = t;
-    else
-        seed[stream] = t + MODULUS;
-    return ((double) seed[stream] / MODULUS);
 }
 
 /*

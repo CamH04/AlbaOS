@@ -428,7 +428,6 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t multiboot_m
         PCIController.SelectDrivers(&drvManager, &interrupts);
 
     ASL.benchmark();
-        //activating drivers
         printf("Hardware init, Stage 2\n");
     drvManager.ActivateAll();
     ASL.benchmark();

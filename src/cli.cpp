@@ -1,4 +1,5 @@
 #include <common/asl.h>
+#include <common/asl_maths.h>
 #include <cli.h>
 #include <owlart.h>
 #include <playstart.h>
@@ -20,6 +21,8 @@ using albaos::hardwarecommunication::apm;
 
 
 asl ASLCLI;
+asl_maths ASLMATHSCLI;
+
 void printf(char* str);
 uint32_t numOrVar(char* args, CommandLine* cli, uint8_t argNum);
 uint32_t findarg(char* args, CommandLine* cli, uint8_t ArgNum);
@@ -177,7 +180,7 @@ void speak(char* args, CommandLine* cli){
 	PCSPEAKER.NoSound();
 }
 void random(char* args, CommandLine* cli){
-    common::uint16_t prngresult = ASLCLI.Random();
+    common::uint16_t prngresult = ASLMATHSCLI.Random();
 
     prngresult = prngresult % cli->cmdIndex++;
 
@@ -491,7 +494,7 @@ void test(char* args, CommandLine* cli){
 //a small break to find args
 uint32_t findarg(char* args, CommandLine* cli, uint8_t ArgNum){
         char* name = ASLCLI.argparse(args, ArgNum);
-        uint16_t HashTemp = ASLCLI.hash(name) % 1024;
+        uint16_t HashTemp = ASLMATHSCLI.hash(name) % 1024;
 
         if (cli->varTable[HashTemp] != 0xffffffff){
             return cli->varTable[HashTemp];
@@ -504,7 +507,7 @@ uint32_t findarg(char* args, CommandLine* cli, uint8_t ArgNum){
 
 uint32_t numOrVar(char* args, CommandLine* cli, uint8_t argNum) {
 	char* name = ASLCLI.argparse(args, argNum);
-	uint16_t hashVar = ASLCLI.hash(name) % 1024;
+	uint16_t hashVar = ASLMATHSCLI.hash(name) % 1024;
 	if (cli->varTable[hashVar] != 0xffffffff) {
 		return cli->varTable[hashVar];
 
@@ -537,7 +540,7 @@ CommandLine::~CommandLine() {
 
 void CommandLine::hash_add(char* cmd, void func(char*, CommandLine* cli)) {
 
-    uint16_t hashIndex = ASLCLI.hash(cmd);
+    uint16_t hashIndex = ASLMATHSCLI.hash(cmd);
 
 
     while (this->cmdTable[hashIndex] != nullptr) {
@@ -566,9 +569,9 @@ void CommandLine::hash_cli_init() {
     }
 
 
-    this->varTable[ASLCLI.hash(">")] = 0x00;
-    this->varTable[ASLCLI.hash(">CTRL")] = 0x00;
-    this->varTable[ASLCLI.hash(">PRESS")] = 0x00;
+    this->varTable[ASLMATHSCLI.hash(">")] = 0x00;
+    this->varTable[ASLMATHSCLI.hash(">CTRL")] = 0x00;
+    this->varTable[ASLMATHSCLI.hash(">PRESS")] = 0x00;
 
 
     this->conditionIf = true;
@@ -635,11 +638,11 @@ char* CommandLine::command(char* cmd, uint8_t length) {
         }
         command[cmdLength] = '\0';
         arguments[argLength-1] = '\0';
-        uint16_t result = ASLCLI.hash(command);
-        if (this->conditionIf == false && result != ASLCLI.hash("fi")) {
+        uint16_t result = ASLMATHSCLI.hash(command);
+        if (this->conditionIf == false && result != ASLMATHSCLI.hash("fi")) {
             return "IF vjbsdjvysuvbsdjnvdkjsnvsjdbvsdi";
         }
-        if (this->conditionLoop == false && result != ASLCLI.hash("pool")) {
+        if (this->conditionLoop == false && result != ASLMATHSCLI.hash("pool")) {
             return "LOOP fbaisaofnslalfnasjghfisdnld";
         }
 

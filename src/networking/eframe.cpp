@@ -17,9 +17,11 @@ EthernetFrameHandler::~EthernetFrameHandler(){
     backend->handlers[EtherEtype_BigEndien] = 0;
 }
 bool EthernetFrameHandler::OnEthernetFrameRecived(uint8_t* EtherFramePayload, uint32_t size){
+    printf("ETHER FRAME: EtherFrameHandler OnEthernetFrameRecived\n");
     return false;
 }
 void EthernetFrameHandler::Send(uint64_t MacDestination_BigEndien, uint8_t* data, uint32_t size){
+    printf("ETHER FRAME: EtherFrameHandler Send\n");
     backend->Send(MacDestination_BigEndien, EtherEtype_BigEndien, data, size);
 }
 
@@ -68,6 +70,4 @@ void EthernetFrameProv::Send(uint64_t MacDestination_BigEndien, uint16_t EtherEt
         dst[i] = src[i];
     }
     backend->Send(bufferNumber2, size + sizeof(EtherFrameHeader));
-
-
 }

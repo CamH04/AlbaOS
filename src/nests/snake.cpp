@@ -1,4 +1,5 @@
 #include <common/asl.h>
+#include <common/asl_maths.h>
 #include <nests/snake.h>
 
 using namespace albaos;
@@ -7,6 +8,7 @@ using namespace albaos::drivers;
 
 
 asl ASLSNAKE;
+asl_maths ASLSNAKEMATHS;
 Speaker PCSPEAKER;
 
 // ported from OsakaOS to ALbaOS :)
@@ -243,8 +245,8 @@ void snake(char key) {
 	if (!fruit) {
 
 		do {
-			fruitX = (((uint8_t)ASLSNAKE.betterRandom()) % 78) + 2;
-			fruitY = (((uint8_t)ASLSNAKE.betterRandom()) % 21) + 4;
+			fruitX = (((uint8_t)ASLSNAKEMATHS.betterRandom()) % 78) + 2;
+			fruitY = (((uint8_t)ASLSNAKEMATHS.betterRandom()) % 21) + 4;
 
 			vidmem = (volatile uint16_t*)0xb8000 + (80*fruitY+fruitX);
 

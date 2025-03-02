@@ -7,6 +7,7 @@ LDPARAMS = -melf_i386
 
 objects = obj/loader.o \
 	  obj/common/asl.o\
+	  obj/common/asl_maths.o\
 	  obj/gdt.o \
 	  obj/memorymanagement.o \
 	  obj/owlart.o \

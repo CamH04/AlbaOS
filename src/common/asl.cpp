@@ -16,6 +16,17 @@ asl WOOPS;
 //TODO move printf to here!!!!!!!!!!!!!!!!
 void printf(char* str);
 
+int asl::strcmp(const char* str1, const char* str2) {
+    while (*str1 != '\0' && *str2 != '\0') {
+        if (*str1 != *str2) {
+            return (unsigned char)*str1 - (unsigned char)*str2;
+        }
+        str1++;
+        str2++;
+    }
+    return (unsigned char)*str1 - (unsigned char)*str2;
+}
+
 //from little to big endien as internet is written in big endien
 uint16_t asl::SwitchEndian16Bit(uint16_t inp) {
     return (inp>>8) | (inp<<8);

@@ -24,6 +24,7 @@
 #include <nests/filenest.h>
 #include <nests/snake.h>
 #include <nests/raycastdemo.h>
+#include <nests/terminalgame.h>
 #include <gui/sim.h>
 //31st jan 2025 8:08pm : networking stuff im starting this now
 #include <drivers/amd_am79c973.h>
@@ -136,6 +137,8 @@ void printf(char* str) {
     }
 }
 
+
+
 bool EnterGUI = false;
 //"put Keybaord in command line pls" the class
 class CLIKeyboardEventHandler : public KeyboardEventHandler, public CommandLine {
@@ -152,7 +155,6 @@ public:
             bool ctrl, bool type) {
 
         switch (this->cliMode) {
-            //file edit program
             case 1:
                 if (type) {fileMain(pressed, ch, ctrl);}
                 break;
@@ -160,7 +162,8 @@ public:
 					snake(ch);
 					break;
             case 3:
-                    //r.LoadData();
+                    //doesnt work rn
+                    //password();
                     break;
             default:
                 break;
@@ -191,8 +194,8 @@ public:
                         EnterGUI = true;
                         break;
                     case 'r':
-                        //this->cliMode = 3;
-                        //nestSet(this->cliMode);
+                        this->cliMode = 3;
+                        nestSet(this->cliMode);
                         break;
 					default:
 						break;

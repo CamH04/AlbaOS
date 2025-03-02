@@ -40,6 +40,7 @@ objects = obj/loader.o \
 	  obj/nests/filenest.o \
 	  obj/nests/raycastdemo.o \
 	  obj/nests/snake.o \
+	  obj/nests/terminalgame.o \
 	  obj/playstart.o \
 	  obj/cpuid.o \
 	  obj/syscalls.o \

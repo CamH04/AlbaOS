@@ -10,6 +10,7 @@ namespace albaos
     {
         class asl{
         public:
+            int strcmp(const char* str1, const char* str2);
             uint16_t SwitchEndian16Bit(uint16_t inp);
             uint32_t SwitchEndian32Bit(uint32_t inp);
             char* ArrayIntToString(unsigned int* arr);

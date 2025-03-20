@@ -472,7 +472,14 @@ void shutdown(char* args, CommandLine* cli){
 void benchmark(char* args, CommandLine* cli){
     ASLCLI.benchmark();
 }
-
+void scribe(char* args, CommandLine* cli){
+    uint32_t gen_rand= ASLMATHSCLI.betterRandom();
+    for(uint32_t f = 0; f <= 10; f++){
+        gen_rand = gen_rand % 78 + f;
+        printf(ASLCLI.IntToString(gen_rand));
+        printf("\n");
+    }
+}
 void test(char* args, CommandLine* cli){
     apm APM;
     APM.init();
@@ -594,6 +601,7 @@ void CommandLine::hash_cli_init() {
     this->hash_add("emojiprint",emojiprint);
     this->hash_add("shutdown",shutdown);
     this->hash_add("rb",rebootCLI);
+    this->hash_add("scribe",scribe);
     //file commands
 	this->hash_add("files", files);
 	this->hash_add("fs", size);

@@ -6,8 +6,6 @@
 #include <hardwarecommunication/interrupts.h>
 #include <drivers/driver.h>
 #include <gui/font.h>
-#include <maths.h>
-
 
 
 namespace albaos {

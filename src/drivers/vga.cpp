@@ -1,14 +1,14 @@
 #include <drivers/vga.h>
 #include <common/asl.h>
-
+#include <common/asl_maths.h>
 
 using namespace albaos;
 using namespace albaos::gui;
 using namespace albaos::common;
 using namespace albaos::drivers;
-using namespace albaos::math;
 
 asl ASLVGA;
+asl_maths ASLM;
 
 
 VideoGraphicsArray::VideoGraphicsArray() :
@@ -339,7 +339,7 @@ void VideoGraphicsArray::DrawLine(int32_t x0, int32_t y0,
 				int32_t x1, int32_t y1,
 				uint8_t color) {
 
-	if (abs(y1 - y0) < abs(x1 - x0)) {
+	if (ASLM.abs(y1 - y0) < ASLM.abs(x1 - x0)) {
 
 		if (x0 > x1) {  DrawLineLow(x1, y1, x0, y0, color);
 		} else {	DrawLineLow(x0, y0, x1, y1, color); }

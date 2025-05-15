@@ -32,7 +32,7 @@ bool apm::poweroff() {
     uint16_t ax = 0x5307;
     uint16_t bx = 0x0001;
 	// power state 3= off 2=ssuspend 1=standby
-    uint16_t cx = 0x0003;
+    uint16_t cx = 0x0002;
     bool APM_error = false;
     asm volatile(
         "int $0x15\n\t"
@@ -42,6 +42,7 @@ bool apm::poweroff() {
         : "memory", "cc"
     );
 	printf("should be trurning off now! \n");
+
     return !APM_error;
 }
 //it was being an ass with embedded asm so i just chucked it into a seperate asm file

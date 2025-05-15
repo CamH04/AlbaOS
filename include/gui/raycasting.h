@@ -5,7 +5,6 @@
 #include <common/types.h>
 #include <drivers/vga.h>
 #include <gui/widget.h>
-#include <maths.h>
 
 
 namespace albaos {

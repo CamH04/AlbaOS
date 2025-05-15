@@ -1,14 +1,14 @@
 #include <gui/raycasting.h>
 #include <common/asl.h>
+#include <common/asl_maths.h>
 
 using namespace albaos;
 using namespace albaos::gui;
-using namespace albaos::math;
 using namespace albaos::common;
 using namespace albaos::drivers;
 
 asl ASLRAY;
-
+asl_maths ASLMRAY;
 
 
 /*
@@ -157,8 +157,8 @@ void RaycastSpace::ComputeSpace(GraphicsContext* gc, char keylog[16], uint8_t lo
         double sideDistY = 0;
 
 
-        double deltaDistX = (rayDirX == 0) ? 1e30 : absD(1.0/rayDirX);
-        double deltaDistY = (rayDirY == 0) ? 1e30 : absD(1.0/rayDirY);
+        double deltaDistX = (rayDirX == 0) ? 1e30 : ASLMRAY.absD(1.0/rayDirX);
+        double deltaDistY = (rayDirY == 0) ? 1e30 : ASLMRAY.absD(1.0/rayDirY);
         double perpWallDist = 0;
 
         int stepX, stepY = 0;
@@ -294,21 +294,21 @@ void RaycastSpace::ComputeSpace(GraphicsContext* gc, char keylog[16], uint8_t lo
     if (mouseX < w/2) {
 
         double oldDirX = dirX;
-        dirX = dirX * cos(-rotSpeed) - dirY * sin(-rotSpeed);
-        dirY = oldDirX * sin(-rotSpeed) + dirY * cos(-rotSpeed);
+        dirX = dirX * ASLMRAY.cos(-rotSpeed) - dirY * ASLMRAY.sin(-rotSpeed);
+        dirY = oldDirX * ASLMRAY.sin(-rotSpeed) + dirY * ASLMRAY.cos(-rotSpeed);
         double oldPlaneX = planeX;
-        planeX = planeX * cos(-rotSpeed) - planeY * sin(-rotSpeed);
-        planeY = oldPlaneX * sin(-rotSpeed) + planeY * cos(-rotSpeed);
+        planeX = planeX * ASLMRAY.cos(-rotSpeed) - planeY * ASLMRAY.sin(-rotSpeed);
+        planeY = oldPlaneX * ASLMRAY.sin(-rotSpeed) + planeY * ASLMRAY.cos(-rotSpeed);
     }
 
     //rotate left
     if (mouseX > w/2) {
 
         double oldDirX = dirX;
-        dirX = dirX * cos(rotSpeed) - dirY * sin(rotSpeed);
-        dirY = oldDirX * sin(rotSpeed) + dirY * cos(rotSpeed);
+        dirX = dirX * ASLMRAY.cos(rotSpeed) - dirY * ASLMRAY.sin(rotSpeed);
+        dirY = oldDirX * ASLMRAY.sin(rotSpeed) + dirY * ASLMRAY.cos(rotSpeed);
         double oldPlaneX = planeX;
-        planeX = planeX * cos(rotSpeed) - planeY * sin(rotSpeed);
-        planeY = oldPlaneX * sin(rotSpeed) + planeY * cos(rotSpeed);
+        planeX = planeX * ASLMRAY.cos(rotSpeed) - planeY * ASLMRAY.sin(rotSpeed);
+        planeY = oldPlaneX * ASLMRAY.sin(rotSpeed) + planeY * ASLMRAY.cos(rotSpeed);
     }
 }

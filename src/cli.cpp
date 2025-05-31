@@ -45,6 +45,7 @@ void help_page1(){
     printf("shutdown : shuts down\n");
     printf("date: gives date\n");
     printf("benchmark: displays the amount of clock cyles since last cpu reset\n");
+    printf("bid : displays your current BootID\n");
 }
 void help_page2(){
     printf("=== Fun Commands: ===\n");
@@ -472,6 +473,14 @@ void shutdown(char* args, CommandLine* cli){
 void benchmark(char* args, CommandLine* cli){
     ASLCLI.benchmark();
 }
+void DisplayBID(char* args, CommandLine* cli){
+    printf("Your Boot ID is:");
+    printf(ASLCLI.IntToString(ASLMATHSCLI.stored_bootID));
+    printf("\n");
+}
+
+
+
 void scribe(char* args, CommandLine* cli){
     uint32_t gen_rand= ASLMATHSCLI.betterRandom();
     for(uint32_t f = 0; f <= 10; f++){
@@ -575,6 +584,11 @@ void CommandLine::hash_cli_init() {
         }
     }
 
+    ASLMATHSCLI.stored_bootID = ASLMATHSCLI.bootID();
+    printf("Your Boot ID is:");
+    printf(ASLCLI.IntToString(ASLMATHSCLI.stored_bootID));
+    printf("\n");
+
 
     this->varTable[ASLMATHSCLI.hash(">")] = 0x00;
     this->varTable[ASLMATHSCLI.hash(">CTRL")] = 0x00;
@@ -602,6 +616,7 @@ void CommandLine::hash_cli_init() {
     this->hash_add("shutdown",shutdown);
     this->hash_add("rb",rebootCLI);
     this->hash_add("scribe",scribe);
+    this->hash_add("bid",DisplayBID);
     //file commands
 	this->hash_add("files", files);
 	this->hash_add("fs", size);

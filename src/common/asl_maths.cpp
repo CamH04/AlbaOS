@@ -52,6 +52,40 @@ uint16_t asl_maths::betterRandom() { //Linear-feedback shift register
 	return lfsr;
 }
 
+uint64_t asl_maths::bootID(){ //cpu sig, vender hash, timestamp, LFSR combined
+    uint32_t eax1, ebx1, ecx1, edx1;
+    asm volatile("cpuid"
+                 : "=a"(eax1), "=b"(ebx1), "=c"(ecx1), "=d"(edx1)
+                 : "a"(1));
+    uint32_t cpuSignature = eax1;
+
+    uint32_t ebx0, ecx0, edx0, unused;
+    asm volatile("cpuid"
+                 : "=a"(unused), "=b"(ebx0), "=c"(ecx0), "=d"(edx0)
+                 : "a"(0));
+    uint32_t vendorHash = ebx0 ^ ecx0 ^ edx0;
+
+    uint32_t tsc_low, tsc_high;
+    asm volatile("rdtsc" : "=a"(tsc_low), "=d"(tsc_high));
+    uint64_t tsc = ((uint64_t)tsc_high << 32) | tsc_low;
+
+    PIT pit;
+    uint16_t pitSeed = (uint16_t)pit.readCount();
+    uint16_t lfsr = pitSeed;
+    for (int i = 0; i < 16; ++i) {
+        uint16_t lsb = lfsr & 1u;
+        lfsr >>= 1;
+        lfsr ^= (-lsb) & 0xB400u;
+    }
+    uint64_t bootID = ((uint64_t)cpuSignature << 32)
+                    ^ ((uint64_t)vendorHash << 16)
+                    ^ ((uint64_t)lfsr)
+                    ^ tsc;
+
+    return bootID;
+}
+
+
 double asl_maths::Random(void){ // betwwen 1 and 0
     PIT pit;
     static long seed[STREAMS] = {(uint16_t)pit.readCount()};

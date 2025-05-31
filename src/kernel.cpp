@@ -1,4 +1,5 @@
 #include <common/asl.h>
+#include <common/asl_maths.h>
 #include <common/types.h>
 #include <gdt.h>
 #include <memorymanagement.h>
@@ -41,6 +42,7 @@ using namespace albaos::networking;
 using namespace albaos::gui;
 
 asl ASL;
+asl_maths ASLMATHS;
 
 void printf(char* str) {
     static uint8_t x = 0, y = 0;
@@ -436,16 +438,14 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t multiboot_m
     drvManager.ActivateAll();
     ASL.benchmark();
 
-    printf("ACPI POWER INIT!, Stage 2 A\n");
-    acpi ACPI;
-    ACPI.initAcpi();
-    //ACPI.acpiEnable();
 
-    printf("APM POWER INIT , STAGE 2 B \n");
-    apm APM;
-    APM.init();
+    printf("Hardware init, Stage 3\n");
+    interrupts.Activate();
+    printf("ALBA KERNEL : interrupts activated\n");
+	interrupts.boot = true;
 
-    printf("Network init, Stage 3\n");
+
+    printf("Network init, Stage 4\n");
         amd_am79c973* eth0 = (amd_am79c973*)(drvManager.drivers[2]);
         printf("ALBA KERNEL : eth0 init\n");
 
@@ -455,16 +455,18 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t multiboot_m
         //etherframe.Send(0xFFFFFFFFFFFF, 0x0608, (uint8_t*)"FOO", 3);
         printf("ALBA KERNEL : ethframe sent\n");
 
+    printf("ACPI POWER INIT!\n");
+    acpi ACPI;
+    ACPI.initAcpi();
+    ACPI.acpiEnable();
+    printf("APM POWER INIT\n");
+    apm APM;
+    APM.init();
 
-    printf("Hardware init, Stage 4\n");
-    interrupts.Activate();
 
-
-    printf("Welcome To AlbaOS!");
-    printf("\n  ");
-	interrupts.boot = true;
-
-
+    printf("\nWelcome To AlbaOS!");
+    printf("\n");
+    printf("\n\nPress Any Key To Continue ...");
 
 
 

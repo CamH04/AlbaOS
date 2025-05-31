@@ -10,6 +10,8 @@ namespace albaos
     {
         class asl_maths{
         public:
+            uint64_t stored_bootID;
+            uint64_t bootID();
 
             const double pi = 3.14159265358979323846;
 

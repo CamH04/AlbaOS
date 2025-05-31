@@ -17,6 +17,12 @@ asl WOOPS;
 //TODO move printf to here!!!!!!!!!!!!!!!!
 void printf(char* str);
 
+bool asl::cpuSupportsTSC() {
+    uint32_t eax, edx;
+    asm volatile("cpuid" : "=d"(edx) : "a"(1) : "ebx", "ecx");
+    return (edx & (1 << 4)) != 0;
+}
+
 int asl::strcmp(const char* str1, const char* str2) {
     while (*str1 != '\0' && *str2 != '\0') {
         if (*str1 != *str2) {

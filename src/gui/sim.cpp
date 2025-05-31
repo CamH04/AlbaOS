@@ -3,7 +3,6 @@
 using namespace albaos::common;
 using namespace albaos::drivers;
 using namespace albaos::gui;
-using namespace albaos::math;
 
 
 void sleep(uint32_t);

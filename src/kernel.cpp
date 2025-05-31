@@ -6,6 +6,7 @@
 #include <playstart.h>
 #include <syscalls.h>
 #include <hardwarecommunication/power.h>
+#include <hardwarecommunication/acpi.h>
 #include <hardwarecommunication/interrupts.h>
 #include <hardwarecommunication/pci.h>
 #include <drivers/ata.h>

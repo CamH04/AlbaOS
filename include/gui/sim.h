@@ -4,13 +4,11 @@
 #include <common/types.h>
 #include <common/graphicscontext.h>
 #include <drivers/vga.h>
-#include <maths.h>
+#include <common/asl_maths.h>
 
 
 namespace albaos {
-
 	namespace gui {
-
 		class Simulator {
 
 			//protected:
@@ -23,7 +21,7 @@ namespace albaos {
 				common::int32_t albaX;
 				common::int32_t albaY;
 
-				struct math::point walkPixels[320];
+				struct common::asl_maths::point walkPixels[320];
 				common::uint16_t stepsNum;
 				common::uint8_t walkCycle;
 

@@ -1,5 +1,6 @@
 #include <common/asl.h>
 #include <drivers/pit.h>
+#include <hardwarecommunication/acpi.h>
 #include <hardwarecommunication/power.h>
 #include <drivers/amd_am79c973.h>
 #include <drivers/pit.h>
@@ -354,8 +355,8 @@ void asl::reboot() {
 	asm volatile ("hlt");
 }
 void asl::shutdown() {
-    albaos::hardwarecommunication::acpi ACPI;
-    ACPI.initAcpi();
+    acpi ACPI;
+    //ACPI.initAcpi();
     ACPI.acpiPowerOff();
 }
 

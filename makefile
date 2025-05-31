@@ -19,6 +19,7 @@ objects = obj/loader.o \
 	  obj/drivers/amd_am79c973.o \
 	  obj/hardwarecommunication/pci.o \
 	  obj/hardwarecommunication/power.o \
+	  obj/hardwarecommunication/acpi.o \
 	  obj/hardwarecommunication/apm_bios_call.o \
 	  obj/drivers/cmos.o \
 	  obj/drivers/keyboard.o \
@@ -36,7 +37,6 @@ objects = obj/loader.o \
 	  obj/networking/eframe.o \
 	  obj/cli.o \
 	  obj/app.o \
-	  obj/maths.o \
 	  obj/nests/filenest.o \
 	  obj/nests/raycastdemo.o \
 	  obj/nests/snake.o \

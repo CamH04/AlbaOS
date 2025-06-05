@@ -17,6 +17,33 @@ asl WOOPS;
 //TODO move printf to here!!!!!!!!!!!!!!!!
 void printf(char* str);
 
+int asl::atoi(char*& str, int base) {
+    base = 10;
+    if (base < 2 || base > 16) return 0;
+    int result = 0;
+    int sign = 1;
+    while (*str == ' ' || *str == '\t') ++str;
+    if (*str == '-') {
+        sign = -1;
+        ++str;
+    } else if (*str == '+') {
+        ++str;
+    }
+    while (*str) {
+        char c = *str;
+        int digit;
+
+        if (c >= '0' && c <= '9') digit = c - '0';
+        else if (c >= 'A' && c <= 'F') digit = c - 'A' + 10;
+        else if (c >= 'a' && c <= 'f') digit = c - 'a' + 10;
+        else break;
+        if (digit >= base) break;
+        result = result * base + digit;
+        ++str;
+    }
+    return sign * result;
+}
+
 void asl::itoa(int value, char* str, int base) {
     char* ptr = str;
     char* ptr1 = str;
@@ -517,12 +544,13 @@ void asl::printfhere(const char* str, uint8_t line) {
         *VideoMemory = str[i] | 0x700;
     }
 }
-void asl::printfHex(uint8_t key){
+char* asl::printfHex(uint8_t key){
     char* foo = "00";
     char* hex = "0123456789ABCDEF";
     foo[0] = hex[(key >> 4) & 0xF];
     foo[1] = hex[key & 0xF];
     printf(foo);
+    return foo;
 }
 void asl::printfHex16(uint16_t key){
     printfHex((key >> 8) & 0xFF);

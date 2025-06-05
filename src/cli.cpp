@@ -68,7 +68,8 @@ void help_page3(){
     printf("files: lists files \n");
     printf("fs filename: tells size of file \n");
     printf("d filename: deletes file XvX \n");
-     printf("dsec int: dumps all written file sectors\n");
+    printf("dsec int: dumps all written file sectors\n");
+    printf("vsec int: view hard drive sector \n");
 }
 void help_page4(){
     printf("=== Maths Commands: ===\n");
@@ -526,7 +527,25 @@ void dumpWrittenSectors(char* args, CommandLine* cli) {
         printf("Done.\n");
     }
 }
-
+//TODO convert hex dump to ascii string
+void viewSector(char* args, CommandLine* cli) {
+    if (args == 0 || ASLCLI.strlen(args) == 0) {
+        printf("Usage: viewSector int \n");
+        return;
+    }
+    uint32_t sector = ASLCLI.atoi(args, 10);
+    uint8_t buffer[512];
+    ata.Read28(sector, buffer, 512, 0);
+    if (!cli->mute) {
+        printf("Sector Dump :\n");
+        printf(args);
+        for (int i = 0; i < 512; i++) {
+            if (i % 16 == 0) printf(ASLCLI.printfHex(i));
+            ASLCLI.printfHex(buffer[i]);
+        }
+    printf("\n");
+    }
+}
 
 
 
@@ -674,6 +693,7 @@ void CommandLine::hash_cli_init() {
 	this->hash_add("fs", size);
 	this->hash_add("d", deleteFile);
     this->hash_add("dsec", dumpWrittenSectors);
+    this->hash_add("vsec", viewSector);
     //maths commands
     this->hash_add("add", add);
     this->hash_add("sub", sub);

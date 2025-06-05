@@ -10,6 +10,7 @@ namespace albaos
     {
         class asl{
         public:
+            int atoi(char*& str, int base);
             void itoa(int value, char* str, int base);
             void utoa(unsigned int value, char* str, int base);
             bool cpuSupportsTSC();
@@ -47,7 +48,7 @@ namespace albaos
             void cprintf(char* str, albaos::common::uint8_t forecolor, albaos::common::uint8_t backcolor, albaos::common::uint8_t x, albaos::common::uint8_t y);
             void printc(char c);
             void printfhere(const char* str, albaos::common::uint8_t line);
-            void printfHex(uint8_t key);
+            char* printfHex(uint8_t key);
             void printfHex16(uint16_t key);
             void printfHex32(uint32_t key);
             void reboot();

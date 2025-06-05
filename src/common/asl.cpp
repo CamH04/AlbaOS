@@ -17,6 +17,47 @@ asl WOOPS;
 //TODO move printf to here!!!!!!!!!!!!!!!!
 void printf(char* str);
 
+void asl::itoa(int value, char* str, int base) {
+    char* ptr = str;
+    char* ptr1 = str;
+    char tmp_char;
+    int tmp_value;
+    if (value < 0 && base == 10) { //negative numbers bad
+        *ptr++ = '-';
+        value = -value;
+    }
+    do { //num to str
+        tmp_value = value;
+        value /= base;
+        *ptr++ = "0123456789ABCDEF"[tmp_value - value * base];
+    } while (value);
+
+    *ptr-- = '\0';
+    while (ptr1 < ptr) {
+        tmp_char = *ptr;
+        *ptr-- = *ptr1;
+        *ptr1++ = tmp_char;
+    }
+}
+void asl::utoa(unsigned int value, char* str, int base) { //same as itoa for unsigned
+    char* ptr = str;
+    char* ptr1 = str;
+    char tmp_char;
+    unsigned int tmp_value;
+    do {
+        tmp_value = value;
+        value /= base;
+        *ptr++ = "0123456789ABCDEF"[tmp_value - value * base];
+    } while (value);
+    *ptr-- = '\0';
+    while (ptr1 < ptr) {
+        tmp_char = *ptr;
+        *ptr-- = *ptr1;
+        *ptr1++ = tmp_char;
+    }
+}
+
+
 bool asl::cpuSupportsTSC() {
     uint32_t eax, edx;
     asm volatile("cpuid" : "=d"(edx) : "a"(1) : "ebx", "ecx");
@@ -149,13 +190,16 @@ void asl::benchmark(){
     printf("\n");
 }
 void asl::PrintCpuSpeed(){
+    uint32_t hz = (uint32_t)calculateClockSpeed();
+    uint32_t ghz_whole = hz / 1000000000;
+    uint32_t ghz_frac  = (hz % 1000000000) / 100000000;  // first d.p
     printf("CPU Speed: ");
-    printf(IntToString((uint32_t)calculateClockSpeed() / 100000000));
+    printf(IntToString(ghz_whole));
     printf(".");
-    /*i am sorry*/
-    printf(IntToString(((uint32_t)calculateClockSpeed()%100000000)/10000000 ));
-    printf(" GHz \n\n");
+    printf(IntToString(ghz_frac));
+    printf(" GHz\n\n");
 }
+
 
 uint16_t asl::inw (unsigned short int __port){
   unsigned short _v;

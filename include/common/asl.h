@@ -10,6 +10,8 @@ namespace albaos
     {
         class asl{
         public:
+            void itoa(int value, char* str, int base);
+            void utoa(unsigned int value, char* str, int base);
             bool cpuSupportsTSC();
             int strcmp(const char* str1, const char* str2);
             uint16_t SwitchEndian16Bit(uint16_t inp);

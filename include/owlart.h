@@ -13,7 +13,7 @@
             public:
 
                 void printfhere(char *str, albaos::common::uint8_t line);
-
+                void FullCliArt();
                 void MenuHello();
                 void OwlArtStare();
                 void OwlArtSleep();

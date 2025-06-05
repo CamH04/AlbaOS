@@ -10,6 +10,36 @@ asl ASLOA;
 void printf(char* str);
 
 
+void owlart::FullCliArt(){
+    printf("\n");
+    printf("                   OOO  OO OOOOO\n");
+    printf("           OOO O               O\n");
+    printf("        OOO                   OOOOOOO\n");
+    printf("       OO                           OOOOO\n");
+    printf("      O                                OOO\n");
+    printf("    OO                                   OOO\n");
+    printf("   O                                      OOO\n");
+    printf("  O       OOOO                             OOO\n");
+    printf(" O       O   OO                             OOO\n");
+    printf("OO      OOOOOOO                              OO\n");
+    printf("O       OOOOOOO             O OOOOO          OOO\n");
+    printf("O       OOOO O             OOO    OOO OO      OOO\n");
+    printf("O         OOO             OO   OOOOOOOOO       OO\n");
+    printf("O                         OOOOOOOOOOO          OOO\n");
+    printf("O                        OOOOOOO OO           OO\n");
+    printf("O                     OO                      OO\n");
+    printf("OO            O     OO                       OO\n");
+    printf("OO          O OO O O                        OO\n");
+    printf(" OOO        O   OO                        OOO\n");
+    printf("  OO        O OOO                        OOO\n");
+    printf("   OO        OO                        OOO\n");
+    printf("    OOO                             OOOOO\n");
+    printf("      OO                       OOOOOOO\n");
+    printf("       OOO               OOOOOOOOO\n");
+    printf("         OOOOOOOOOOOOOOOOOO\n");
+    printf("\n");
+}
+
 // eg ASLOA.printfhere("help me god",0);
 //    ASLOA.printfhere("its too late for this",1);
 void owlart::MenuHello(){

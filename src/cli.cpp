@@ -9,6 +9,7 @@
 #include <drivers/amd_am79c973.h>
 #include <filesys/ofs.h>
 #include <drivers/cmos.h>
+#include <drivers/ata.h>
 #include <hardwarecommunication/power.h>
 
 
@@ -22,6 +23,8 @@ using albaos::hardwarecommunication::apm;
 
 asl ASLCLI;
 asl_maths ASLMATHSCLI;
+AdvancedTechnologyAttachment ata(0x1F0, true);
+owlart OA;
 
 void printf(char* str);
 uint32_t numOrVar(char* args, CommandLine* cli, uint8_t argNum);
@@ -38,7 +41,7 @@ void help_page1(){
     printf("tab: clears screen\n");
     printf("\n");
     printf("=== Useful Commands: ===\n");
-    printf("help number(0 - 3): list of commands\n");
+    printf("help number(0 - 4): list of commands\n");
     printf("v : tells you the version of AlbaOS!\n");
     printf("hwi : tells you about your hardware\n");
     printf("rb : reboots lol\n");
@@ -52,6 +55,7 @@ void help_page2(){
     printf("owl number(0-9) : prints some art!\n");
     printf("hello : starts the conversation with Dusty\n");
     printf("speak : Dusty will speak\n");
+    printf("thanks : say thanks to Dusty!\n");
     printf("changetext number(0-16): changes text colour\n");
     printf("textnum: gives numbers for text colours\n");
     printf("pic: will print a coloured picture for you! (its very underwhelming)\n");
@@ -64,6 +68,7 @@ void help_page3(){
     printf("files: lists files \n");
     printf("fs filename: tells size of file \n");
     printf("d filename: deletes file XvX \n");
+     printf("dsec int: dumps all written file sectors\n");
 }
 void help_page4(){
     printf("=== Maths Commands: ===\n");
@@ -99,37 +104,11 @@ void help(char* args, CommandLine* cli){
     }
 }
 void version(char* args, CommandLine* cli){
-    printf("\n");
-    printf("                   OOO  OO OOOOO\n");
-    printf("           OOO O               O\n");
-    printf("        OOO                   OOOOOOO\n");
-    printf("       OO                           OOOOO\n");
-    printf("      O                                OOO\n");
-    printf("    OO                                   OOO\n");
-    printf("   O                                      OOO\n");
-    printf("  O       OOOO                             OOO\n");
-    printf(" O       O   OO                             OOO\n");
-    printf("OO      OOOOOOO                              OO\n");
-    printf("O       OOOOOOO             O OOOOO          OOO\n");
-    printf("O       OOOO O             OOO    OOO OO      OOO\n");
-    printf("O         OOO             OO   OOOOOOOOO       OO\n");
-    printf("O                         OOOOOOOOOOO          OOO\n");
-    printf("O                        OOOOOOO OO           OO\n");
-    printf("O                     OO                      OO\n");
-    printf("OO            O     OO                       OO\n");
-    printf("OO          O OO O O                        OO\n");
-    printf(" OOO        O   OO                        OOO\n");
-    printf("  OO        O OOO                        OOO\n");
-    printf("   OO        OO                        OOO\n");
-    printf("    OOO                             OOOOO\n");
-    printf("      OO                       OOOOOOO\n");
-    printf("       OOO               OOOOOOOOO\n");
-    printf("         OOOOOOOOOOOOOOOOOO\n");
-    printf("\n");
+    OA.FullCliArt();
     printf("==================================================\n");
     printf("\n");
     printf("                     (0v0)           \n");
-    printf("             AlbaOS: Ver: 0.9-R.0.1\n");
+    printf("       AlbaOS Version: v0.9-Offline.0.2\n");
     printf("\n");
     printf("==================================================\n");
     //print colours
@@ -138,7 +117,6 @@ void version(char* args, CommandLine* cli){
     {
         char* ch = " ";
         ch[0] = 2;
-
         ASLCLI.SetTextColor(true,i);
         printf(ch);
     }
@@ -189,7 +167,6 @@ void random(char* args, CommandLine* cli){
     printf("\n");
 }
 void owl(char* args, CommandLine* cli){
-    owlart OA;
     uint32_t ValueIn = findarg(args, cli, 0);
     switch (ValueIn){
         case 0:
@@ -479,6 +456,80 @@ void DisplayBID(char* args, CommandLine* cli){
     printf("\n");
 }
 
+void thanksReply(char* args, CommandLine* cli){
+    printf("You're Welcome !\n");
+}
+
+void dumpWrittenSectors(char* args, CommandLine* cli) {
+    const int maxSectorsToScan = 2048; // Can go up and down
+    uint8_t buffer[512];
+    bool inRange = false;
+    int rangeStart = -1;
+    if (!cli->mute) {
+        printf("Scanning for written sectors...\n");
+    }
+    for (int sector = 0; sector < maxSectorsToScan; sector++) {
+        ata.Read28(sector, buffer, 512, 0);
+        bool nonZero = false;
+        for (int i = 0; i < 512; i++) {
+            if (buffer[i] != 0x00) {
+                nonZero = true;
+                break;
+            }
+        }
+        if (nonZero) {
+            if (!inRange) {
+                inRange = true;
+                rangeStart = sector;
+            }
+        } else {
+            if (inRange) {
+                char startStr[16], endStr[16];
+                ASLCLI.itoa(rangeStart, startStr, 10);
+                ASLCLI.itoa(sector - 1, endStr, 10);
+
+                if (rangeStart == sector - 1) {
+                    printf("Sector ");
+                    printf(startStr);
+                    printf(" has been written to.\n");
+                } else {
+                    printf("Sector ");
+                    printf(startStr);
+                    printf(" to ");
+                    printf(endStr);
+                    printf(" has been written to.\n");
+                }
+
+                inRange = false;
+            }
+        }
+    }
+    if (inRange) {
+        char startStr[16], endStr[16];
+        ASLCLI.itoa(rangeStart, startStr, 10);
+        ASLCLI.itoa(maxSectorsToScan - 1, endStr, 10);
+
+        if (rangeStart == maxSectorsToScan - 1) {
+            printf("Sector ");
+            printf(startStr);
+            printf(" has been written to.\n");
+        } else {
+            printf("Sector ");
+            printf(startStr);
+            printf(" to ");
+            printf(endStr);
+            printf(" has been written to.\n");
+        }
+    }
+
+    if (!cli->mute) {
+        printf("Done.\n");
+    }
+}
+
+
+
+
 
 
 void scribe(char* args, CommandLine* cli){
@@ -603,6 +654,7 @@ void CommandLine::hash_cli_init() {
     this->hash_add("help", help);
     this->hash_add("hello", hello);
     this->hash_add("speak",speak);
+    this->hash_add("thanks",thanksReply);
     this->hash_add("random",random);
     this->hash_add("owl",owl);
     this->hash_add("v",version);
@@ -621,6 +673,7 @@ void CommandLine::hash_cli_init() {
 	this->hash_add("files", files);
 	this->hash_add("fs", size);
 	this->hash_add("d", deleteFile);
+    this->hash_add("dsec", dumpWrittenSectors);
     //maths commands
     this->hash_add("add", add);
     this->hash_add("sub", sub);

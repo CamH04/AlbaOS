@@ -37,7 +37,6 @@ AdvancedTechnologyAttachment::~AdvancedTechnologyAttachment() {
 
 
 bool AdvancedTechnologyAttachment::Identify() {
-
 	devicePort.Write(master ? 0xa0 : 0xb0);
 	controlPort.Write(0);
 

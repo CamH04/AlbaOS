@@ -17,6 +17,9 @@ asl WOOPS;
 //TODO move printf to here!!!!!!!!!!!!!!!!
 void printf(char* str);
 
+
+
+// TODO move to asl_string ========================================
 int asl::atoi(char*& str, int base) {
     base = 10;
     if (base < 2 || base > 16) return 0;
@@ -84,71 +87,6 @@ void asl::utoa(unsigned int value, char* str, int base) { //same as itoa for uns
     }
 }
 
-
-bool asl::cpuSupportsTSC() {
-    uint32_t eax, edx;
-    asm volatile("cpuid" : "=d"(edx) : "a"(1) : "ebx", "ecx");
-    return (edx & (1 << 4)) != 0;
-}
-
-int asl::strcmp(const char* str1, const char* str2) {
-    while (*str1 != '\0' && *str2 != '\0') {
-        if (*str1 != *str2) {
-            return (unsigned char)*str1 - (unsigned char)*str2;
-        }
-        str1++;
-        str2++;
-    }
-    return (unsigned char)*str1 - (unsigned char)*str2;
-}
-
-//from little to big endien as internet is written in big endien
-uint16_t asl::SwitchEndian16Bit(uint16_t inp) {
-    return (inp>>8) | (inp<<8);
-}
-uint32_t asl::SwitchEndian32Bit(uint32_t inp) {
-    return ((inp>>24)&0xff)      |
-            ((inp<<8)&0xff0000)   |
-            ((inp>>8)&0xff00)     |
-            ((inp<<24)&0xff000000);
-}
-char* asl::ArrayIntToString(unsigned int* arr) {
-    int len = 0;
-    while (arr[len] != -1) {
-        len++;
-    }
-    char* result = new char[len * 12 + len + 1];  // geussung each integer takes up to 11 digits + space
-
-    int idx = 0;
-    for (int i = 0; i < len; i++) {
-        int num = arr[i];
-        char buffer[12];
-        int pos = 0;
-        if (num < 0) {
-            buffer[pos++] = '-';
-            num = -num;
-        }
-        int numPos = pos;
-        do {
-            buffer[pos++] = '0' + (num % 10);
-            num /= 10;
-        } while (num > 0);
-        for (int j = numPos, k = pos - 1; j < k; j++, k--) {
-            char temp = buffer[j];
-            buffer[j] = buffer[k];
-            buffer[k] = temp;
-        }
-        for (int j = 0; j < pos; j++) {
-            result[idx++] = buffer[j];
-        }
-        if (i < len - 1) {
-            result[idx++] = ' ';
-        }
-    }
-    result[idx] = '\0';
-    return result;
-}
-
 char* asl::CharPointerToString(const char* ptr) {
     if (ptr == nullptr) {
         return nullptr;
@@ -193,6 +131,127 @@ char* asl::FloatToString(float number) {
     return buffer;
 }
 
+int asl::strcmp(const char* str1, const char* str2) {
+    while (*str1 != '\0' && *str2 != '\0') {
+        if (*str1 != *str2) {
+            return (unsigned char)*str1 - (unsigned char)*str2;
+        }
+        str1++;
+        str2++;
+    }
+    return (unsigned char)*str1 - (unsigned char)*str2;
+}
+char* asl::ArrayIntToString(unsigned int* arr) {
+    int len = 0;
+    while (arr[len] != -1) {
+        len++;
+    }
+    char* result = new char[len * 12 + len + 1];  // geussung each integer takes up to 11 digits + space
+
+    int idx = 0;
+    for (int i = 0; i < len; i++) {
+        int num = arr[i];
+        char buffer[12];
+        int pos = 0;
+        if (num < 0) {
+            buffer[pos++] = '-';
+            num = -num;
+        }
+        int numPos = pos;
+        do {
+            buffer[pos++] = '0' + (num % 10);
+            num /= 10;
+        } while (num > 0);
+        for (int j = numPos, k = pos - 1; j < k; j++, k--) {
+            char temp = buffer[j];
+            buffer[j] = buffer[k];
+            buffer[k] = temp;
+        }
+        for (int j = 0; j < pos; j++) {
+            result[idx++] = buffer[j];
+        }
+        if (i < len - 1) {
+            result[idx++] = ' ';
+        }
+    }
+    result[idx] = '\0';
+    return result;
+}
+uint32_t asl::StringToInt(char* args){
+    uint32_t number = 0;
+    uint16_t i = 0;
+    bool foundNum = false;
+
+    for(uint16_t i = 0; args[i] != '\0'; i++){
+        if((args[i] >= 58 || args[i] <= 47) && args[i] != ' '){
+            return 0;
+        }
+        if(args[i] != ' '){
+            number *= 10;
+            number += ((uint32_t)args[i] -  48);
+            foundNum = true;
+            args[i] = ' ';
+        }
+        else{
+            if(foundNum){
+                return number;
+            }
+        }
+    }
+    return number;
+}
+char* asl::IntToString(uint32_t num) {
+        uint32_t numChar = 1;
+        uint8_t i = 1;
+        if (num % 10 != num) {
+                while ((num / (numChar)) >= 10) {
+                        numChar *= 10;
+                        i++;
+                }
+                char* str = "4294967296";
+                uint8_t strIndex = 0;
+                while (i) {
+                        str[strIndex] = (char)(((num / (numChar)) % 10) + 48);
+                        if (numChar >= 10) {
+
+                                numChar /= 10;
+                        }
+                        strIndex++;
+                        i--;
+                }
+                str[strIndex] = '\0';
+                return str;
+        }
+        char* str = " ";
+        str[0] = (num + 48);
+        return str;
+}
+uint16_t asl::strlen(char* args) {
+        uint16_t length = 0;
+        for (length = 0; args[length] != '\0'; length++) {
+
+        }
+        return length;
+}
+//end of asl_string ======================================
+
+
+bool asl::cpuSupportsTSC() {
+    uint32_t eax, edx;
+    asm volatile("cpuid" : "=d"(edx) : "a"(1) : "ebx", "ecx");
+    return (edx & (1 << 4)) != 0;
+}
+
+//from little to big endien as internet is written in big endien
+uint16_t asl::SwitchEndian16Bit(uint16_t inp) {
+    return (inp>>8) | (inp<<8);
+}
+uint32_t asl::SwitchEndian32Bit(uint32_t inp) {
+    return ((inp>>24)&0xff)      |
+            ((inp<<8)&0xff0000)   |
+            ((inp>>8)&0xff00)     |
+            ((inp<<24)&0xff000000);
+}
 uint64_t asl::GetTicks() {
     PIT pit;
     pit.setCount(1193182/1000);
@@ -361,55 +420,6 @@ void asl::printfTUI(char* str, uint8_t forecolor, uint8_t backcolor, uint8_t x, 
         }
     }
 }
-uint32_t asl::StringToInt(char* args){
-    uint32_t number = 0;
-    uint16_t i = 0;
-    bool foundNum = false;
-
-    for(uint16_t i = 0; args[i] != '\0'; i++){
-        if((args[i] >= 58 || args[i] <= 47) && args[i] != ' '){
-            return 0;
-        }
-        if(args[i] != ' '){
-            number *= 10;
-            number += ((uint32_t)args[i] -  48);
-            foundNum = true;
-            args[i] = ' ';
-        }
-        else{
-            if(foundNum){
-                return number;
-            }
-        }
-    }
-    return number;
-}
-char* asl::IntToString(uint32_t num) {
-        uint32_t numChar = 1;
-        uint8_t i = 1;
-        if (num % 10 != num) {
-                while ((num / (numChar)) >= 10) {
-                        numChar *= 10;
-                        i++;
-                }
-                char* str = "4294967296";
-                uint8_t strIndex = 0;
-                while (i) {
-                        str[strIndex] = (char)(((num / (numChar)) % 10) + 48);
-                        if (numChar >= 10) {
-
-                                numChar /= 10;
-                        }
-                        strIndex++;
-                        i--;
-                }
-                str[strIndex] = '\0';
-                return str;
-        }
-        char* str = " ";
-        str[0] = (num + 48);
-        return str;
-}
 
 
 // UI  Prints =============================================
@@ -577,11 +587,3 @@ uint32_t asl::memRead(uint32_t memory) {
 	return *value;
 }
 
-//string manip functions
-uint16_t asl::strlen(char* args) {
-        uint16_t length = 0;
-        for (length = 0; args[length] != '\0'; length++) {
-
-        }
-        return length;
-}

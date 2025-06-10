@@ -35,9 +35,15 @@ uint32_t findarg(char* args, CommandLine* cli, uint8_t ArgNum);
 void help_page1(){
     printf("=== Keybinds: ===\n");
     printf("ctrl+e : enter you into file editing nest\n");
-    printf("        ctrl+w to write to file :)\n");
-    printf("ctrl+c : return to CLI \n");
-    //printf("ctrl+g : Enter GUI\n");
+    printf("    ->    ctrl+w to write to file :)\n");
+    printf("    ->    ctrl+c : return to CLI \n");
+    printf("==========================================\n");
+    printf("ctrl+s : enter the snake game nest\n");
+    printf("    ->    ctrl+c : return to CLI \n");
+    printf("==========================================\n");
+    printf("ctrl+g : Enter GUI\n");
+    printf("ctrl+r : idk yet\n");
+    printf("==========================================\n");
     printf("tab: clears screen\n");
     printf("\n");
     printf("=== Useful Commands: ===\n");

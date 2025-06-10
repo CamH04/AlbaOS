@@ -189,7 +189,7 @@ public:
 						nestSet(this->cliMode);
 						break;
                     case 's':
-                        // edit file
+                        // snake
 						this->cliMode = 2;
 						nestSet(this->cliMode);
 						break;

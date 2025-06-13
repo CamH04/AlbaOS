@@ -1,5 +1,6 @@
 #include <common/asl.h>
 #include <common/asl_maths.h>
+#include <common/asl_string.h>
 #include <cli.h>
 #include <owlart.h>
 #include <playstart.h>
@@ -23,6 +24,7 @@ using albaos::hardwarecommunication::apm;
 
 asl ASLCLI;
 asl_maths ASLMATHSCLI;
+asl_string ASLSTRINGCLI;
 AdvancedTechnologyAttachment ata(0x1F0, true);
 owlart OA;
 
@@ -539,7 +541,7 @@ void viewSector(char* args, CommandLine* cli) {
         printf("Usage: viewSector int \n");
         return;
     }
-    uint32_t sector = ASLCLI.atoi(args, 10);
+    uint32_t sector = ASLSTRINGCLI.atoi(args, 10);
     uint8_t buffer[512];
     ata.Read28(sector, buffer, 512, 0);
     if (!cli->mute) {

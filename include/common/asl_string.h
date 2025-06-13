@@ -10,6 +10,7 @@ namespace albaos
     {
         class asl_string{
         public:
+            int atoi(char*& str, int base);
         };
     }
 }

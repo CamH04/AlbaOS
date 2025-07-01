@@ -1,5 +1,6 @@
 #include <drivers/cmos.h>
 #include <common/asl.h>
+#include <common/asl_string.h>
 
 using namespace albaos;
 using namespace albaos::common;
@@ -7,6 +8,7 @@ using namespace albaos::drivers;
 using namespace albaos::hardwarecommunication;
 
 asl ASLCMOS;
+asl_string ASLSTRINGCMOS;
 
 void printf(char* str);
 
@@ -31,7 +33,7 @@ uint16_t Cmos::GetRAMFromCMOS(bool print){
     ram = lowmem | highmem << 8;
 
     if(print == true){
-        printf(ASLCMOS.IntToString(ram));
+        printf(ASLSTRINGCMOS.IntToString(ram));
         printf("kb");
         printf("\n");
     }
@@ -39,7 +41,7 @@ uint16_t Cmos::GetRAMFromCMOS(bool print){
 }
 
 //RTC CLOCK =================================================
-#define CURRENT_YEAR 24
+#define CURRENT_YEAR 25
 
 
 uint8_t second,minute,hour,day,month,year;
@@ -123,16 +125,16 @@ uint8_t Cmos::ReadRTC(bool print) {
       }
     if(print == true){
         printf("Time: ");
-        printf(ASLCMOS.IntToString(hour));
+        printf(ASLSTRINGCMOS.IntToString(hour));
         printf(":");
-        printf(ASLCMOS.IntToString(minute));
+        printf(ASLSTRINGCMOS.IntToString(minute));
         printf("\n");
         printf("Day: ");
-        printf(ASLCMOS.IntToString(day));
+        printf(ASLSTRINGCMOS.IntToString(day));
         printf(" Month: ");
-        printf(ASLCMOS.IntToString(month));
+        printf(ASLSTRINGCMOS.IntToString(month));
         printf(" Year: ");
-        printf(ASLCMOS.IntToString(year));
+        printf(ASLSTRINGCMOS.IntToString(year));
         printf("\n");
     }
     return hour,minute,second;

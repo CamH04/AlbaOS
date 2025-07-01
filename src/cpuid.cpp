@@ -1,11 +1,14 @@
 #include <cpuid.h>
 #include <common/types.h>
 #include <common/asl.h>
+#include <common/asl_string.h>
+
 
 using namespace albaos;
 using namespace albaos::common;
 
 asl ASLCPUID;
+asl_string ASLSTRINGCPUID;
 
 int intelcpu(void);
 void printregs(int eax, int ebx, int ecx, int edx);
@@ -94,7 +97,7 @@ int cpuidentif::intelcpu(void) {
     reserved = eax >> 14;
     signature = eax;
     printf("Type - ");
-    printf(ASLCPUID.IntToString(type));
+    printf(ASLSTRINGCPUID.IntToString(type));
     printf("\n");
     switch(type) {
         case 0:
@@ -112,7 +115,7 @@ int cpuidentif::intelcpu(void) {
     }
     printf("\n");
     printf("Family - ");
-    printf(ASLCPUID.IntToString(family));
+    printf(ASLSTRINGCPUID.IntToString(family));
     printf("\n");
     switch(family) {
         case 3:
@@ -134,11 +137,11 @@ int cpuidentif::intelcpu(void) {
     if(family == 15) {
         extended_family = (eax >> 20) & 0xff;
         printf("Extended family ");
-        printf(ASLCPUID.IntToString(extended_family));
+        printf(ASLSTRINGCPUID.IntToString(extended_family));
         printf("\n");
     }
     printf("Model - ");
-    printf(ASLCPUID.IntToString(model));
+    printf(ASLSTRINGCPUID.IntToString(model));
     printf("\n");
     switch(family) {
         case 3:
@@ -229,7 +232,7 @@ int cpuidentif::intelcpu(void) {
         printf("\n");
     } else if(brand > 0) {
         printf("Brand - ");
-        printf(ASLCPUID.IntToString(brand));
+        printf(ASLSTRINGCPUID.IntToString(brand));
         printf("\n");
         if(brand < 0x18) {
             if(signature == 0x000006B1 || signature == 0x00000F13) {
@@ -243,9 +246,9 @@ int cpuidentif::intelcpu(void) {
         }
     }
     printf("Stepping: ");
-    printf(ASLCPUID.IntToString(stepping));
+    printf(ASLSTRINGCPUID.IntToString(stepping));
     printf("Reserved: ");
-    printf(ASLCPUID.IntToString(reserved));
+    printf(ASLSTRINGCPUID.IntToString(reserved));
     printf("\n");
     return 0;
 }

@@ -10,14 +10,9 @@ namespace albaos
     {
         class asl{
         public:
-            void itoa(int value, char* str, int base);
-            void utoa(unsigned int value, char* str, int base);
             bool cpuSupportsTSC();
-            int strcmp(const char* str1, const char* str2);
             uint16_t SwitchEndian16Bit(uint16_t inp);
             uint32_t SwitchEndian32Bit(uint32_t inp);
-            char* ArrayIntToString(unsigned int* arr);
-            char* CharPointerToString(const char* ptr);
             char* FloatToString(float number);
             void PrintCpuSpeed();
             double calculateClockSpeed();
@@ -38,8 +33,6 @@ namespace albaos
             uint16_t SetTextColor(bool set, albaos::common::uint16_t color = 0x07);
             double Random(void);
             uint16_t betterRandom();
-            char* IntToString(uint32_t num);
-            uint32_t StringToInt(char* args);
             void sleep(uint32_t ms);
             //printstuff
             uint8_t Web2EGA(uint32_t colour);
@@ -55,7 +48,6 @@ namespace albaos
             void putcharTUI(unsigned char ch, unsigned char forecolor,unsigned char backcolor, uint8_t x, uint8_t y);
             void TUI(uint8_t forecolor, uint8_t backcolor,uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2,bool shadow);
             void printfTUI(char* str, uint8_t forecolor, uint8_t backcolor, uint8_t x, uint8_t y);
-            uint16_t strlen(char* args);
             char* argparse(char* args, uint8_t num);
             uint8_t argcount(char* args);
 

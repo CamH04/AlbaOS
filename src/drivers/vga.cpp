@@ -1,6 +1,7 @@
 #include <drivers/vga.h>
 #include <common/asl.h>
 #include <common/asl_maths.h>
+#include <common/asl_string.h>
 
 using namespace albaos;
 using namespace albaos::gui;
@@ -9,6 +10,7 @@ using namespace albaos::drivers;
 
 asl ASLVGA;
 asl_maths ASLM;
+asl_string ASLSTRINGV;
 
 
 VideoGraphicsArray::VideoGraphicsArray() :
@@ -175,7 +177,7 @@ void VideoGraphicsArray::PutPixelRaw(int32_t x, int32_t y, uint8_t colorIndex) {
 
 void VideoGraphicsArray::PutText(char* str, int32_t x, int32_t y, uint8_t color) {
 
-	uint16_t length = ASLVGA.strlen(str);
+	uint16_t length = ASLSTRINGV.strlen(str);
 
 	if ((320 - x) < (length * 5)) {
 

@@ -1,6 +1,7 @@
 #include <nests/terminalgame.h>
 #include <common/asl.h>
 #include <common/asl_maths.h>
+#include <common/asl_string.h>
 #include <cli.h>
 #include <drivers/keyboard.h>
 #include <drivers/audio.h>
@@ -11,6 +12,7 @@ using namespace albaos::common;
 using namespace albaos::drivers;
 
 asl ASLTG;
+asl_string ASLSTRTG;
 Speaker PCSPEAKERS;
 
 int attemptnum = 4;
@@ -25,7 +27,7 @@ void terminalgamestart() {
     ASLTG.printfTUI("Alba Software TERMLINK PROTOCOL\n", 0x0f, 0x00, 0, 0);
     ASLTG.printfTUI("ENTER PASSWORD NOW\n", 0x0f, 0x00, 0, 2);
     ASLTG.printfTUI("ATTEMPT(S) LEFT: ", 0x0f, 0x00, 20, 4);
-    ASLTG.printfTUI(ASLTG.IntToString(attemptnum), 0x0f, 0x00, 20, 4);
+    ASLTG.printfTUI(ASLSTRTG.IntToString(attemptnum), 0x0f, 0x00, 20, 4);
     ASLTG.printfTUI("\n", 0x0f, 0x00, 0, 6);
     ASLTG.printfTUI("0xF4F0 VIRAL 0F5BC MINES\n", 0x0f, 0x00, 0, 7);
     ASLTG.printfTUI("0xF4FC DARED 0F5C8 LIKES\n", 0x0f, 0x00, 0, 8);
@@ -64,18 +66,18 @@ void password() {
                 inputIndex--;
                 inputPassword[inputIndex] = 0;
             } else if (key == '\n') {
-                if (ASLTG.strcmp(inputPassword, correctPassword) == 0) {
+                if (ASLSTRTG.strcmp(inputPassword, correctPassword) == 0) {
                     exp += 10;
                     ASLTG.printfTUI("Exact Match! +10 EXP\n", 0x0f, 0x00, 0, 16);
                     PCSPEAKERS.Speak(1000);
                     ASLTG.sleep(500);
                     ASLTG.printfTUI("Total EXP: ", 0x0f, 0x00, 0, 17);
-                    ASLTG.printfTUI(ASLTG.IntToString(exp), 0x0f, 0x00, 30, 17);
+                    ASLTG.printfTUI(ASLSTRTG.IntToString(exp), 0x0f, 0x00, 30, 17);
                     break;
                 } else {
                     attemptnum--;
                     ASLTG.printfTUI("Incorrect password. Attempts left: ", 0x0f, 0x00, 0, 16);
-                    ASLTG.printfTUI(ASLTG.IntToString(attemptnum), 0x0f, 0x00, 30, 16);
+                    ASLTG.printfTUI(ASLSTRTG.IntToString(attemptnum), 0x0f, 0x00, 30, 16);
 
                     if (attemptnum == 0) {
                         lockedOut = true;

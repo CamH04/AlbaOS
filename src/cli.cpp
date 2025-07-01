@@ -139,7 +139,7 @@ void hello(char* args, CommandLine* cli){
 
 void changetext(char* args, CommandLine* cli) {
     //chnage
-    uint16_t newColour = (uint16_t)(ASLCLI.StringToInt(args));
+    uint16_t newColour = (uint16_t)(ASLSTRINGCLI.StringToInt(args));
     if (!newColour) {
         return;
     }
@@ -154,7 +154,7 @@ void textnum(char* args, CommandLine* cli) {
     for (int i = 0; i < numOfAvalibeCol; i++)
     {
         ASLCLI.SetTextColor(true,i);
-        char* numStr = ASLCLI.IntToString(i);
+        char* numStr = ASLSTRINGCLI.IntToString(i);
         printf(numStr);
         printf(" , ");
     }
@@ -172,7 +172,7 @@ void random(char* args, CommandLine* cli){
 
     prngresult = prngresult % cli->cmdIndex++;
 
-    printf(ASLCLI.IntToString(prngresult));
+    printf(ASLSTRINGCLI.IntToString(prngresult));
     printf("\n");
 }
 void owl(char* args, CommandLine* cli){
@@ -278,14 +278,14 @@ void emojiprint(char* args, CommandLine* cli){
     int chamount = 256;
     for(int i = 11; i <= chamount; i++){
         ch[0] = i;
-        printf(ASLCLI.IntToString(i));
+        printf(ASLSTRINGCLI.IntToString(i));
         printf("-");
         printf(ch);
         printf(",");
     }
     for(int i = 1; i < 11; i++){
         ch[0] = i;
-        printf(ASLCLI.IntToString(i));
+        printf(ASLSTRINGCLI.IntToString(i));
         printf("-");
         printf(ch);
         printf(",");
@@ -307,7 +307,7 @@ void files(char* args, CommandLine* cli) {
 
 		if (cli->mute == false) {
 
-			printf(ASLCLI.IntToString(location));
+			printf(ASLSTRINGCLI.IntToString(location));
 			printf("    ");
 			printf(name);
 			printf("\n");
@@ -315,7 +315,7 @@ void files(char* args, CommandLine* cli) {
 	}
 
 
-	char* strNum = ASLCLI.IntToString(fileNum);
+	char* strNum = ASLSTRINGCLI.IntToString(fileNum);
 
 	if (cli->mute == false) {
 
@@ -338,10 +338,10 @@ void size(char* args, CommandLine* cli) {
 			printf("'");
 			printf(args);
 			printf("' is ");
-			printf(ASLCLI.IntToString(size / 1000));
+			printf(ASLSTRINGCLI.IntToString(size / 1000));
 			printf("kb large. ");
             printf(" (");
-            printf(ASLCLI.IntToString(size));
+            printf(ASLSTRINGCLI.IntToString(size));
             printf(" bytes) 0v0\n");
 		} else {
 			printf("doesnt exist @v@\n");
@@ -375,7 +375,7 @@ void rebootCLI(char* args, CommandLine* cli){
 }
 
 void add (char* args, CommandLine* cli){
-    uint32_t ArgsStringCount = ASLCLI.strlen(args);
+    uint32_t ArgsStringCount = ASLSTRINGCLI.strlen(args);
     uint32_t NumAmount = ArgsStringCount / 2;
 
     //getting amount of nums in args
@@ -386,11 +386,11 @@ void add (char* args, CommandLine* cli){
     for (int i = 1; i <= NumAmount; i++){
         total = total + findarg(args, cli, i - 1);
     }
-    printf(ASLCLI.IntToString(total));
+    printf(ASLSTRINGCLI.IntToString(total));
     printf("\n");
 }
 void mul (char* args, CommandLine* cli){
-    uint32_t ArgsStringCount = ASLCLI.strlen(args);
+    uint32_t ArgsStringCount = ASLSTRINGCLI.strlen(args);
     uint32_t NumAmount = ArgsStringCount / 2;
 
     //getting amount of nums in args
@@ -401,11 +401,11 @@ void mul (char* args, CommandLine* cli){
     for (int i = 1; i <= NumAmount; i++){
         total = total * findarg(args, cli, i - 1);
     }
-    printf(ASLCLI.IntToString(total));
+    printf(ASLSTRINGCLI.IntToString(total));
     printf("\n");
 }
 void sub (char* args, CommandLine* cli){
-    uint32_t ArgsStringCount = ASLCLI.strlen(args);
+    uint32_t ArgsStringCount = ASLSTRINGCLI.strlen(args);
     uint32_t NumAmount = ArgsStringCount / 2;
 
     //getting amount of nums in args
@@ -416,12 +416,12 @@ void sub (char* args, CommandLine* cli){
     for (int i = 1; i <= NumAmount; i++){
         total = total - findarg(args, cli, i);
     }
-    printf(ASLCLI.IntToString(total));
+    printf(ASLSTRINGCLI.IntToString(total));
     printf("\n");
 
 }
 void mod (char* args, CommandLine* cli){
-    uint32_t ArgsStringCount = ASLCLI.strlen(args);
+    uint32_t ArgsStringCount = ASLSTRINGCLI.strlen(args);
     uint32_t NumAmount = ArgsStringCount / 2;
     //getting amount of nums in args
     if (ArgsStringCount % 2 != 0){
@@ -431,11 +431,11 @@ void mod (char* args, CommandLine* cli){
     for (int i = 1; i <= NumAmount - 1; i++){
         total = total % findarg(args, cli, i);
     }
-    printf(ASLCLI.IntToString(total));
+    printf(ASLSTRINGCLI.IntToString(total));
     printf("\n");
 }
 void div (char* args, CommandLine* cli){
-    uint32_t ArgsStringCount = ASLCLI.strlen(args);
+    uint32_t ArgsStringCount = ASLSTRINGCLI.strlen(args);
     uint32_t NumAmount = ArgsStringCount / 2;
     //getting amount of nums in args
     if (ArgsStringCount % 2 != 0){
@@ -445,7 +445,7 @@ void div (char* args, CommandLine* cli){
     for (int i = 1; i <= NumAmount - 1; i++){
         total = total / findarg(args, cli, i);
     }
-    printf(ASLCLI.IntToString(total));
+    printf(ASLSTRINGCLI.IntToString(total));
     printf("\n");
 }
 
@@ -461,7 +461,7 @@ void benchmark(char* args, CommandLine* cli){
 }
 void DisplayBID(char* args, CommandLine* cli){
     printf("Your Boot ID is:");
-    printf(ASLCLI.IntToString(ASLMATHSCLI.stored_bootID));
+    printf(ASLSTRINGCLI.IntToString(ASLMATHSCLI.stored_bootID));
     printf("\n");
 }
 
@@ -494,8 +494,8 @@ void dumpWrittenSectors(char* args, CommandLine* cli) {
         } else {
             if (inRange) {
                 char startStr[16], endStr[16];
-                ASLCLI.itoa(rangeStart, startStr, 10);
-                ASLCLI.itoa(sector - 1, endStr, 10);
+                ASLSTRINGCLI.itoa(rangeStart, startStr, 10);
+                ASLSTRINGCLI.itoa(sector - 1, endStr, 10);
 
                 if (rangeStart == sector - 1) {
                     printf("Sector ");
@@ -515,8 +515,8 @@ void dumpWrittenSectors(char* args, CommandLine* cli) {
     }
     if (inRange) {
         char startStr[16], endStr[16];
-        ASLCLI.itoa(rangeStart, startStr, 10);
-        ASLCLI.itoa(maxSectorsToScan - 1, endStr, 10);
+        ASLSTRINGCLI.itoa(rangeStart, startStr, 10);
+        ASLSTRINGCLI.itoa(maxSectorsToScan - 1, endStr, 10);
 
         if (rangeStart == maxSectorsToScan - 1) {
             printf("Sector ");
@@ -537,7 +537,7 @@ void dumpWrittenSectors(char* args, CommandLine* cli) {
 }
 //TODO convert hex dump to ascii string
 void viewSector(char* args, CommandLine* cli) {
-    if (args == 0 || ASLCLI.strlen(args) == 0) {
+    if (args == 0 || ASLSTRINGCLI.strlen(args) == 0) {
         printf("Usage: viewSector int \n");
         return;
     }
@@ -563,7 +563,7 @@ void scribe(char* args, CommandLine* cli){
     uint32_t gen_rand= ASLMATHSCLI.betterRandom();
     for(uint32_t f = 0; f <= 10; f++){
         gen_rand = gen_rand % 78 + f;
-        printf(ASLCLI.IntToString(gen_rand));
+        printf(ASLSTRINGCLI.IntToString(gen_rand));
         printf("\n");
     }
 }
@@ -595,7 +595,7 @@ uint32_t findarg(char* args, CommandLine* cli, uint8_t ArgNum){
         }else if (name[0] == '>' && name[1] == 'R' && name[2] == '\0'){
             return cli->returnVal;
         }else{
-            return ASLCLI.StringToInt(name);
+            return ASLSTRINGCLI.StringToInt(name);
         }
 }
 
@@ -616,7 +616,7 @@ uint32_t numOrVar(char* args, CommandLine* cli, uint8_t argNum) {
 	} else if (name[0] == '@' && name[2] == '\0') {
 		return (uint8_t)(name[1]);
 	} else {
-		return ASLCLI.StringToInt(name);
+		return ASLSTRINGCLI.StringToInt(name);
 	}
 }
 
@@ -664,7 +664,7 @@ void CommandLine::hash_cli_init() {
 
     ASLMATHSCLI.stored_bootID = ASLMATHSCLI.bootID();
     printf("Your Boot ID is:");
-    printf(ASLCLI.IntToString(ASLMATHSCLI.stored_bootID));
+    printf(ASLSTRINGCLI.IntToString(ASLMATHSCLI.stored_bootID));
     printf("\n");
 
 

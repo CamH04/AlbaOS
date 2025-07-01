@@ -2,6 +2,7 @@
 #include <nests/filenest.h>
 #include <filesys/ofs.h>
 #include <common/asl.h>
+#include <common/asl_string.h>
 
 
 
@@ -11,11 +12,10 @@ using namespace albaos::drivers;
 using namespace albaos::filesystem;
 
 void printf(char*);
-
-
 void sleep(uint32_t);
 
 asl ASLFILENEST;
+asl_string ASLStringFILENEST;
 
 void fileTUI() {
 	ASLFILENEST.TUI(0x07, 0x05, 10, 5, 70, 19, true);
@@ -129,7 +129,7 @@ void file(bool pressed, char key, bool ctrl, bool reset) {
 						ASLFILENEST.TUI(0x0f, 0x05, 0, 23, 79, 24, false);
 						ASLFILENEST.printfTUI(fileName, 0x0f, 0x05, 0, 24);
 						ASLFILENEST.printfTUI("LBA:", 0x0f, 0x05, 72, 24);
-						ASLFILENEST.printfTUI(ASLFILENEST.IntToString(lba), 0x0f, 0x05, 76, 24);
+						ASLFILENEST.printfTUI(ASLStringFILENEST.IntToString(lba), 0x0f, 0x05, 76, 24);
 
 
 						//read file if it already exists
@@ -237,7 +237,7 @@ void file(bool pressed, char key, bool ctrl, bool reset) {
 						}
 					}
 					ASLFILENEST.printfTUI("   ", 0x01, 0x01, 76, 24);
-					ASLFILENEST.printfTUI(ASLFILENEST.IntToString(lba), 0x0f, 0x05, 76, 24);
+					ASLFILENEST.printfTUI(ASLStringFILENEST.IntToString(lba), 0x0f, 0x05, 76, 24);
 				}
 				return;
 			}

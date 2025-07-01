@@ -1,4 +1,5 @@
 #include <common/asl.h>
+#include <common/asl_string.h>
 #include <drivers/pit.h>
 #include <hardwarecommunication/acpi.h>
 #include <hardwarecommunication/power.h>
@@ -13,201 +14,9 @@ using namespace albaos::drivers;
 using namespace albaos::hardwarecommunication;
 
 asl WOOPS;
+asl_string WOOPSAGAIN;
 
-//TODO move printf to here!!!!!!!!!!!!!!!!
 void printf(char* str);
-
-
-
-// TODO move to asl_string ========================================
-
-void asl::itoa(int value, char* str, int base) {
-    char* ptr = str;
-    char* ptr1 = str;
-    char tmp_char;
-    int tmp_value;
-    if (value < 0 && base == 10) { //negative numbers bad
-        *ptr++ = '-';
-        value = -value;
-    }
-    do { //num to str
-        tmp_value = value;
-        value /= base;
-        *ptr++ = "0123456789ABCDEF"[tmp_value - value * base];
-    } while (value);
-
-    *ptr-- = '\0';
-    while (ptr1 < ptr) {
-        tmp_char = *ptr;
-        *ptr-- = *ptr1;
-        *ptr1++ = tmp_char;
-    }
-}
-void asl::utoa(unsigned int value, char* str, int base) { //same as itoa for unsigned
-    char* ptr = str;
-    char* ptr1 = str;
-    char tmp_char;
-    unsigned int tmp_value;
-    do {
-        tmp_value = value;
-        value /= base;
-        *ptr++ = "0123456789ABCDEF"[tmp_value - value * base];
-    } while (value);
-    *ptr-- = '\0';
-    while (ptr1 < ptr) {
-        tmp_char = *ptr;
-        *ptr-- = *ptr1;
-        *ptr1++ = tmp_char;
-    }
-}
-
-char* asl::CharPointerToString(const char* ptr) {
-    if (ptr == nullptr) {
-        return nullptr;
-    }
-    int length = 0;
-    while (ptr[length] != '\0') { // until we hit the null terminator
-        length++;
-    }
-    char* result = new char[length + 1];
-    for (int i = 0; i < length; i++) {
-        result[i] = ptr[i];
-    }
-    result[length] = '\0';
-    return result;
-}
-char* asl::FloatToString(float number) {
-    static char buffer[32];
-    char* ptr = buffer;
-    if (number < 0) {
-        *ptr++ = '-';
-        number = -number;
-    }
-    int integerPart = static_cast<int>(number);
-    float fractionalPart = number - integerPart;
-    char intBuffer[16];
-    int i = 0;
-    do {
-        intBuffer[i++] = '0' + (integerPart % 10);
-        integerPart /= 10;
-    } while (integerPart > 0);
-    while (i > 0) {
-        *ptr++ = intBuffer[--i];
-    }
-    *ptr++ = '.';
-    for (int j = 0; j < 6; ++j) {
-        fractionalPart *= 10;
-        int digit = static_cast<int>(fractionalPart);
-        *ptr++ = '0' + digit;
-        fractionalPart -= digit;
-    }
-    *ptr = '\0';
-    return buffer;
-}
-
-int asl::strcmp(const char* str1, const char* str2) {
-    while (*str1 != '\0' && *str2 != '\0') {
-        if (*str1 != *str2) {
-            return (unsigned char)*str1 - (unsigned char)*str2;
-        }
-        str1++;
-        str2++;
-    }
-    return (unsigned char)*str1 - (unsigned char)*str2;
-}
-char* asl::ArrayIntToString(unsigned int* arr) {
-    int len = 0;
-    while (arr[len] != -1) {
-        len++;
-    }
-    char* result = new char[len * 12 + len + 1];  // geussung each integer takes up to 11 digits + space
-
-    int idx = 0;
-    for (int i = 0; i < len; i++) {
-        int num = arr[i];
-        char buffer[12];
-        int pos = 0;
-        if (num < 0) {
-            buffer[pos++] = '-';
-            num = -num;
-        }
-        int numPos = pos;
-        do {
-            buffer[pos++] = '0' + (num % 10);
-            num /= 10;
-        } while (num > 0);
-        for (int j = numPos, k = pos - 1; j < k; j++, k--) {
-            char temp = buffer[j];
-            buffer[j] = buffer[k];
-            buffer[k] = temp;
-        }
-        for (int j = 0; j < pos; j++) {
-            result[idx++] = buffer[j];
-        }
-        if (i < len - 1) {
-            result[idx++] = ' ';
-        }
-    }
-    result[idx] = '\0';
-    return result;
-}
-uint32_t asl::StringToInt(char* args){
-    uint32_t number = 0;
-    uint16_t i = 0;
-    bool foundNum = false;
-
-    for(uint16_t i = 0; args[i] != '\0'; i++){
-        if((args[i] >= 58 || args[i] <= 47) && args[i] != ' '){
-            return 0;
-        }
-        if(args[i] != ' '){
-            number *= 10;
-            number += ((uint32_t)args[i] -  48);
-            foundNum = true;
-            args[i] = ' ';
-        }
-        else{
-            if(foundNum){
-                return number;
-            }
-        }
-    }
-    return number;
-}
-char* asl::IntToString(uint32_t num) {
-        uint32_t numChar = 1;
-        uint8_t i = 1;
-        if (num % 10 != num) {
-                while ((num / (numChar)) >= 10) {
-                        numChar *= 10;
-                        i++;
-                }
-                char* str = "4294967296";
-                uint8_t strIndex = 0;
-                while (i) {
-                        str[strIndex] = (char)(((num / (numChar)) % 10) + 48);
-                        if (numChar >= 10) {
-
-                                numChar /= 10;
-                        }
-                        strIndex++;
-                        i--;
-                }
-                str[strIndex] = '\0';
-                return str;
-        }
-        char* str = " ";
-        str[0] = (num + 48);
-        return str;
-}
-uint16_t asl::strlen(char* args) {
-        uint16_t length = 0;
-        for (length = 0; args[length] != '\0'; length++) {
-
-        }
-        return length;
-}
-//end of asl_string ======================================
 
 
 bool asl::cpuSupportsTSC() {
@@ -246,7 +55,7 @@ double asl::calculateClockSpeed() {
     return (double)(end - start); //delay is 1 second, cycles = Hz
 }
 void asl::benchmark(){
-    printf(IntToString(rdtsc()));
+    printf(WOOPSAGAIN.IntToString(rdtsc()));
     printf("\n");
 }
 void asl::PrintCpuSpeed(){
@@ -254,9 +63,9 @@ void asl::PrintCpuSpeed(){
     uint32_t ghz_whole = hz / 1000000000;
     uint32_t ghz_frac  = (hz % 1000000000) / 100000000;  // first d.p
     printf("CPU Speed: ");
-    printf(IntToString(ghz_whole));
+    printf(WOOPSAGAIN.IntToString(ghz_whole));
     printf(".");
-    printf(IntToString(ghz_frac));
+    printf(WOOPSAGAIN.IntToString(ghz_frac));
     printf(" GHz\n\n");
 }
 
@@ -435,7 +244,7 @@ char* asl::argparse(char* args, uint8_t num) {
     bool valid = false;
     uint8_t argIndex = 0;
     uint8_t bufferIndex = 0;
-    for (int i = 0; i < (strlen(args) + 1); i++) {
+    for (int i = 0; i < (WOOPSAGAIN.strlen(args) + 1); i++) {
         if (args[i] == ' ' || args[i] == '\0') {
             if (valid) {
                 if (argIndex == num) {

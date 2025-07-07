@@ -28,6 +28,7 @@ objects = obj/loader.o \
 	  obj/drivers/vga.o \
 	  obj/drivers/ata.o \
 	  obj/drivers/pit.o \
+	  obj/drivers/virtual_keyboard.o \
 	  obj/drivers/audio.o \
 	  obj/gui/widget.o \
 	  obj/gui/desktop.o \

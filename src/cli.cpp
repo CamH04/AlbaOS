@@ -12,8 +12,7 @@
 #include <drivers/cmos.h>
 #include <drivers/ata.h>
 #include <hardwarecommunication/power.h>
-
-
+#include <drivers/virtual_keyboard.h>
 
 using namespace albaos;
 using namespace albaos::drivers;
@@ -27,6 +26,7 @@ asl_maths ASLMATHSCLI;
 asl_string ASLSTRINGCLI;
 AdvancedTechnologyAttachment ata(0x1F0, true);
 owlart OA;
+
 
 void printf(char* str);
 uint32_t numOrVar(char* args, CommandLine* cli, uint8_t argNum);
@@ -568,9 +568,9 @@ void scribe(char* args, CommandLine* cli){
     }
 }
 void test(char* args, CommandLine* cli){
-    apm APM;
-    APM.init();
-    APM.poweroff();
+    vkeyboard.PressKey('H');
+    ASLCLI.sleep(1000);
+    vkeyboard.PressKey('i');
 }
 
 

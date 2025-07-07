@@ -15,6 +15,7 @@
 #include <drivers/keyboard.h>
 #include <drivers/mouse.h>
 #include <drivers/audio.h>
+#include <drivers/virtual_keyboard.h>
 #include <drivers/vga.h>
 #include <filesys/ofs.h>
 #include <gui/desktop.h>
@@ -463,6 +464,9 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t multiboot_m
     apm APM;
     APM.init();
 
+    printf("Init Virtual Keyboard\n");
+    VirtualKeyboard vkeyboard(&kbhandler);
+    printf("Virtual Keyboard Init Complete\n");
 
     printf("\nWelcome To AlbaOS!");
     printf("\n");

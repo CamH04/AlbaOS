@@ -53,6 +53,9 @@ namespace albaos {
 				virtual void Activate();
 		};
 
+		extern albaos::drivers::KeyboardDriver keyboard;
+		extern albaos::drivers::KeyboardEventHandler kbhandler;
+
 	}
 }
 

@@ -117,7 +117,7 @@ void version(char* args, CommandLine* cli){
     printf("==================================================\n");
     printf("\n");
     printf("                     (0v0)           \n");
-    printf("       AlbaOS Version: v0.9-Offline.0.2\n");
+    printf("       AlbaOS Version: v0.9-Offline.0.5\n");
     printf("\n");
     printf("==================================================\n");
     //print colours

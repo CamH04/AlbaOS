@@ -3,6 +3,8 @@
 
 #include <drivers/keyboard.h>
 
+//eg on how to call : GetVirtualKeyboard().PressKey(KEY_TAB);
+
 #define KEY_TAB        '\v'
 #define KEY_ENTER      '\n'
 #define KEY_BACKSPACE  '\b'
@@ -15,6 +17,7 @@
 #define KEY_DELETE     '\x7f'
 #define KEY_NULL       '\0'
 
+#pragma once
 namespace albaos {
     namespace drivers {
         class VirtualKeyboard {
@@ -36,6 +39,6 @@ namespace albaos {
         };
     }
 }
-extern albaos::drivers::VirtualKeyboard vkeyboard;
+
 
 #endif

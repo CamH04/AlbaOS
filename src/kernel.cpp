@@ -144,6 +144,8 @@ void printf(char* str) {
 
 
 bool EnterGUI = false;
+namespace albaos {
+namespace drivers {
 //"put Keybaord in command line pls" the class
 class CLIKeyboardEventHandler : public KeyboardEventHandler, public CommandLine {
 public:
@@ -351,6 +353,8 @@ public:
 
 
 };
+}
+}
 Desktop* LoadDesktopForTask(bool set, Desktop* desktop = 0) {
 
 	static Desktop* retDesktop = 0;
@@ -377,9 +381,11 @@ void DrawDesktopTask() {
 
 
 
+static albaos::drivers::VirtualKeyboard* g_vkeyboard = nullptr;
 
-
-
+VirtualKeyboard& GetVirtualKeyboard() {
+    return *g_vkeyboard;
+}
 
 typedef void (*constructor)();
 extern "C" constructor start_ctors;
@@ -420,7 +426,13 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t multiboot_m
     printf("Hardware init, Stage 1\n");
     DriverManager drvManager;
     AdvancedTechnologyAttachment ata0m(0x1F0, true);
+
 	CLIKeyboardEventHandler kbhandler(gdt, &taskManager, &ata0m);
+    printf("Init Virtual Keyboard\n");
+    albaos::drivers::VirtualKeyboard vkeyboard(&kbhandler);
+    printf("Virtual Keyboard Init Complete\n");
+    g_vkeyboard = &vkeyboard;
+
 	KeyboardDriver keyboard(&interrupts, &kbhandler);
     drvManager.AddDriver(&keyboard);
 
@@ -463,10 +475,6 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t multiboot_m
     printf("APM POWER INIT\n");
     apm APM;
     APM.init();
-
-    printf("Init Virtual Keyboard\n");
-    VirtualKeyboard vkeyboard(&kbhandler);
-    printf("Virtual Keyboard Init Complete\n");
 
     printf("\nWelcome To AlbaOS!");
     printf("\n");

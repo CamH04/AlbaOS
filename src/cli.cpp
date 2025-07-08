@@ -31,7 +31,7 @@ owlart OA;
 void printf(char* str);
 uint32_t numOrVar(char* args, CommandLine* cli, uint8_t argNum);
 uint32_t findarg(char* args, CommandLine* cli, uint8_t ArgNum);
-
+albaos::drivers::VirtualKeyboard& GetVirtualKeyboard();
 
 //commands =====================================================
 void help_page1(){
@@ -568,9 +568,7 @@ void scribe(char* args, CommandLine* cli){
     }
 }
 void test(char* args, CommandLine* cli){
-    vkeyboard.PressKey('H');
-    ASLCLI.sleep(1000);
-    vkeyboard.PressKey('i');
+    GetVirtualKeyboard().PressKey(KEY_TAB);
 }
 
 

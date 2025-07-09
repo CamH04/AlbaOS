@@ -71,3 +71,12 @@ void EthernetFrameProv::Send(uint64_t MacDestination_BigEndien, uint16_t EtherEt
     }
     backend->Send(bufferNumber2, size + sizeof(EtherFrameHeader));
 }
+
+uint32_t EthernetFrameProv::GetIPAddress(){
+    return backend->GetIPAddress();
+}
+
+
+uint64_t EthernetFrameProv::GetMACAddress(){
+    return backend->GetMACAddress();
+}

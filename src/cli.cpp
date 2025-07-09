@@ -567,8 +567,12 @@ void scribe(char* args, CommandLine* cli){
         printf("\n");
     }
 }
-void test(char* args, CommandLine* cli){
+void clear(char* args, CommandLine* cli){
     GetVirtualKeyboard().PressKey(KEY_TAB);
+}
+
+
+void test(char* args, CommandLine* cli){
 }
 
 
@@ -694,6 +698,7 @@ void CommandLine::hash_cli_init() {
     this->hash_add("rb",rebootCLI);
     this->hash_add("scribe",scribe);
     this->hash_add("bid",DisplayBID);
+    this->hash_add("clear",clear);
     //file commands
 	this->hash_add("files", files);
 	this->hash_add("fs", size);

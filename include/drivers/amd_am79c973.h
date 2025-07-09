@@ -85,9 +85,11 @@ namespace albaos
 
             void Send(common::uint8_t* buffer, int count);
             void Receive();
-            //
             void SetHandler(RawDataHandler* handler);
             common::uint64_t GetMACAddress();
+            void SetIPAddress(common::uint32_t ip);
+            common::uint32_t GetIPAddress();
+
         };
 
 

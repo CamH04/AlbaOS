@@ -32,7 +32,7 @@
 //31st jan 2025 8:08pm : networking stuff im starting this now
 #include <drivers/amd_am79c973.h>
 #include <networking/eframe.h>// 4 days later: help me
-
+#include <networking/arp.h> // im back 9th july 25
 
 using namespace albaos;
 using namespace albaos::common;
@@ -380,12 +380,13 @@ void DrawDesktopTask() {
 
 
 
-
+//Global Getters
 static albaos::drivers::VirtualKeyboard* g_vkeyboard = nullptr;
-
 VirtualKeyboard& GetVirtualKeyboard() {
     return *g_vkeyboard;
 }
+
+
 
 typedef void (*constructor)();
 extern "C" constructor start_ctors;
@@ -475,6 +476,25 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t multiboot_m
     printf("APM POWER INIT\n");
     apm APM;
     APM.init();
+
+    uint8_t ip1 = 10, ip2 = 0, ip3 = 2, ip4 = 15;
+
+    uint32_t ip_be = ((uint32_t)ip4 << 24)
+                    | ((uint32_t)ip3 << 16)
+                    | ((uint32_t)ip2 << 8)
+                    | (uint32_t)ip1;
+
+    uint8_t gip1 = 10, gip2 = 0, gip3 = 2, gip4 = 2;
+    uint32_t gip_be = ((uint32_t)gip4 << 24)
+                    | ((uint32_t)gip3 << 16)
+                    | ((uint32_t)gip2 << 8)
+                    | (uint32_t)gip1;
+
+    printf("\n\n\n\n");
+    eth0->SetIPAddress(ip_be);
+    AddressResolutionProtocol arp(&etherframe);
+
+    arp.Resolve(gip_be);
 
     printf("\nWelcome To AlbaOS!");
     printf("\n");

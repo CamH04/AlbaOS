@@ -37,6 +37,7 @@ objects = obj/loader.o \
 	  obj/gui/raycasting.o \
 	  obj/filesys/ofs.o \
 	  obj/networking/eframe.o \
+	  obj/networking/arp.o \
 	  obj/cli.o \
 	  obj/app.o \
 	  obj/nests/filenest.o \

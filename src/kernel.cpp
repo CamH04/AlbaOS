@@ -490,21 +490,27 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t multiboot_m
                     | ((uint32_t)gip2 << 8)
                     | (uint32_t)gip1;
 
+    printf("ip_be =");
+    ASL.printfHex(ip_be);
+    printf("\n");
+    /*
     eth0->SetIPAddress(ip_be);
+    printf("ip address set\n");
     AddressResolutionProtocol arp(&etherframe);
 
     arp.Resolve(gip_be);
+    printf("ARP Resolve Successful");
 
     printf("\nWelcome To AlbaOS!");
     printf("\n");
     printf("\n\nPress Any Key To Continue ...");
-
-
+    */
 
 
 
 
     //the user stuff from here -------------------------------------------
+    printf("Press Any Key To Continue\n");
     owlart OA;
     //OA.MenuHello();
 

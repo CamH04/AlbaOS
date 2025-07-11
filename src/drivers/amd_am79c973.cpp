@@ -1,32 +1,41 @@
-#include <common/asl.h>
-#include <drivers/amd_am79c973.h>
 
+#include <drivers/amd_am79c973.h>
+#include <common/asl.h>
 
 using namespace albaos;
 using namespace albaos::common;
 using namespace albaos::drivers;
 using namespace albaos::hardwarecommunication;
 
+asl ASLAMDDRIVER;
 
-//Raw Data Handler stuff for passing to ethernet frame
-RawDataHandler::RawDataHandler(amd_am79c973* backend){
+
+RawDataHandler::RawDataHandler(amd_am79c973* backend)
+{
     this->backend = backend;
     backend->SetHandler(this);
 }
-RawDataHandler::~RawDataHandler(){
+
+RawDataHandler::~RawDataHandler()
+{
     backend->SetHandler(0);
 }
 
-bool RawDataHandler::OnRawDataReceived(uint8_t* buffer , uint32_t size){
+bool RawDataHandler::OnRawDataReceived(uint8_t* buffer, uint32_t size)
+{
     return false;
 }
-void RawDataHandler::Send(uint8_t* buffer , uint32_t size){
-    backend->Send(buffer , size);
+
+void RawDataHandler::Send(uint8_t* buffer, uint32_t size)
+{
+    backend->Send(buffer, size);
 }
 
 
 
 
+
+void printf(char*);
 
 
 amd_am79c973::amd_am79c973(PeripheralComponentInterconnectDeviceDescriptor *dev, InterruptManager* interrupts)
@@ -58,13 +67,16 @@ amd_am79c973::amd_am79c973(PeripheralComponentInterconnectDeviceDescriptor *dev,
                  | MAC1 << 8
                  | MAC0;
 
+    // 32 bit mode
     registerAddressPort.Write(20);
     busControlRegisterDataPort.Write(0x102);
 
+    // STOP reset
     registerAddressPort.Write(0);
     registerDataPort.Write(0x04);
 
-    initBlock.mode = 0x0000; // freaky mode = false ;P
+    // initBlock
+    initBlock.mode = 0x0000; // promiscuous mode = false
     initBlock.reserved1 = 0;
     initBlock.numSendBuffers = 3;
     initBlock.reserved2 = 0;
@@ -125,7 +137,7 @@ int amd_am79c973::Reset()
     return 10;
 }
 
-void printf(char*);
+
 
 uint32_t amd_am79c973::HandleInterrupt(common::uint32_t esp)
 {
@@ -134,16 +146,17 @@ uint32_t amd_am79c973::HandleInterrupt(common::uint32_t esp)
     registerAddressPort.Write(0);
     uint32_t temp = registerDataPort.Read();
 
-    if((temp & 0x8000) == 0x8000) printf("=== AMD am79c973 ERROR === \n");
-    if((temp & 0x2000) == 0x2000) printf("  : AMD am79c973 COLLISION ERROR\n");
-    if((temp & 0x1000) == 0x1000) printf("  : AMD am79c973 MISSED FRAME\n");
-    if((temp & 0x0800) == 0x0800) printf("  : AMD am79c973 MEMORY ERROR\n");
+    if((temp & 0x8000) == 0x8000) printf("AMD am79c973 ERROR\n");
+    if((temp & 0x2000) == 0x2000) printf("AMD am79c973 COLLISION ERROR\n");
+    if((temp & 0x1000) == 0x1000) printf("AMD am79c973 MISSED FRAME\n");
+    if((temp & 0x0800) == 0x0800) printf("AMD am79c973 MEMORY ERROR\n");
     if((temp & 0x0400) == 0x0400) Receive();
-    if((temp & 0x0200) == 0x0200) printf("=== AMD am79c973 DATA SENT :) === \n");
+    if((temp & 0x0200) == 0x0200) printf("AMD am79c973 DATA SENT\n");
 
+    // acknoledge
     registerAddressPort.Write(0);
     registerDataPort.Write(temp);
-    //last time was 2 insted of 1, caused imminent death
+
     if((temp & 0x0100) == 0x0100) printf("AMD am79c973 INIT DONE\n");
 
     return esp;
@@ -163,11 +176,10 @@ void amd_am79c973::Send(uint8_t* buffer, int size)
                 src >= buffer; src--, dst--)
         *dst = *src;
 
-    asl ASLAMD;
     printf("Sending: ");
     for(int i = 0; i < size; i++)
     {
-        ASLAMD.printfHex(buffer[i]);
+        ASLAMDDRIVER.printfHex(buffer[i]);
         printf(" ");
     }
 
@@ -181,7 +193,7 @@ void amd_am79c973::Send(uint8_t* buffer, int size)
 
 void amd_am79c973::Receive()
 {
-    printf("=== AMD am79c973 DATA RECEIVED ===\n");
+    printf("AMD am79c973 DATA RECEIVED\n");
 
     for(; (recvBufferDescr[currentRecvBuffer].flags & 0x80000000) == 0;
         currentRecvBuffer = (currentRecvBuffer + 1) % 8)
@@ -196,10 +208,15 @@ void amd_am79c973::Receive()
 
             uint8_t* buffer = (uint8_t*)(recvBufferDescr[currentRecvBuffer].address);
 
-            if(handler != 0){
-                if(handler->OnRawDataReceived(buffer , size)){
-                    Send(buffer , size);
-                }
+            if(handler != 0)
+                if(handler->OnRawDataReceived(buffer, size))
+                    Send(buffer, size);
+
+            size = 64;
+            for(int i = 0; i < size; i++)
+            {
+                ASLAMDDRIVER.printfHex(buffer[i]);
+                printf(" ");
             }
 
         }
@@ -209,18 +226,22 @@ void amd_am79c973::Receive()
     }
 }
 
-//for stackframe handling
-void amd_am79c973::SetHandler(RawDataHandler* handler){
+void amd_am79c973::SetHandler(RawDataHandler* handler)
+{
     this->handler = handler;
 }
-uint64_t amd_am79c973::GetMACAddress(){
+
+uint64_t amd_am79c973::GetMACAddress()
+{
     return initBlock.physicalAddress;
 }
 
-void amd_am79c973::SetIPAddress(uint32_t ip){
-    initBlock.logicalAddress;
-
+void amd_am79c973::SetIPAddress(uint32_t ip)
+{
+    initBlock.logicalAddress = ip;
 }
-uint32_t amd_am79c973::GetIPAddress(){
+
+uint32_t amd_am79c973::GetIPAddress()
+{
     return initBlock.logicalAddress;
 }

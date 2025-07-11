@@ -463,7 +463,7 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t multiboot_m
         amd_am79c973* eth0 = (amd_am79c973*)(drvManager.drivers[2]);
         printf("ALBA KERNEL : eth0 init\n");
 
-        EthernetFrameProv etherframe(eth0);
+        EtherFrameProvider etherframe(eth0);
         printf("ALBA KERNEL : ethframe obj init\n");
 
         //etherframe.Send(0xFFFFFFFFFFFF, 0x0608, (uint8_t*)"FOO", 3);
@@ -475,7 +475,7 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t multiboot_m
     ACPI.acpiEnable();
     printf("APM POWER INIT\n");
     apm APM;
-    APM.init();
+    APM.init();;
 
     uint8_t ip1 = 10, ip2 = 0, ip3 = 2, ip4 = 15;
 
@@ -490,7 +490,6 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t multiboot_m
                     | ((uint32_t)gip2 << 8)
                     | (uint32_t)gip1;
 
-    printf("\n\n\n\n");
     eth0->SetIPAddress(ip_be);
     AddressResolutionProtocol arp(&etherframe);
 
@@ -499,8 +498,6 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t multiboot_m
     printf("\nWelcome To AlbaOS!");
     printf("\n");
     printf("\n\nPress Any Key To Continue ...");
-
-
 
 
 

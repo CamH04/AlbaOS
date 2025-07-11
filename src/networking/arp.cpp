@@ -1,95 +1,99 @@
-//give me that computers IP
 
-#include<networking/arp.h>
-#include<common/types.h>
-#include<networking/eframe.h>
-
+#include <networking/arp.h>
 using namespace albaos;
 using namespace albaos::common;
-using namespace albaos::drivers;
 using namespace albaos::networking;
-AddressResolutionProtocol::AddressResolutionProtocol(EthernetFrameProv* backend)
-            : EthernetFrameHandler(backend, 0x0608) // or 0x0806 depending on endianess
+using namespace albaos::drivers;
+
+
+AddressResolutionProtocol::AddressResolutionProtocol(EtherFrameProvider* backend)
+:  EtherFrameHandler(backend, 0x806)
+{
+    numCacheEntries = 0;
+}
+
+AddressResolutionProtocol::~AddressResolutionProtocol()
+{
+}
+
+bool AddressResolutionProtocol::OnEtherFrameReceived(uint8_t* etherframePayload, uint32_t size)
+{
+    if(size < sizeof(AddressResolutionProtocolMessage))
+        return false;
+
+    AddressResolutionProtocolMessage* arp = (AddressResolutionProtocolMessage*)etherframePayload;
+    if(arp->hardwareType == 0x0100)
+    {
+
+        if(arp->protocol == 0x0008
+        && arp->hardwareAddressSize == 6
+        && arp->protocolAddressSize == 4
+        && arp->dstIP == backend->GetIPAddress())
         {
-            numCacheEntries = 0;
-        }
 
-        AddressResolutionProtocol::~AddressResolutionProtocol() {}
+            switch(arp->command)
+            {
 
-        bool AddressResolutionProtocol::OnEthernetFrameRecived(common::uint8_t* EtherFramePayload, common::uint32_t size) {
-            if (size < sizeof(AddressResolutionProtocolMessage))
-                return false; // ignore too small frames
-
-            AddressResolutionProtocolMessage* arp = (AddressResolutionProtocolMessage*)EtherFramePayload;
-
-            if (arp->hardwareType == 0x0100) {  // check your endian - 0x0001 in network byte order
-                if (arp->protocolType == 0x0008 &&  // likely 0x0800 IP protocol, watch endian here
-                    arp->hardwareAddressSize == 6 &&
-                    arp->protocolAddressSize == 4 &&
-                    arp->dstIP == backend->GetIPAddress()) {
-
-                    switch (arp->command) {
-                        case 0x0100: // ARP request (again, endian check!)
-                            arp->command = 0x0200;  // ARP reply
-                            arp->dstIP = arp->srcIP;
-                            arp->dstMAC = arp->srcMAC;
-                            arp->srcIP = backend->GetIPAddress();
-                            arp->srcMAC = backend->GetMACAddress();
-
-                            // Send the reply (you need to implement this Send function accordingly)
-                            Send(arp->dstMAC, (common::uint8_t*)arp, sizeof(AddressResolutionProtocolMessage));
-                            break;
-
-                        case 0x0200: // ARP reply
-                            // Cache the sender's IP and MAC address
-                            if (numCacheEntries < 128) {
-                                IPcache[numCacheEntries] = arp->srcIP;
-                                MACcache[numCacheEntries] = arp->srcMAC;
-                                numCacheEntries++;
-                            }
-                            break;
-                    }
+                case 0x0100: // request
+                    arp->command = 0x0200;
+                    arp->dstIP = arp->srcIP;
+                    arp->dstMAC = arp->srcMAC;
+                    arp->srcIP = backend->GetIPAddress();
+                    arp->srcMAC = backend->GetMACAddress();
                     return true;
-                }
+                    break;
+
+                case 0x0200: // response
+                    if(numCacheEntries < 128)
+                    {
+                        IPcache[numCacheEntries] = arp->srcIP;
+                        MACcache[numCacheEntries] = arp->srcMAC;
+                        numCacheEntries++;
+                    }
+                    break;
             }
-            return false;
         }
 
-        void AddressResolutionProtocol::RequestMACAddress(common::uint32_t IP_BE) {
-            AddressResolutionProtocolMessage arp = {0};
+    }
 
-            arp.hardwareType = 0x0100;
-            arp.protocolType = 0x0008;
-            arp.hardwareAddressSize = 6;
-            arp.protocolAddressSize = 4;
-            arp.command = 0x0100;
+    return false;
+}
 
-            arp.srcMAC = backend->GetMACAddress();
-            arp.srcIP = backend->GetIPAddress();
+void AddressResolutionProtocol::RequestMACAddress(uint32_t IP_BE)
+{
 
-            arp.dstMAC = 0;
-            arp.dstIP = IP_BE;
+    AddressResolutionProtocolMessage arp;
+    arp.hardwareType = 0x0100; // ethernet
+    arp.protocol = 0x0008; // ipv4
+    arp.hardwareAddressSize = 6; // mac
+    arp.protocolAddressSize = 4; // ipv4
+    arp.command = 0x0100; // request
 
-            Send(0xFFFFFFFFFFFF, (common::uint8_t*)&arp, sizeof(AddressResolutionProtocolMessage));
-        }
+    arp.srcMAC = backend->GetMACAddress();
+    arp.srcIP = backend->GetIPAddress();
+    arp.dstMAC = 0xFFFFFFFFFFFF; // broadcast
+    arp.dstIP = IP_BE;
 
+    this->Send(arp.dstMAC, (uint8_t*)&arp, sizeof(AddressResolutionProtocolMessage));
 
-uint64_t AddressResolutionProtocol::GetMACfromCache(uint32_t IP_BE){
+}
+
+uint64_t AddressResolutionProtocol::GetMACFromCache(uint32_t IP_BE)
+{
     for(int i = 0; i < numCacheEntries; i++)
         if(IPcache[i] == IP_BE)
             return MACcache[i];
-    return 0xFFFFFFFFFFFF;
+    return 0xFFFFFFFFFFFF; // broadcast address
 }
 
-uint64_t AddressResolutionProtocol::Resolve(common::uint32_t IP_BE){
-    uint64_t result = GetMACfromCache(IP_BE);
-
-    if(result == 0xFFFFFFFFFFFF){
+uint64_t AddressResolutionProtocol::Resolve(uint32_t IP_BE)
+{
+    uint64_t result = GetMACFromCache(IP_BE);
+    if(result == 0xFFFFFFFFFFFF)
         RequestMACAddress(IP_BE);
-    }
-    while(result == 0xFFFFFFFFFFFF){
-        result = GetMACfromCache(IP_BE);
-    }
+
+    while(result == 0xFFFFFFFFFFFF) // possible infinite loop
+        result = GetMACFromCache(IP_BE);
+
     return result;
 }
-

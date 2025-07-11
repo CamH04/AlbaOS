@@ -98,8 +98,7 @@ run: albaos.iso
 
 vrun: albaos.iso
 	(killall VirtualBox && sleep 1) || true
-	VirtualBox --startvm 'AlbaOSVM' &
-
+	VBoxManage startvm 'AlbaOSVM' --type gui
 
 
 .PHONY: clean

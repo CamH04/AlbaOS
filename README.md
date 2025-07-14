@@ -49,7 +49,8 @@ sudo apt-get install xorriso
 + Global Descriptor Table (GDT)
 + Ports
 + Interrupts
-+ Keyboard Drivers
++ Keyboard Driver
++ Virtual Keyboard Driver
 + Mouse Drivers
 + PCI (Peripheral Component Interconnect) and BAR (base address registers) 
 + Owl Art (:
@@ -60,11 +61,12 @@ sudo apt-get install xorriso
 + Speaker audio with PIT
 + The AlbaOS Command Line (ACL)
 + Heap with Malloc Implemtation
-+ Amd_am79c ... Network Drivers
++ Amd_am79c ... Network Driver
 + CPU Identification
 + Ata Hard Disk Read / Write and Identification
 + Object File System (OFS)
 + Syscalls
++ GUI
 + Programs (Nests):
 +    - File Edit Nest
 +    - Snake Game Nest
@@ -74,6 +76,7 @@ sudo apt-get install xorriso
 + Power Management (APM , ACPI)
 + Networking
 +    - Ethernet Frames 
++    - ARP
 + Many Bugs!
 
 ## Alt Builds Of AlbaOS :

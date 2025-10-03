@@ -109,7 +109,7 @@ void help(char* args, CommandLine* cli){
             break;
 
         default:
-            printf("we dont have that many pages -v-");
+            printf("we dont have that many pages -v-\n");
     }
 }
 void version(char* args, CommandLine* cli){
@@ -117,7 +117,7 @@ void version(char* args, CommandLine* cli){
     printf("==================================================\n");
     printf("\n");
     printf("                     (0v0)           \n");
-    printf("       AlbaOS Version: v0.9-Offline.0.6\n");
+    printf("       AlbaOS Version: v0.9-Offline.0.7\n");
     printf("\n");
     printf("==================================================\n");
     //print colours

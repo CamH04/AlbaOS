@@ -1,116 +1,137 @@
-# AlbaOS #
-AlbaOS is a 32 bit operating system developed by me from scratch as a hobby <3
+# AlbaOS
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+**A 32-bit operating system built from scratch as a passion project.**
 
-![AlbaOsSplash](THUMB.JPG "Alba Os Splash Screen")
+AlbaOS is a fully functional operating system developed from the ground up, featuring a command-line interface, graphics capabilities, multitasking, networking, and a suite of built-in applications. This is a hobby project showcasing kernel development, system-level programming, and OS design principles.
 
+---
 
-## How To Run AlbaOS On A Virtual Machine
+## Start
 
-+ Clone the repo localy / Download the zip folder
+### Installation & Setup
 
-+ In your virtual machine select the boot / installer disc file as albaos.iso (in this example im using VMware workstation)
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/CamH04/AlbaOS.git
+   cd AlbaOS
+   ```
 
-![vmwarescreenshot](VMWARE.png "Setup Screenshot in vmware")
+2. **Install required dependencies:**
+   ```bash
+   sudo apt-get install g++
+   sudo apt-get install binutils
+   sudo apt-get install libc-dev-i386
+   sudo apt-get install grub-legacy
+   sudo apt-get install xorriso
+   ```
+   
+   *Note: If `grub-legacy` is unavailable, `grub-common` or `grub2` will work as alternatives.*
 
+3. **Build the operating system:**
+   ```bash
+   make clean        # Remove previously generated files
+   make albaos.iso   # Generate the bootable ISO image
+   ```
 
-+ Run the virtual machine!
+4. **Run in a virtual machine:**
+   - Create a new virtual machine in VMware Workstation, VirtualBox, or similar
+   - Mount the `albaos.iso` file as the boot disk
+   - Start the virtual machine and enjoy!
 
-## How To Compile AlbaOS On Linux
-+ make sure you have the installs listed below
-+ cd to root folder (/AlbaOs)
-+ use command: " make clean " to remove all generated .o , .bin and ,iso files
-+ use command: " make albaos.iso " to generate all needed files
+### Compile Dependencies
+- **g++**: C++ compiler for the kernel codebase
+- **binutils**: Binary utilities and assembly code management
+- **libc-dev-i386**: 32-bit architecture libraries for kernel compatibility
+- **grub-legacy**: Bootloader for multibooting and OS installation
+- **xorriso**: ISO 9660 disc image creation and manipulation
 
+---
 
+## Features
 
-## Installs
+### Core Kernel Components
+- **Console Output**: printf functionality with colored text support
+- **Global Descriptor Table (GDT)**: Memory segmentation and protection
+- **Port I/O**: Hardware communication and control
+- **Interrupts**: Interrupt handling and exception management
+- **Keyboard Driver**: Hardware keyboard input with virtual keyboard support
+- **Mouse Drivers**: Pointer device support
+- **PCI & BAR**: Peripheral Component Interconnect device detection and Base Address Register management
+- **CPU Identification**: CPU feature detection and reporting
 
-```
-sudo apt-get install g++
-sudo apt-get install binutils
-sudo apt-get install libc-dev-i386
-sudo apt-get install grub-legacy
-sudo apt-get install xorriso
+### Memory & Storage
+- **Heap & Malloc**: Dynamic memory allocation
+- **ATA Hard Disk Support**: Read/write operations with disk identification
+- **Object File System (OFS)**: Custom filesystem implementation
+- **CMOS Driver**: CMOS memory and real-time clock access
 
-```
+### Graphics & Multimedia
+- **VGA Graphics Mode**: 32-bit color graphics support
+- **Graphics Framework**: Drawing primitives and rendering
+- **Raycasting Engine**: 3D graphics rendering capability
+- **Speaker Audio with PIT**: Sound generation via the Programmable Interval Timer (PIT)
 
-+ g++ is a the compiler for the c++ code as i dont want to write my own
-+ binutils is a binary manager as well as managing the assembaly code
-+ libc-dev-i386 is the 32 bit architecture for the kernel
-+ grub legacy allows for multibooting and installing the os into the grub
-+ xorriso so the digital disc file (.iso) can be generated
+### Multitasking & System
+- **Multitasking**: Process management and scheduling
+- **Syscalls**: System call interface for user programs
+- **Random Number Generation**: Pseudo-random number support
+- **Power Management**: APM and ACPI power management
 
-(note) : grub-legacy is unavailable but grub-common or grub2 will work fine
+### Networking
+- **Ethernet Frames**: Layer 2 networking support
+- **ARP Protocol**: Address Resolution Protocol (ARP) 
+- **AMD AM79C Network Driver**: Ethernet driver 
 
-## Stuff i've implemented 
-+ working console output (printf) and coloured printf
-+ Global Descriptor Table (GDT)
-+ Ports
-+ Interrupts
-+ Keyboard Driver
-+ Virtual Keyboard Driver
-+ Mouse Drivers
-+ PCI (Peripheral Component Interconnect) and BAR (base address registers) 
-+ Owl Art (:
-+ Random numbers
-+ Vga graphics mode
-+ Graphics framework
-+ Multitasking
-+ Speaker audio with PIT
-+ The AlbaOS Command Line (ACL)
-+ Heap with Malloc Implemtation
-+ Amd_am79c ... Network Driver
-+ CPU Identification
-+ Ata Hard Disk Read / Write and Identification
-+ Object File System (OFS)
-+ Syscalls
-+ GUI
-+ Programs (Nests):
-+    - File Edit Nest
-+    - Snake Game Nest
-+ CMOS Driver
-+ The AlbaOS Standard Library (ASL)
-+ Raycasting Engine (Sorta...)
-+ Power Management (APM , ACPI)
-+ Networking
-+    - Ethernet Frames 
-+    - ARP
-+ Many Bugs!
+### User Interface
+- **AlbaOS Command Line (ACL)**: Custom command-line shell
+- **GUI**: Graphical user interface framework
+- **AlbaOS Standard Library (ASL)**: Standard library for application development
 
-## Alt Builds Of AlbaOS :
+### Built-in Applications (Nests)
+- **File Edit Nest**: Text editor for file manipulation
+- **Snake Game Nest**: Snake game 
+
+### Easter Eggs
+- **Owl Art**: Custom ASCII owl artwork <3
+
+---
+
+## Documentation & Resources
+
+For documentation and guides, visit:
+
+- **Documentation**: [AlbaOS Docs](https://albasoftware.netlify.app/albaos)
+- **Technical Articles**: [AlbaOS Articles](https://albasoftware-articles.netlify.app/)
+
+---
+
+## Alternative Builds Of AlbaOS :
 + [AlbaOS For Arm (raspberry pi)](https://github.com/CamH04/AlbaOS-For-Arm/tree/master/rpi4)
 + [AlbaOS For Arm (Cortex-A15)](https://github.com/CamH04/AlbaOS-For-Arm/tree/master/CortexA15)
 + [AlbaOS For Mc (tweaked:cc)](https://github.com/CamH04/Alba-OS-MC)
 + [AlbaOS Rusty](https://github.com/CamH04/AlbaOS-Rusty)
+---
+Built with a love for low-level systems programming
 
-## Website:
-With Docs And Other Hoopla
-[Link](https://albasoftware.netlify.app/albaos)
-Articles
-[Link](https://albasoftware-articles.netlify.app/)
-
-
-## Some Ascii art of my owls:
 ```
-(0,0)
-/)_)/
- **
+    (0,0)
+    /)_)/
+     **
 
-(-,-_)
-(x-x(v)7
+   (-,-_)
+    (x-x(v)7
 
-(@,@)
-[(_)]
- **
+    (@,@)
+    [(_)]
+     **
 
-(^,^)
-/)_)/
- **
+    (^,^)
+    /)_)/
+     **
 
-       <3
-  (^,^)  (^,^)
-  /)_)/  /)_)/
----**-----**----
+        <3
+   (^,^)  (^,^)
+   /)_)/  /)_)/
+ ---**-----**----
 ```
+---

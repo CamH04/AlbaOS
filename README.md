@@ -2,7 +2,7 @@
 
 **A 32-bit operating system built from scratch as a passion project.**
 
-AlbaOS is a fully functional operating system developed from the ground up, featuring a command-line interface, graphics capabilities, multitasking, networking, and a suite of built-in applications. This is a hobby project showcasing kernel development, system-level programming, and OS design principles.
+AlbaOS is a fully functional operating system developed from scratch, featuring a CLI, GUI, multitasking, networking, and a suite of built-in applications. This is a hobby project showcasing kernel development, system-level programming, and OS design patterns.
 
 ---
 

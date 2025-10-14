@@ -4,6 +4,9 @@
 
 AlbaOS is a fully functional operating system developed from scratch, featuring a CLI, GUI, multitasking, networking, and a suite of built-in applications. This is a hobby project showcasing kernel development, system-level programming, and OS design patterns.
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+![AlbaOsSplash](THUMB.JPG "Alba Os Splash Screen")
+
 ---
 
 ## Start
@@ -32,8 +35,15 @@ AlbaOS is a fully functional operating system developed from scratch, featuring 
    make clean        # Remove previously generated files
    make albaos.iso   # Generate the bootable ISO image
    ```
-
-4. **Run in a virtual machine:**
+   to run in QEMU
+   ```bash
+   make run  
+   ```
+   or to run in VirtualBox
+   ```bash
+   make vrun  
+   ```
+5. **Run in a virtual machine:**
    - Create a new virtual machine in VMware Workstation, VirtualBox, or similar
    - Mount the `albaos.iso` file as the boot disk
    - Start the virtual machine and enjoy!

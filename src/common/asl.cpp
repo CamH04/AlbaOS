@@ -69,7 +69,7 @@ void asl::PrintCpuSpeed(){
     printf(" GHz\n\n");
 }
 
-
+//ASL_MEM=======================================================
 uint16_t asl::inw (unsigned short int __port){
   unsigned short _v;
   __asm__ __volatile__ ("inw %w1,%0":"=a" (_v):"Nd" (__port));
@@ -95,14 +95,14 @@ int asl::memcmp(const void *s1, const void *s2, size_t n){
 }
 
 void asl::memmove(void *dest, void *src, size_t n){
-char *csrc = (char *)src;
-char *cdest = (char *)dest;
-char *temp = new char[n];
-for (int i=0; i<n; i++)
-    temp[i] = csrc[i];
-for (int i=0; i<n; i++)
-    cdest[i] = temp[i];
-delete [] temp;
+    char *csrc = (char *)src;
+    char *cdest = (char *)dest;
+    char *temp = new char[n];
+    for (int i=0; i<n; i++)
+        temp[i] = csrc[i];
+    for (int i=0; i<n; i++)
+        cdest[i] = temp[i];
+    delete [] temp;
 }
 
 void asl::memcpy(void *dest, void *src, size_t n) {
@@ -111,51 +111,21 @@ void asl::memcpy(void *dest, void *src, size_t n) {
     for (int i=0; i<n; i++)
         cdest[i] = csrc[i];
 }
+void asl::memWrite(uint32_t memory, uint32_t inputVal) {
+	volatile uint32_t* value;
+	value = (volatile uint32_t*)memory;
+	*value = inputVal;
+}
 
+uint32_t asl::memRead(uint32_t memory) {
+	volatile uint32_t* value;
+	value = (volatile uint32_t*)memory;
 
-//sleeps zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
-void asl::sleep(uint32_t ms) {//like arduino (ms)
-    PIT pit;
-    for (uint32_t i = 0; i < ms; i++) {
-        pit.setCount(1193182/1000);
-        uint32_t start = pit.readCount();
-        while ((start - pit.readCount()) < 1000) {}
-    }
+	return *value;
 }
-uint8_t asl::Web2EGA(uint32_t colour) {
-uint8_t bytes[3];
-bytes[2] = colour >> 16;
-bytes[1] = (colour >> 8) & 0xff;
-bytes[0] = colour & 0xff;
-uint8_t result = 0;
-for (int i = 0; i < 3; i++) {
-	if(bytes[i] < 0x2b){
-        bytes[i] = 0x00;
-	}
-	else if (bytes[i] < 0x80) {
-        bytes[i] = 0x55;
-	}
-	else if (bytes[i] < 0xd5) {
-        bytes[i] = 0xaa;
-	}
-	else{
-        bytes[i] = 0xff;
-    }
-}
-for (int i = 0; i < 3; i++) {
-	switch (bytes[i]) {
-		case 0xff:
-			result |= (1 << (i+3));
-			result |= (1 << i);
-			break;
-		case 0x55: result |= (1 << (i+3)); break;
-		case 0xaa: result |= (1 << i); break;
-		default: break;
-	}
-}
-return result;
+//======================================================
 
-}
+// UI  Prints =============================================
 void asl::TUI(uint8_t forecolor, uint8_t backcolor,uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2,bool shadow) {
     for (uint8_t y = 0; y < 25; y++) {
         for (uint8_t x = 0; x < 80; x++) {
@@ -203,9 +173,6 @@ void asl::printfTUI(char* str, uint8_t forecolor, uint8_t backcolor, uint8_t x, 
         }
     }
 }
-
-
-// UI  Prints =============================================
 void asl::putcharTUI(unsigned char ch, unsigned char forecolor,
         unsigned char backcolor, uint8_t x, uint8_t y) {
     uint16_t attrib = (backcolor << 4) | (forecolor & 0x0f);
@@ -213,7 +180,50 @@ void asl::putcharTUI(unsigned char ch, unsigned char forecolor,
     vidmem = (volatile uint16_t*)0xb8000 + (80*y+x);
     *vidmem = ch | (attrib << 8);
 }
+//==========================================================================
 
+//sleeps zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+void asl::sleep(uint32_t ms) {//like arduino (ms)
+    PIT pit;
+    for (uint32_t i = 0; i < ms; i++) {
+        pit.setCount(1193182/1000);
+        uint32_t start = pit.readCount();
+        while ((start - pit.readCount()) < 1000) {}
+    }
+}
+uint8_t asl::Web2EGA(uint32_t colour) {
+    uint8_t bytes[3];
+    bytes[2] = colour >> 16;
+    bytes[1] = (colour >> 8) & 0xff;
+    bytes[0] = colour & 0xff;
+    uint8_t result = 0;
+    for (int i = 0; i < 3; i++) {
+        if(bytes[i] < 0x2b){
+            bytes[i] = 0x00;
+        }
+        else if (bytes[i] < 0x80) {
+            bytes[i] = 0x55;
+        }
+        else if (bytes[i] < 0xd5) {
+            bytes[i] = 0xaa;
+        }
+        else{
+            bytes[i] = 0xff;
+        }
+    }
+    for (int i = 0; i < 3; i++) {
+        switch (bytes[i]) {
+            case 0xff:
+                result |= (1 << (i+3));
+                result |= (1 << i);
+                break;
+            case 0x55: result |= (1 << (i+3)); break;
+            case 0xaa: result |= (1 << i); break;
+            default: break;
+        }
+    }
+    return result;
+}
 void asl::reboot() {
 	asm volatile ("cli");
 	uint8_t read = 0x02;
@@ -276,7 +286,7 @@ uint8_t asl::argcount(char* args) {
     }
     return i-1;
 }
-
+// MORE ALS_UI ================================================
 /*
 BLACK 0x00
 BLUE 0x01
@@ -337,6 +347,8 @@ void asl::printfhere(const char* str, uint8_t line) {
         *VideoMemory = str[i] | 0x700;
     }
 }
+//  ================================================
+
 char* asl::printfHex(uint8_t key){
     char* foo = "00";
     char* hex = "0123456789ABCDEF";
@@ -354,19 +366,5 @@ void asl::printfHex32(uint32_t key){
     printfHex((key >> 16) & 0xFF);
     printfHex((key >> 8) & 0xFF);
     printfHex( key & 0xFF);
-}
-
-
-void asl::memWrite(uint32_t memory, uint32_t inputVal) {
-	volatile uint32_t* value;
-	value = (volatile uint32_t*)memory;
-	*value = inputVal;
-}
-
-uint32_t asl::memRead(uint32_t memory) {
-	volatile uint32_t* value;
-	value = (volatile uint32_t*)memory;
-
-	return *value;
 }
 

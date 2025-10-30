@@ -2,7 +2,7 @@
 #include <common/asl_maths.h>
 #include <drivers/pit.h>
 
-// (AlbaOS Standard Lib For Mathamtics)
+// (AlbaOS Standard Lib For Mathamatics)
 
 
 using namespace albaos;

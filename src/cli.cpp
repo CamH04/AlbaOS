@@ -60,6 +60,7 @@ void help_page1(){
 }
 void help_page2(){
     printf("=== Fun Commands: ===\n");
+    printf("scribe : generate some word soup\n");
     printf("owl number(0-9) : prints some art!\n");
     printf("hello : starts the conversation with Dusty\n");
     printf("speak : Dusty will speak\n");
@@ -560,19 +561,81 @@ void viewSector(char* args, CommandLine* cli) {
 
 
 void scribe(char* args, CommandLine* cli){
-    uint32_t gen_rand= ASLMATHSCLI.betterRandom();
-    for(uint32_t f = 0; f <= 10; f++){
-        gen_rand = gen_rand % 78 + f;
-        printf(ASLSTRINGCLI.IntToString(gen_rand));
-        printf("\n");
+        //i have a feeling this will implode one day
+    char* stringArray[] = {
+        (char*)"Hello, world",
+        (char*)"Jumping in a puddle With no boots All soaked And I get nosebleeds But I always get back up",
+        (char*)"I dream Ill see you in the afterlife",
+        (char*)"I know why the caged bird sings , Maya Angelou",
+        (char*)"Wonder is the beginning of wisdom , Socrates",
+        (char*)"Is it blissful? It's like a dream I want to dream"
+    };
+    const uint32_t arraySize = 6;
+    uint32_t repetitions = (ASLMATHSCLI.betterRandom() % 8) + 3;
+    char pullString[512] = {0};
+    uint32_t pullStringLen = 0;
+
+    for(uint32_t i = 0; i < repetitions; i++){
+        uint32_t stringIndex = ASLMATHSCLI.betterRandom() % arraySize;
+        char* selectedString = stringArray[stringIndex];
+        uint32_t stringLen = ASLSTRINGCLI.strlen(selectedString);
+        uint32_t start = ASLMATHSCLI.betterRandom() % stringLen;
+        uint32_t maxEnd = stringLen - start;
+        uint32_t length = ASLMATHSCLI.betterRandom() % (maxEnd + 1);
+        uint32_t end = start + length;
+        char substring[256] = {0};
+        uint32_t subLen = 0;
+        for(uint32_t j = start; j < end && subLen < 255; j++){
+            substring[subLen++] = selectedString[j];
+        }
+        substring[subLen] = '\0';
+        char words[20][50]; // max 20 words, 50 chars each
+        uint32_t wordCount = 0;
+        uint32_t wordStart = 0;
+        bool inWord = false;
+
+        for(uint32_t j = 0; j <= subLen && wordCount < 20; j++){
+            char c = (j < subLen) ? substring[j] : '\0';
+            if(c != ' ' && c != ',' && c != '\0' && !inWord){
+                wordStart = j;
+                inWord = true;
+            }
+            else if((c == ' ' || c == ',' || c == '\0') && inWord){
+                uint32_t wordLen = j - wordStart;
+                if(wordLen > 0 && wordLen < 50){
+                    for(uint32_t k = 0; k < wordLen; k++){
+                        words[wordCount][k] = substring[wordStart + k];
+                    }
+                    words[wordCount][wordLen] = '\0';
+                    wordCount++;
+                }
+                inWord = false;
+            }
+        }
+        if(wordCount > 0){
+            uint32_t wordIndex = ASLMATHSCLI.betterRandom() % wordCount;
+            char* selectedWord = words[wordIndex];
+            for(uint32_t j = 0; selectedWord[j] != '\0' && pullStringLen < 510; j++){
+                pullString[pullStringLen++] = selectedWord[j];
+            }
+            if(pullStringLen < 511){
+                pullString[pullStringLen++] = ' ';
+            }
+        }
     }
+    pullString[pullStringLen] = '\0';
+    printf("Combined pull string:\n");
+    printf(pullString);
+    printf("\n");
 }
+
 void clear(char* args, CommandLine* cli){
     GetVirtualKeyboard().PressKey(KEY_TAB);
 }
 
 
 void test(char* args, CommandLine* cli){
+
 }
 
 

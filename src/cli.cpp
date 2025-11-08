@@ -624,7 +624,6 @@ void scribe(char* args, CommandLine* cli){
         }
     }
     pullString[pullStringLen] = '\0';
-    printf("Combined pull string:\n");
     printf(pullString);
     printf("\n");
 }

@@ -324,8 +324,7 @@ public:
 					snakeInit();
 					break;
                 case 3:
-                    //raycaster
-                    //r.LoadData();
+                    //raycast here
                     break;
 				default:
 					printf("Mode not found.\n");
@@ -342,6 +341,9 @@ public:
 					break;
                 case 2:
 					printf("\nExiting snake nest \n\n");
+					break;
+                case 3:
+                    printf("\nExiting Raycast nest \n\n");
 					break;
 				default:
                     printf("\v");

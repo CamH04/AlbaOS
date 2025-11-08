@@ -85,14 +85,14 @@ run: albaos.iso
 	pulseaudio --kill
 	pulseaudio --start
 	qemu-system-x86_64 -enable-kvm \
-		-boot menu=on \
-		-drive id=disk,file=albaos.iso,format=raw,if=none \
-		-device piix4-ide,id=piix4 -device ide-hd,drive=disk,bus=piix4.0 \
-		-cpu 486 -smp 1 -m 8M \
-		-audiodev pa,id=pa0 \
-		-machine pcspk-audiodev=pa0 \
-		-vga virtio \
-		-machine type=pc,accel=kvm
+	-boot menu=on \
+	-drive id=disk,file=albaos.iso,format=raw,if=none \
+	-device piix4-ide,id=piix4 -device ide-hd,drive=disk,bus=piix4.0 \
+	-smp 1 -m 8M \
+	-audiodev pa,id=pa0 \
+	-machine pcspk-audiodev=pa0 \
+	-vga virtio \
+	-machine type=pc,accel=kvm
 
 
 

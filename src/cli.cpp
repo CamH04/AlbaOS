@@ -568,9 +568,19 @@ void scribe(char* args, CommandLine* cli){
         (char*)"I dream Ill see you in the afterlife",
         (char*)"I know why the caged bird sings , Maya Angelou",
         (char*)"Wonder is the beginning of wisdom , Socrates",
-        (char*)"Is it blissful? It's like a dream I want to dream"
+        (char*)"Is it blissful? It's like a dream I want to dream",
+        (char*)"ALERT , A RED SPY IS IN THE BASE",
+        (char*)"Murr hurr mphuphurrur, hurr mph phrr",
+        (char*)"I may be but small , but I will die a colossus . Ludleth of Courland Dark Souls 3",
+        (char*)"Goodbye then . Stay safe friend . Don't you dare go hollow . Solare Dark Souls",
+        (char*)"Protocol 1 : link to pilot Protocol 2 : uphold the mission Protocol 3 : protect the pilot",
+        (char*)"Wonder is the beginning of wisdom",
+        (char*)"This song is new to me , but I am honored to be a part of it",
+        (char*)"When the heart speaks , the mind finds it indecent to object",
+        (char*)"Dear Diary , Did i tell you i saw a bird . it had brown feathers and a red chest - it gleamed againts the sky",
+        (char*)"they may face their greatest adversaries , eachother , and ultimately themselves"
     };
-    const uint32_t arraySize = 6;
+    const uint32_t arraySize = 16; //TODO just dynamicly get array size
     uint32_t repetitions = (ASLMATHSCLI.betterRandom() % 8) + 3;
     char pullString[512] = {0};
     uint32_t pullStringLen = 0;

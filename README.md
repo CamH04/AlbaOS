@@ -98,8 +98,9 @@ AlbaOS is a fully functional operating system developed from scratch, featuring 
 - **AlbaOS Standard Library (ASL)**: Standard library for application development
 
 ### Built-in Applications (Nests)
-- **File Edit Nest**: Text editor for file manipulation
+- **File Edit Nest**: Text editor for file edits
 - **Snake Game Nest**: Snake game 
+- **Metaballs**: Lavalamp style screensaver
 
 ### Easter Eggs
 - **Owl Art**: Custom ASCII owl artwork <3
@@ -114,14 +115,12 @@ For documentation and guides, visit:
 - **Technical Articles**: [AlbaOS Articles](https://albasoftware-articles.netlify.app/)
 
 ---
-
 ## Alternative Builds Of AlbaOS :
 + [AlbaOS For Arm (raspberry pi)](https://github.com/CamH04/AlbaOS-For-Arm/tree/master/rpi4)
 + [AlbaOS For Arm (Cortex-A15)](https://github.com/CamH04/AlbaOS-For-Arm/tree/master/CortexA15)
 + [AlbaOS For Mc (tweaked:cc)](https://github.com/CamH04/Alba-OS-MC)
 + [AlbaOS Rusty](https://github.com/CamH04/AlbaOS-Rusty)
 ---
-Built with a love for low-level systems programming
 
 ```
     (0,0)

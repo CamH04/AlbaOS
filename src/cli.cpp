@@ -36,20 +36,10 @@ albaos::drivers::VirtualKeyboard& GetVirtualKeyboard();
 //commands =====================================================
 void help_page1(){
     printf("=== Keybinds: ===\n");
-    printf("ctrl+e : enter you into file editing nest\n");
-    printf("    ->    ctrl+w to write to file :)\n");
-    printf("    ->    ctrl+c : return to CLI \n");
-    printf("==========================================\n");
-    printf("ctrl+s : enter the snake game nest\n");
-    printf("    ->    ctrl+c : return to CLI \n");
-    printf("==========================================\n");
-    printf("ctrl+g : Enter GUI\n");
-    printf("ctrl+r : idk yet\n");
-    printf("==========================================\n");
     printf("tab: clears screen\n");
     printf("\n");
     printf("=== Useful Commands: ===\n");
-    printf("help number(0 - 4): list of commands\n");
+    printf("help number(0 - 5): list of commands\n");
     printf("v : tells you the version of AlbaOS!\n");
     printf("hwi : tells you about your hardware\n");
     printf("rb : reboots lol\n");
@@ -88,9 +78,22 @@ void help_page4(){
     printf("div (any amount of numbers): divides the numbers\n");
     printf("mod (any amount of numbers): gives the remainder\n");
 }
-
+void help_page5(){
+    printf("=== Nests (Programs): ===\n");
+    printf("ctrl+e : enter you into file editing nest\n");
+    printf("    ->    ctrl+w to write to file :)\n");
+    printf("    ->    ctrl+c : return to CLI \n");
+    printf("==========================================\n");
+    printf("ctrl+s : enter the snake game nest\n");
+    printf("    ->    ctrl+c : return to CLI \n");
+    printf("==========================================\n");
+    printf("ctrl+m : enter the metaballs (meatballs) gui\n");
+    printf("    ->    ctrl+c : return to CLI \n");
+    printf("==========================================\n");
+    printf("ctrl+g : Enter GUI\n");
+    printf("ctrl+r : idk yet\n");
+}
 void help(char* args, CommandLine* cli){
-
     uint32_t ValueIn = findarg(args, cli, 0);
     switch (ValueIn){
         case 0:
@@ -107,6 +110,9 @@ void help(char* args, CommandLine* cli){
             break;
         case 4:
             help_page4();
+            break;
+        case 5:
+            help_page5();
             break;
 
         default:

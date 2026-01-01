@@ -1,4 +1,3 @@
-
 #ifndef __ALBAOS__MODE__SNAKE_H
 #define __ALBAOS__MODE__SNAKE_H
 

@@ -33,6 +33,7 @@
 #include <drivers/amd_am79c973.h>
 #include <networking/eframe.h>// 4 days later: help me
 #include <networking/arp.h> // im back 9th july 25
+#include <nests/meatball.h>
 
 using namespace albaos;
 using namespace albaos::common;
@@ -171,6 +172,9 @@ public:
                     //doesnt work rn
                     //password();
                     break;
+            case 4:
+                    metaballs(ch);
+                    break;
             default:
                 break;
         }
@@ -201,6 +205,10 @@ public:
                         break;
                     case 'r':
                         this->cliMode = 3;
+                        nestSet(this->cliMode);
+                        break;
+                    case 'm':
+                        this->cliMode = 4;
                         nestSet(this->cliMode);
                         break;
 					default:

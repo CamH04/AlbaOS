@@ -3,7 +3,7 @@
 #include <hardwarecommunication/port.h>
 #include <common/asl.h>
 
-
+//TODO ake condition if ACPI fails use APM shutdown
 
 #define NULL 0
 

@@ -101,6 +101,7 @@ AlbaOS is a fully functional operating system developed from scratch, featuring 
 - **File Edit Nest**: Text editor for file edits
 - **Snake Game Nest**: Snake game 
 - **Metaballs**: Lavalamp style screensaver
+- **Pipes**: Windows pipes screensaver
 
 ### Easter Eggs
 - **Owl Art**: Custom ASCII owl artwork <3

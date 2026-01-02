@@ -34,6 +34,7 @@
 #include <networking/eframe.h>// 4 days later: help me
 #include <networking/arp.h> // im back 9th july 25
 #include <nests/meatball.h>
+#include <nests/pipe.h>
 
 using namespace albaos;
 using namespace albaos::common;
@@ -175,6 +176,9 @@ public:
             case 4:
                     metaballs(ch);
                     break;
+            case 5:
+                    pipes(ch);
+                    break;
             default:
                 break;
         }
@@ -211,6 +215,9 @@ public:
                         this->cliMode = 4;
                         nestSet(this->cliMode);
                         break;
+                    case 'p':
+                        this->cliMode = 5;
+                        nestSet(this->cliMode);
 					default:
 						break;
 				}

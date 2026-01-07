@@ -46,6 +46,7 @@ objects = obj/loader.o \
 	  obj/nests/snake.o \
 	  obj/nests/meatball.o \
 	  obj/nests/pipe.o \
+	  obj/nests/dvd.o \
 	  obj/nests/terminalgame.o \
 	  obj/playstart.o \
 	  obj/cpuid.o \

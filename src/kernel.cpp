@@ -35,6 +35,7 @@
 #include <networking/arp.h> // im back 9th july 25
 #include <nests/meatball.h>
 #include <nests/pipe.h>
+#include <nests/dvd.h>
 
 using namespace albaos;
 using namespace albaos::common;
@@ -179,6 +180,9 @@ public:
             case 5:
                     pipes(ch);
                     break;
+            case 6:
+                    dvd(ch);
+                    break;
             default:
                 break;
         }
@@ -217,6 +221,9 @@ public:
                         break;
                     case 'p':
                         this->cliMode = 5;
+                        nestSet(this->cliMode);
+                    case 'd':
+                        this->cliMode = 6;
                         nestSet(this->cliMode);
 					default:
 						break;

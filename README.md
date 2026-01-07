@@ -102,6 +102,7 @@ AlbaOS is a fully functional operating system developed from scratch, featuring 
 - **Snake Game Nest**: Snake game 
 - **Metaballs**: Lavalamp style screensaver
 - **Pipes**: Windows pipes screensaver
+- **Dvd Idle** The dvd idle screen with Dusty as the icon
 
 ### Easter Eggs
 - **Owl Art**: Custom ASCII owl artwork <3

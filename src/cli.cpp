@@ -93,6 +93,12 @@ void help_page5(){
     printf("ctrl+m : enter windows pipes screensaver\n");
     printf("    ->    ctrl+c : return to CLI \n");
     printf("==========================================\n");
+    printf("ctrl+r : password game\n");
+    printf("    ->    ctrl+c : return to CLI \n");
+    printf("==========================================\n");
+    printf("ctrl+d : dvd screensaver\n");
+    printf("    ->    ctrl+c : return to CLI \n");
+    printf("==========================================\n");
     printf("ctrl+g : Enter GUI\n");
     printf("ctrl+r : idk yet\n");
 }

@@ -1,10 +1,7 @@
-#ifndef __ALBAOS__MODE__TERMINAL_GAME_H
-#define __ALBAOS__MODE__TERMINAL_GAME_H
+#ifndef __ALBAOS__MODE__TERMINALGAME_H
+#define __ALBAOS__MODE__TERMINALGAME_H
 
-#include <drivers/audio.h>
-
-
-void terminalgamestart();
-void password();
+void terminalgameInit();
+void terminalgame(char key);
 
 #endif

@@ -1,99 +1,225 @@
 #include <nests/terminalgame.h>
 #include <common/asl.h>
 #include <common/asl_maths.h>
-#include <common/asl_string.h>
-#include <cli.h>
-#include <drivers/keyboard.h>
 #include <drivers/audio.h>
-
 
 using namespace albaos;
 using namespace albaos::common;
 using namespace albaos::drivers;
 
 asl ASLTG;
-asl_string ASLSTRTG;
-Speaker PCSPEAKERS;
+asl_maths ASLMATHTG;
+Speaker PCSPEAKERTG;
 
-int attemptnum = 4;
-bool lockedOut = false;
-int exp = 0;
 
-KeyboardEventHandler keyboardEventHandler;
-KeyboardDriver* keyboardDriver;
+//keeps permenatly flickering because of spam printing
+//firs tletter gets pritned 5 times (cant type an input properly)
 
-void terminalgamestart() {
+struct TerminalGame {
+    char inputPassword[32];
+    int inputIndex;
+    int attemptnum;
+    bool lockedOut;
+    int exp;
+    bool gameWon;
+};
+
+TerminalGame tgame;
+
+const char* words[] = {
+    "VIRAL", "DARED", "WIRES", "LINES",
+    "LIVES", "SORTS", "AGREE", "FARMS",
+    "MINES", "LIKES", "PARTS", "HARAM",
+    "LINED", "WARNS", "THREW", "SIDES"
+};
+
+const char correctPassword[] = "LIVES";
+
+void terminalgameInit() {
     ASLTG.TUI(0x00, 0x00, 0, 0, 0, 0, false);
-    ASLTG.printfTUI("Alba Software TERMLINK PROTOCOL\n", 0x0f, 0x00, 0, 0);
-    ASLTG.printfTUI("ENTER PASSWORD NOW\n", 0x0f, 0x00, 0, 2);
-    ASLTG.printfTUI("ATTEMPT(S) LEFT: ", 0x0f, 0x00, 20, 4);
-    ASLTG.printfTUI(ASLSTRTG.IntToString(attemptnum), 0x0f, 0x00, 20, 4);
-    ASLTG.printfTUI("\n", 0x0f, 0x00, 0, 6);
-    ASLTG.printfTUI("0xF4F0 VIRAL 0F5BC MINES\n", 0x0f, 0x00, 0, 7);
-    ASLTG.printfTUI("0xF4FC DARED 0F5C8 LIKES\n", 0x0f, 0x00, 0, 8);
-    ASLTG.printfTUI("0xF508 WIRES 0F5D4 PARTS\n", 0x0f, 0x00, 0, 9);
-    ASLTG.printfTUI("0xF4F0 LINES 0F5BC HARAM\n", 0x0f, 0x00, 0, 10);
-    ASLTG.printfTUI("0xF520 LIVES 0xF5E LINED\n", 0x0f, 0x00, 0, 11);
-    ASLTG.printfTUI("0xF52C SORTS 0xF5F WARNS\n", 0x0f, 0x00, 0, 12);
-    ASLTG.printfTUI("0xF538 AGREE 0xF60 THREW\n", 0x0f, 0x00, 0, 13);
-    ASLTG.printfTUI("0xF544 FARMS 0xF61 SIDES\n", 0x0f, 0x00, 0, 14);
+
+    tgame.inputIndex = 0;
+    tgame.attemptnum = 4;
+    tgame.lockedOut = false;
+    tgame.exp = 0;
+    tgame.gameWon = false;
+
+    for (int i = 0; i < 32; i++) {
+        tgame.inputPassword[i] = 0;
+    }
+
+    ASLTG.printfTUI("ROBCO INDUSTRIES (TM) TERMLINK PROTOCOL", 0x02, 0x00, 15, 1);
+    ASLTG.printfTUI("ENTER PASSWORD NOW", 0x02, 0x00, 27, 3);
+
+    ASLTG.printfTUI("4 ATTEMPT(S) LEFT: ####", 0x0f, 0x00, 25, 5);
+
+    ASLTG.printfTUI("0xF4F0 VIRAL", 0x02, 0x00, 10, 8);
+    ASLTG.printfTUI("0xF5BC MINES", 0x02, 0x00, 45, 8);
+
+    ASLTG.printfTUI("0xF4FC DARED", 0x02, 0x00, 10, 9);
+    ASLTG.printfTUI("0xF5C8 LIKES", 0x02, 0x00, 45, 9);
+
+    ASLTG.printfTUI("0xF508 WIRES", 0x02, 0x00, 10, 10);
+    ASLTG.printfTUI("0xF5D4 PARTS", 0x02, 0x00, 45, 10);
+
+    ASLTG.printfTUI("0xF514 LINES", 0x02, 0x00, 10, 11);
+    ASLTG.printfTUI("0xF5E0 HARAM", 0x02, 0x00, 45, 11);
+
+    ASLTG.printfTUI("0xF520 LIVES", 0x02, 0x00, 10, 12);
+    ASLTG.printfTUI("0xF5EC LINED", 0x02, 0x00, 45, 12);
+
+    ASLTG.printfTUI("0xF52C SORTS", 0x02, 0x00, 10, 13);
+    ASLTG.printfTUI("0xF5F8 WARNS", 0x02, 0x00, 45, 13);
+
+    ASLTG.printfTUI("0xF538 AGREE", 0x02, 0x00, 10, 14);
+    ASLTG.printfTUI("0xF604 THREW", 0x02, 0x00, 45, 14);
+
+    ASLTG.printfTUI("0xF544 FARMS", 0x02, 0x00, 10, 15);
+    ASLTG.printfTUI("0xF610 SIDES", 0x02, 0x00, 45, 15);
+
+    ASLTG.printfTUI(">", 0x02, 0x00, 10, 18);
 }
 
-void passwordInputBox(char* input) {
-    ASLTG.TUI(0x07, 0x05, 15, 12, 50, 3, true);
-    ASLTG.printfTUI("Enter password: ", 0x0f, 0x00, 16, 13);
-    ASLTG.printfTUI(input, 0x0f, 0x00, 16, 14);
+void updateAttempts() {
+    char attempts[5] = "    ";
+    for (int i = 0; i < tgame.attemptnum; i++) {
+        attempts[i] = '#';
+    }
+    ASLTG.printfTUI(attempts, 0x0f, 0x00, 44, 5);
 }
 
-void password() {
-    terminalgamestart();
-    static char inputPassword[32] = {0};
-    static int inputIndex = 0;
+int checkLikeness(const char* guess, const char* answer) {
+    int matches = 0;
+    for (int i = 0; i < 5 && guess[i] != '\0' && answer[i] != '\0'; i++) {
+        if (guess[i] == answer[i]) {
+            matches++;
+        }
+    }
+    return matches;
+}
 
-    char correctPassword[] = "LIVES";
+void terminalgame(char key) {
+    static bool initialized = false;
+    static int messageY = 19;
 
-    while (attemptnum > 0 && !lockedOut) {
-        passwordInputBox(inputPassword);
+    if (!initialized) {
+        terminalgameInit();
+        initialized = true;
+        messageY = 19;
+    }
 
-        if (keyboardEventHandler.keyValue != 0) {
-            char key = keyboardEventHandler.keyValue;
+    if (key == 'q' || key == 'Q') {
+        initialized = false;
+        return;
+    }
 
-            if (key == '\x1b') {
+    if (key == 'r' || key == 'R') {
+        terminalgameInit();
+        messageY = 19;
+        return;
+    }
+
+    if (tgame.lockedOut || tgame.gameWon) {
+        return;
+    }
+
+    if (key == '\b' && tgame.inputIndex > 0) {
+        tgame.inputIndex--;
+        tgame.inputPassword[tgame.inputIndex] = 0;
+        ASLTG.putcharTUI(' ', 0x02, 0x00, 11 + tgame.inputIndex, 18);
+    }
+    else if (key == '\n' && tgame.inputIndex > 0) {
+        tgame.inputPassword[tgame.inputIndex] = '\0';
+
+        for (int i = 0; i < tgame.inputIndex; i++) {
+            if (tgame.inputPassword[i] >= 'a' && tgame.inputPassword[i] <= 'z') {
+                tgame.inputPassword[i] -= 32;
+            }
+        }
+
+        bool wordFound = false;
+        for (int i = 0; i < 16; i++) {
+            bool match = true;
+            for (int j = 0; j < 5 && words[i][j] != '\0'; j++) {
+                if (tgame.inputPassword[j] != words[i][j]) {
+                    match = false;
+                    break;
+                }
+            }
+            if (match && tgame.inputPassword[5] == '\0') {
+                wordFound = true;
                 break;
             }
+        }
 
-            if (key == '\b' && inputIndex > 0) {
-                inputIndex--;
-                inputPassword[inputIndex] = 0;
-            } else if (key == '\n') {
-                if (ASLSTRTG.strcmp(inputPassword, correctPassword) == 0) {
-                    exp += 10;
-                    ASLTG.printfTUI("Exact Match! +10 EXP\n", 0x0f, 0x00, 0, 16);
-                    PCSPEAKERS.Speak(1000);
-                    ASLTG.sleep(500);
-                    ASLTG.printfTUI("Total EXP: ", 0x0f, 0x00, 0, 17);
-                    ASLTG.printfTUI(ASLSTRTG.IntToString(exp), 0x0f, 0x00, 30, 17);
+        if (!wordFound) {
+            ASLTG.printfTUI(">Error: Invalid word", 0x0C, 0x00, 10, messageY++);
+            PCSPEAKERTG.Speak(200);
+            ASLTG.sleep(100);
+        }
+        else {
+            bool correct = true;
+            for (int i = 0; i < 5; i++) {
+                if (tgame.inputPassword[i] != correctPassword[i]) {
+                    correct = false;
                     break;
-                } else {
-                    attemptnum--;
-                    ASLTG.printfTUI("Incorrect password. Attempts left: ", 0x0f, 0x00, 0, 16);
-                    ASLTG.printfTUI(ASLSTRTG.IntToString(attemptnum), 0x0f, 0x00, 30, 16);
-
-                    if (attemptnum == 0) {
-                        lockedOut = true;
-                        ASLTG.printfTUI("You have been temporarily locked out! Contact the Administrator!\n", 0x0f, 0x00, 0, 18);
-                        PCSPEAKERS.Speak(500);
-                        ASLTG.sleep(3000);
-                        break;
-                    }
-                }
-            } else {
-                if (inputIndex < 31) {
-                    inputPassword[inputIndex++] = key;
                 }
             }
 
-            keyboardEventHandler.OnKeyUp();
+            if (correct) {
+                ASLTG.printfTUI(">Entry granted.", 0x0A, 0x00, 10, messageY++);
+                ASLTG.printfTUI(">Exact match!", 0x0A, 0x00, 10, messageY++);
+                ASLTG.printfTUI(">Likeness=5", 0x0A, 0x00, 10, messageY++);
+                PCSPEAKERTG.Speak(800);
+                ASLTG.sleep(200);
+                PCSPEAKERTG.Speak(1000);
+                tgame.gameWon = true;
+            }
+            else {
+                tgame.attemptnum--;
+                updateAttempts();
+
+                int likeness = checkLikeness(tgame.inputPassword, correctPassword);
+
+                ASLTG.printfTUI(">Entry denied.", 0x0C, 0x00, 10, messageY++);
+
+                char likeMsg[20] = ">Likeness=";
+                likeMsg[10] = '0' + likeness;
+                likeMsg[11] = '\0';
+                ASLTG.printfTUI(likeMsg, 0x0C, 0x00, 10, messageY++);
+
+                PCSPEAKERTG.Speak(300);
+                ASLTG.sleep(100);
+
+                if (tgame.attemptnum == 0) {
+                    ASLTG.printfTUI(">Terminal locked.", 0x0C, 0x00, 10, messageY++);
+                    ASLTG.printfTUI(">Please contact administrator.", 0x0C, 0x00, 10, messageY++);
+                    PCSPEAKERTG.Speak(200);
+                    ASLTG.sleep(200);
+                    PCSPEAKERTG.Speak(150);
+                    tgame.lockedOut = true;
+                }
+            }
         }
+
+        tgame.inputIndex = 0;
+        for (int i = 0; i < 32; i++) {
+            tgame.inputPassword[i] = 0;
+        }
+
+        for (int i = 0; i < 30; i++) {
+            ASLTG.putcharTUI(' ', 0x02, 0x00, 11 + i, 18);
+        }
+    }
+    else if (key >= 'a' && key <= 'z' && tgame.inputIndex < 5) {
+        key -= 32;
+        tgame.inputPassword[tgame.inputIndex] = key;
+        ASLTG.putcharTUI(key, 0x02, 0x00, 11 + tgame.inputIndex, 18);
+        tgame.inputIndex++;
+    }
+    else if (key >= 'A' && key <= 'Z' && tgame.inputIndex < 5) {
+        tgame.inputPassword[tgame.inputIndex] = key;
+        ASLTG.putcharTUI(key, 0x02, 0x00, 11 + tgame.inputIndex, 18);
+        tgame.inputIndex++;
     }
 }

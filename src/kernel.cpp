@@ -171,8 +171,7 @@ public:
 					snake(ch);
 					break;
             case 3:
-                    //doesnt work rn
-                    //password();
+                    terminalgame(ch);
                     break;
             case 4:
                     metaballs(ch);

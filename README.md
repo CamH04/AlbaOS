@@ -113,8 +113,8 @@ AlbaOS is a fully functional operating system developed from scratch, featuring 
 
 For documentation and guides, visit:
 
-- **Documentation**: [AlbaOS Docs](https://albasoftware.netlify.app/albaos)
-- **Technical Articles**: [AlbaOS Articles](https://albasoftware-articles.netlify.app/)
+- **Documentation**: [AlbaOS Docs](https://albasoftware.netlify.app/albaosdocs)
+- **Articles**: [AlbaOS Articles](https://albasoftware-articles.netlify.app/)
 
 ---
 ## Alternative Builds Of AlbaOS :

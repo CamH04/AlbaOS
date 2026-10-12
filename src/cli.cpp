@@ -90,7 +90,7 @@ void help_page5(){
     printf("ctrl+m : enter the metaballs (meatballs) gui\n");
     printf("    ->    ctrl+c : return to CLI \n");
     printf("==========================================\n");
-    printf("ctrl+m : enter windows pipes screensaver\n");
+    printf("ctrl+p : enter windows pipes screensaver\n");
     printf("    ->    ctrl+c : return to CLI \n");
     printf("==========================================\n");
     printf("ctrl+r : password game\n");

@@ -22,6 +22,7 @@ namespace albaos
             InterruptHandler(InterruptManager* interruptManager, albaos::common::uint8_t InterruptNumber);
             ~InterruptHandler();
         public:
+            void setInterruptNumber(albaos::common::uint8_t InterruptNumber);
             virtual albaos::common::uint32_t HandleInterrupt(albaos::common::uint32_t esp);
         };
 

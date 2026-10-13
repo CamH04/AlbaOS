@@ -80,6 +80,7 @@ AlbaOS is a fully functional operating system developed from scratch, featuring 
 - **Graphics Framework**: Drawing primitives and rendering
 - **Raycasting Engine**: 3D graphics rendering capability
 - **Speaker Audio with PIT**: Sound generation via the Programmable Interval Timer (PIT)
+- **Audio with AC97 driver**
 
 ### Multitasking & System
 - **Multitasking**: Process management and scheduling

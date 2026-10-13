@@ -15,6 +15,7 @@
 #include <drivers/keyboard.h>
 #include <drivers/mouse.h>
 #include <drivers/audio.h>
+#include <drivers/ac97.h>
 #include <drivers/virtual_keyboard.h>
 #include <drivers/vga.h>
 #include <filesys/ofs.h>
@@ -409,6 +410,11 @@ VirtualKeyboard& GetVirtualKeyboard() {
     return *g_vkeyboard;
 }
 
+static albaos::drivers::AC97AudioDriver* g_ac97 = nullptr;
+albaos::drivers::AC97AudioDriver* GetAC97() {
+    return g_ac97;
+}
+
 
 
 typedef void (*constructor)();
@@ -469,6 +475,15 @@ extern "C" void kernelMain(const void* multiboot_structure, uint32_t multiboot_m
 
         PeripheralComponentInterconnectController PCIController;
         PCIController.SelectDrivers(&drvManager, &interrupts);
+
+        static char ac97Storage[sizeof(AC97AudioDriver)];
+        AC97AudioDriver* ac97 = new (ac97Storage) AC97AudioDriver(&interrupts, &PCIController);
+        if (ac97->activate()) {
+            g_ac97 = ac97;
+            printf("AC97 audio codec found\n");
+        } else {
+            printf("no AC97 audio codec found\n");
+        }
 
     ASL.benchmark();
         printf("Hardware init, Stage 2\n");

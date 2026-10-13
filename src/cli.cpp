@@ -6,6 +6,7 @@
 #include <playstart.h>
 #include <multitasking.h>
 #include <drivers/audio.h>
+#include <drivers/ac97.h>
 #include <cpuid.h>
 #include <drivers/amd_am79c973.h>
 #include <filesys/ofs.h>
@@ -32,6 +33,7 @@ void printf(char* str);
 uint32_t numOrVar(char* args, CommandLine* cli, uint8_t argNum);
 uint32_t findarg(char* args, CommandLine* cli, uint8_t ArgNum);
 albaos::drivers::VirtualKeyboard& GetVirtualKeyboard();
+albaos::drivers::AC97AudioDriver* GetAC97();
 
 //commands =====================================================
 void help_page1(){
@@ -59,6 +61,7 @@ void help_page2(){
     printf("textnum: gives numbers for text colours\n");
     printf("pic: will print a coloured picture for you! (its very underwhelming)\n");
     printf("singsong number(0-idkyet): Dusty will sing you a song!\n");
+    printf("tone : plays a 440Hz tone through the AC97 sound card (again to stop)\n");
     printf("emojiprint: prints emojis and the offset code (for devs)\n");
     printf("random: will generate a random number for you\n");
 }
@@ -182,6 +185,26 @@ void speak(char* args, CommandLine* cli){
     drivers::Speaker PCSPEAKER;
     PCSPEAKER.PlaySound(1522);
 	PCSPEAKER.NoSound();
+}
+void ac97tone(char* args, CommandLine* cli){
+    AC97AudioDriver* ac97 = GetAC97();
+    if (ac97 == 0) {
+        printf("No AC97 audio codec was found on this machine\n");
+        return;
+    }
+    if (ac97->isRunning()) {
+        ac97->stop();
+        printf("AC97: stopped\n");
+        return;
+    }
+    uint32_t bufSize = 0;
+    for (int i = 0; i < 2; i++) {
+        uint8_t* buf = ac97->getNextBuffer(&bufSize);
+        ac97->fillTestTone(buf, bufSize);
+        ac97->submitBuffer();
+    }
+    ac97->play();
+    printf("AC97: playing a 440Hz tone (type tone again to stop)\n");
 }
 void random(char* args, CommandLine* cli){
     common::uint16_t prngresult = ASLMATHSCLI.Random();
@@ -770,6 +793,7 @@ void CommandLine::hash_cli_init() {
     this->hash_add("help", help);
     this->hash_add("hello", hello);
     this->hash_add("speak",speak);
+    this->hash_add("tone",ac97tone);
     this->hash_add("thanks",thanksReply);
     this->hash_add("random",random);
     this->hash_add("owl",owl);

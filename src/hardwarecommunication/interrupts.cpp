@@ -29,6 +29,15 @@ uint32_t InterruptHandler::HandleInterrupt(uint32_t esp)
     return esp;
 }
 
+void InterruptHandler::setInterruptNumber(uint8_t InterruptNumber)
+{
+    if(interruptManager->handlers[this->InterruptNumber] == this)
+        interruptManager->handlers[this->InterruptNumber] = 0;
+
+    this->InterruptNumber = InterruptNumber;
+    interruptManager->handlers[InterruptNumber] = this;
+}
+
 
 
 

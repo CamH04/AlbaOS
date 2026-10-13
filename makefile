@@ -31,6 +31,7 @@ objects = obj/loader.o \
 	  obj/drivers/pit.o \
 	  obj/drivers/virtual_keyboard.o \
 	  obj/drivers/audio.o \
+	  obj/drivers/ac97.o \
 	  obj/gui/widget.o \
 	  obj/gui/desktop.o \
 	  obj/gui/window.o \
@@ -89,7 +90,10 @@ run: albaos.iso
 	-boot menu=on \
 	-drive id=disk,file=albaos.iso,format=raw,if=none \
 	-device piix4-ide,id=piix4 -device ide-hd,drive=disk,bus=piix4.0 \
-	-smp 1 -m 8M \
+	-device AC97,audiodev=snd0 \
+	-audiodev pa,id=snd0 \
+	-audiodev pa,id=snd0 \
+	-smp 1 -m 32M \
 	-vga virtio \
 	-machine type=pc,accel=kvm
 
